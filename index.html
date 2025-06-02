@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BayWatch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="0834813844.css">
+</head>
+<body>
+
+  <nav>
+    <button onclick="showSection('home')">Home</button>
+    <button onclick="showSection('movies')">Movies</button>
+    <button onclick="showSection('series')">Series</button>
+  </nav>
+
+  <div id="home" class="section active">
+    <h1>Baywatch</h1>
+    <p>NB:The page is still under development</p>
+    <p>we currently only have 2 uploads </p>
+  </div>
+
+  <div id="series" class="section">
+    <h2>Shows</h2>
+    <div class="search-box">
+      <input type="text" id="seriesSearch" placeholder="Search for a series..." onkeyup="searchContent('series')">
+    </div>
+    <div class="genre-buttons" id="seriesGenreButtons"></div> <div id="seriesList" class="series-grid"></div>
+    <div id="seriesDetails" class="series-details" style="display: none;"></div>
+  </div>
+
+
+  <div id="movies" class="section">
+    <h2>Movies</h2>
+    <div class="search-box">
+      <input type="text" id="movieSearch" placeholder="Search for a movie..." onkeyup="searchContent('movies')">
+    </div>
+    <div class="genre-buttons" id="movieGenreButtons"></div> <div id="movieList" class="series-grid"></div>
+    <div id="movieDetails" class="series-details" style="display: none;"></div>
+  </div>
+
+
+
+  <div id="videoFullScreen">
+    <button onclick="closeFullScreen()">🔙</button>
+    <iframe src="" allowfullscreen></iframe>
+  </div>
+
+
+<script src="11.js"></script>
+<script src="12.js"></script>
+<script src="8611.js"></script>
+</body>
+</html>
