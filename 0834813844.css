@@ -326,3 +326,43 @@ p{
   transform: translateY(-3px);
   box-shadow: 0 0 8px #5a9bd8;
 }
+
+/* New style for the Watch Later button */
+.watch-later-btn {
+  padding: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 10px;
+  background: #f39c12; /* A warm orange for watch later */
+  color: #fff;
+  border: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin-top: 0.5rem; /* Space from the "Open/Watch Now" button */
+}
+
+.watch-later-btn:hover {
+  background: #e67e22; /* Darker orange on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 0 8px #f39c12;
+}
+
+/* Style for the remove button in Watch Later list */
+.remove-watch-later-btn {
+  padding: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 10px;
+  background: #e74c3c; /* Red for remove */
+  color: #fff;
+  border: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.remove-watch-later-btn:hover {
+  background: #c0392b; /* Darker red on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 0 8px #e74c3c;
+}
