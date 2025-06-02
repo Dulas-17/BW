@@ -13,6 +13,7 @@ body {
   background: #121212;
   color: #e5f5ff;
   line-height: 1.6;
+  touch-action: manipulation; /* Helps with mobile double-tap issues */
 }
 
 nav {
@@ -22,7 +23,7 @@ nav {
   justify-content: center;
   gap: 1rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
-  flex-wrap: wrap; /* Changed to wrap for better responsiveness */
+  flex-wrap: wrap;
   width:100vw;
 }
 
@@ -81,7 +82,7 @@ nav button:hover {
   background: #1c1c1c;
 }
 
-/* New CSS for Genre Buttons */
+/* Updated CSS for Genre Buttons - Bubble Style */
 .genre-buttons {
   margin: 1.5rem 0;
   text-align: center;
@@ -93,34 +94,35 @@ nav button:hover {
 
 .genre-buttons button {
   padding: 0.6rem 1.2rem;
-  background: #2b3c57;
+  background: #2b3c57; /* Base background for buttons */
   color: #d6ecff;
   border: 1px solid #4a6fa5;
-  border-radius: 8px;
+  border-radius: 25px; /* Makes them significantly rounded - "bubble" */
   font-size: 0.9rem;
   cursor: pointer;
   transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.4); /* Subtle shadow for depth */
 }
 
 .genre-buttons button:hover {
   background: #5a9bd8;
   color: #fff;
   transform: scale(1.03);
-  box-shadow: 0 0 8px #5a9bd8;
+  box-shadow: 0 0 10px #5a9bd8; /* Enhanced shadow on hover */
 }
 
 .genre-buttons button.active-genre {
   background: #5a9bd8; /* Highlight for active genre */
   color: #fff;
   border-color: #d6ecff;
-  box-shadow: 0 0 12px #5a9bd8;
+  box-shadow: 0 0 15px #5a9bd8; /* Stronger shadow for active */
   transform: scale(1.05);
 }
 
-
+/* Responsive Series/Movie Grid Layout */
 .series-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjusted for better flexibility */
+  grid-template-columns: repeat(3, 1fr); /* Default: 3 columns for smaller phones */
   gap: 1rem;
 }
 
@@ -226,78 +228,66 @@ p{
   background: #f87171;
 }
 
+/* Responsive behavior for columns */
+/* Default (small phones): 3 columns, already set above */
 
-/* Responsive behavior */
-@media (max-width: 1024px) {
+@media (min-width: 481px) { /* Larger phones and up */
   .series-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Adjusted for better flexibility */
+    grid-template-columns: repeat(3, 1fr); /* Stay at 3 columns for slightly larger phones */
   }
-
-p{
-  font-size:clamp(1.2rem,2vw,2.2rem);
-}
 }
 
-
-@media (max-width: 768px) {
+@media (min-width: 768px) { /* Tablets */
   .series-grid {
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* Adjusted for better flexibility */
+    grid-template-columns: repeat(4, 1fr); /* 4 columns on tablets */
   }
-
   nav {
-    flex-direction: row;
-    overflow-x: auto;
-    justify-content: flex-start; /* Align buttons to start */
+    justify-content: flex-start;
     padding: 0.8rem;
   }
-
   nav button {
-    flex-shrink: 0;
-    margin-right: 0.5rem; /* Small margin between buttons */
+    margin-right: 0.5rem;
   }
-.h4{
-  font-size:1.3rem;
-}
+  .h4{
+    font-size:1.3rem;
+  }
 }
 
+@media (min-width: 1200px) { /* Desktops */
+  .series-grid {
+    grid-template-columns: repeat(5, 1fr); /* 5 columns on desktops */
+  }
+}
+
+/* General responsive text sizing (from previous versions) */
+@media (max-width: 1024px) {
+  p{
+    font-size:clamp(1.2rem,2vw,2.2rem);
+  }
+}
 
 @media (max-width: 480px) {
   html {
     font-size: 12px;
   }
-
-  .series-grid {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Adjusted for better flexibility */
-    gap: 0.5rem;
-  }
-
   .series-item {
     padding: 0.3rem;
   }
-
   .episode-buttons button {
     padding: 0.8rem;
     font-size: 0.9rem;
   }
-
-  nav {
-    flex-direction: row;
+  .h4{
+    font-size:1rem;
   }
-.h4{
-  font-size:1rem;
-}
-
   .genre-buttons {
     gap: 0.5rem;
   }
-
   .genre-buttons button {
     padding: 0.5rem 0.8rem;
     font-size: 0.8rem;
   }
 }
-
-
 
 .btn {
   padding: 0.4rem;
