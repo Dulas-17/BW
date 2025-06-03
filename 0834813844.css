@@ -63,6 +63,7 @@ nav button:hover {
 .search-box {
   margin: 2rem 0;
   text-align: center;
+display:flex;
 }
 
 .search-box input {
