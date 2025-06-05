@@ -1,4 +1,4 @@
-const content = {
+Const content = {
   series: seriesData,
   movies: movieData,
 };
@@ -210,6 +210,10 @@ function showSeriesDetails(i, originSection = null) {
     document.getElementById('seriesList').innerHTML = '';
     document.getElementById('seriesDetails').style.display = 'block';
 
+    // Hide the search bar and genre buttons when in series detail view
+    document.querySelector('#series .search-box').style.display = 'none';
+    document.getElementById('seriesGenreButtons').style.display = 'none';
+
     document.getElementById('seriesDetails').innerHTML = `
         <img src="${s.image}" alt="${s.title}" />
         <h2>${s.title}</h2>
@@ -238,6 +242,10 @@ function showMovieDetails(i, originSection = null) {
     document.getElementById('movies').classList.add('active');
     document.getElementById('movieList').innerHTML = '';
     document.getElementById('movieDetails').style.display = 'block';
+
+    // Hide the search bar and genre buttons when in movie detail view
+    document.querySelector('#movies .search-box').style.display = 'none';
+    document.getElementById('movieGenreButtons').style.display = 'none';
 
     document.getElementById('movieDetails').innerHTML = `
         <img src="${m.image}" alt="${m.title}" />
