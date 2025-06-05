@@ -1,7 +1,11 @@
-Const content = {
-  series: seriesData,
-  movies: movieData,
+
+const content = {
+  series: seriesData, // seriesData is defined in series.js
+  movies: movieData,   // movieData is defined in movies.js
 };
+// This script assumes 'content' object (with content.series and content.movies)
+// is globally available, loaded from 8611.js, which in turn loads data from
+// series.js and movies.js.
 
 // --- Local Storage Utilities ---
 function saveScrollPosition() {
@@ -15,6 +19,7 @@ function restoreScrollPosition() {
     }
 }
 
+// Function to save the active section, optional detail index, active genre, and NEW: origin section
 function saveState(sectionId, detailType = null, detailIndex = null, activeGenre = null, originSection = null) {
     localStorage.setItem('lastActiveSection', sectionId);
     if (detailType !== null && detailIndex !== null) {
@@ -29,52 +34,52 @@ function saveState(sectionId, detailType = null, detailIndex = null, activeGenre
     } else {
         localStorage.removeItem('activeGenre');
     }
+    // Store originSection if provided, otherwise remove it
     if (originSection !== null) {
         localStorage.setItem('originSection', originSection);
     } else {
         localStorage.removeItem('originSection');
     }
-    saveScrollPosition();
+    saveScrollPosition(); // Save scroll position whenever state changes
 }
 
 // --- Section Management ---
 function showSection(id) {
-    // Hide all sections
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    
-    // Show requested section
     document.getElementById(id).classList.add('active');
-    
-    // Clear detail view state
-    saveState(id, null, null, localStorage.getItem('activeGenre'), null);
+    // When showing a section directly (not detail view), clear detail specific state
+    // Ensure originSection is also cleared when navigating to a main section
+    saveState(id, null, null, localStorage.getItem('activeGenre'), null); 
 
-    // Hide detail views
+    // Always clear detail view displays when switching sections
     document.getElementById('seriesDetails').style.display = 'none';
     document.getElementById('movieDetails').style.display = 'none';
 
-    // Show navigation
+    // Ensure nav is visible
     document.querySelector('nav').style.display = 'flex';
 
-    // Handle section-specific elements
+    // Hide search/genre by default, then show for specific sections
+    document.querySelectorAll('.search-box').forEach(sb => sb.style.display = 'none');
+    document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
+
+
     if (id === 'series') {
-        document.querySelector('#series .search-box').style.display = 'flex';
-        document.getElementById('seriesGenreButtons').style.display = 'flex';
+        document.getElementById('seriesSearch').style.display = 'block'; // Show search for series
+        document.getElementById('seriesGenreButtons').style.display = 'flex'; // Show genre for series
         renderGenreButtons('series');
         filterContentByGenre('series', localStorage.getItem('activeGenre') || 'All');
     } else if (id === 'movies') {
-        document.querySelector('#movies .search-box').style.display = 'flex';
-        document.getElementById('movieGenreButtons').style.display = 'flex';
+        document.getElementById('movieSearch').style.display = 'block'; // Show search for movies
+        document.getElementById('movieGenreButtons').style.display = 'flex'; // Show genre for movies
         renderGenreButtons('movies');
         filterContentByGenre('movies', localStorage.getItem('activeGenre') || 'All');
     } else if (id === 'watchLater') {
-        showWatchLater();
-    } else {
-        // Home section - hide search and genre
-        document.querySelectorAll('.search-box').forEach(sb => sb.style.display = 'none');
-        document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
+        // No search or genre filter for watch later section
+        showWatchLater(); // Call the function to display watch later content
     }
+    // 'home' section doesn't need search/genre, already hidden above
 
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0); // Scroll to top of new section
 }
 
 // --- Search Functionality ---
@@ -82,7 +87,7 @@ function searchContent(type) {
     const input = document.getElementById(type === 'series' ? 'seriesSearch' : 'movieSearch').value.toLowerCase();
     const filtered = content[type].filter(item => item.title.toLowerCase().includes(input));
 
-    localStorage.setItem('activeGenre', 'All');
+    localStorage.setItem('activeGenre', 'All'); // Reset genre filter on search
     renderGenreButtons(type);
 
     if (type === 'series') {
@@ -124,23 +129,31 @@ function filterContentByGenre(type, genre) {
     const genreButtonsContainerId = type === 'series' ? 'seriesGenreButtons' : 'movieGenreButtons';
     const buttons = document.getElementById(genreButtonsContainerId).querySelectorAll('button');
     buttons.forEach(button => {
-        button.classList.toggle('active-genre', button.textContent === genre);
+        if (button.textContent === genre) {
+            button.classList.add('active-genre');
+        } else {
+            button.classList.remove('active-genre');
+        }
     });
 
-    const filteredList = genre === 'All' 
-        ? content[type] 
-        : content[type].filter(item => item.genres && item.genres.includes(genre));
+    let filteredList;
+    if (genre === 'All') {
+        filteredList = content[type];
+    } else {
+        filteredList = content[type].filter(item => item.genres && item.genres.includes(genre));
+    }
 
     if (type === 'series') {
         showSeriesList(filteredList);
     } else {
         showMovieList(filteredList);
     }
-    saveState(type, null, null, genre, null);
+    // Ensure current section is saved, but not a detail view, and clear origin
+    saveState(type, null, null, genre, null); 
     window.scrollTo(0, 0);
 }
 
-// --- Content Display Functions ---
+// --- Display List Functions (Modified for Watch Later Button) ---
 function showSeriesList(list = null) {
     const currentList = list || content.series;
     const container = document.getElementById('seriesList');
@@ -151,18 +164,20 @@ function showSeriesList(list = null) {
         ? currentList.filter(s => s.genres && s.genres.includes(activeGenre))
         : currentList;
 
-    displayList.forEach((s, index) => {
+    displayList.forEach((s) => {
         const div = document.createElement('div');
         div.className = 'series-item';
+        const originalIndex = content.series.indexOf(s);
+        if (originalIndex === -1) return;
+
         div.innerHTML = `
           <img src="${s.image}" alt="${s.title}" />
           <h4>${s.title}</h4>
-          <button onclick="showSeriesDetails(${index})" class="btn">Open</button>
-          <button onclick="addToWatchLater('series', ${index})" class="watch-later-btn">Watch Later</button>
+          <button onclick="showSeriesDetails(${originalIndex})" class="btn">Open</button>
+          <button onclick="addToWatchLater('series', ${originalIndex})" class="watch-later-btn">Watch Later</button>
         `;
         container.appendChild(div);
     });
-
     if (list === null && localStorage.getItem('lastActiveSection') === 'series' && !localStorage.getItem('lastDetailType')) {
         restoreScrollPosition();
     }
@@ -178,43 +193,52 @@ function showMovieList(list = null) {
         ? currentList.filter(m => m.genres && m.genres.includes(activeGenre))
         : currentList;
 
-    displayList.forEach((m, index) => {
+    displayList.forEach((m) => {
         const div = document.createElement('div');
         div.className = 'series-item';
+        const originalIndex = content.movies.indexOf(m);
+        if (originalIndex === -1) return;
+
         div.innerHTML = `
           <img src="${m.image}" alt="${m.title}" />
           <h4>${m.title}</h4>
-          <button onclick="showMovieDetails(${index})" class="btn">Watch</button>
-          <button onclick="addToWatchLater('movie', ${index})" class="watch-later-btn">Watch Later</button>
+          <button onclick="showMovieDetails(${originalIndex})" class="btn">Watch</button>
+          <button onclick="addToWatchLater('movie', ${originalIndex})" class="watch-later-btn">Watch Later</button>
         `;
         container.appendChild(div);
     });
-
     if (list === null && localStorage.getItem('lastActiveSection') === 'movies' && !localStorage.getItem('lastDetailType')) {
         restoreScrollPosition();
     }
 }
 
-// --- Detail Views ---
+// --- Detail View Functions (FIXED: Ensure parent section is active AND accepts originSection) ---
 function showSeriesDetails(i, originSection = null) {
     const s = content.series[i];
-    if (!s) {
-        console.error("Series item not found at index:", i);
-        alert("Could not load series details.");
-        showSection(originSection || 'series');
+    if (!s) { // Defensive check: if item not found, log error and go back
+        console.error("Error: Series item not found at index:", i);
+        alert("Could not load series details. Data might be missing or corrupted.");
+        // Try to go back to the original section, or default to home/series
+        if (originSection === 'watchLater') {
+            showSection('watchLater');
+        } else {
+            showSection('series');
+        }
         return;
     }
+    const container = document.getElementById('seriesDetails');
 
+    // Step 1: Deactivate all sections first
     document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-    document.getElementById('series').classList.add('active');
-    document.getElementById('seriesList').innerHTML = '';
-    document.getElementById('seriesDetails').style.display = 'block';
+    // Then, make the parent section of series details active
+    document.getElementById('series').classList.add('active'); 
 
-    // Hide the search bar and genre buttons when in series detail view
-    document.querySelector('#series .search-box').style.display = 'none';
-    document.getElementById('seriesGenreButtons').style.display = 'none';
+    // Step 2: Hide the list and ensure detail container is block
+    document.getElementById('seriesList').innerHTML = ''; // Clear the list items
+    document.getElementById('seriesDetails').style.display = 'block'; // Show the details container
 
-    document.getElementById('seriesDetails').innerHTML = `
+    // Step 3: Populate details
+    container.innerHTML = `
         <img src="${s.image}" alt="${s.title}" />
         <h2>${s.title}</h2>
         <p>${s.description}</p>
@@ -224,30 +248,41 @@ function showSeriesDetails(i, originSection = null) {
         <button onclick="goBackToList('series')" class="back">Back</button>
       `;
 
-    saveState('series', 'series', i, localStorage.getItem('activeGenre'), originSection);
+    // Save state including the originSection for 'Go Back' navigation
+    saveState('series', 'series', i, localStorage.getItem('activeGenre'), originSection); 
+    window.scrollTo(0, 0); // Scroll to top of details
+
+    // --- Hide Navigation, Search Bar, and Genre Buttons ---
     document.querySelector('nav').style.display = 'none';
-    window.scrollTo(0, 0);
+    document.querySelectorAll('.search-box').forEach(sb => sb.style.display = 'none');
+    document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 }
 
 function showMovieDetails(i, originSection = null) {
     const m = content.movies[i];
-    if (!m) {
-        console.error("Movie item not found at index:", i);
-        alert("Could not load movie details.");
-        showSection(originSection || 'movies');
+    if (!m) { // Defensive check: if item not found, log error and go back
+        console.error("Error: Movie item not found at index:", i);
+        alert("Could not load movie details. Data might be missing or corrupted.");
+        if (originSection === 'watchLater') {
+            showSection('watchLater');
+        } else {
+            showSection('movies');
+        }
         return;
     }
+    const container = document.getElementById('movieDetails');
 
+    // Step 1: Deactivate all sections first
     document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-    document.getElementById('movies').classList.add('active');
-    document.getElementById('movieList').innerHTML = '';
-    document.getElementById('movieDetails').style.display = 'block';
+    // Then, make the parent section of movie details active
+    document.getElementById('movies').classList.add('active'); 
 
-    // Hide the search bar and genre buttons when in movie detail view
-    document.querySelector('#movies .search-box').style.display = 'none';
-    document.getElementById('movieGenreButtons').style.display = 'none';
+    // Step 2: Hide the list and ensure detail container is block
+    document.getElementById('movieList').innerHTML = ''; // Clear the list items
+    document.getElementById('movieDetails').style.display = 'block'; // Show the details container
 
-    document.getElementById('movieDetails').innerHTML = `
+    // Step 3: Populate details
+    container.innerHTML = `
         <img src="${m.image}" alt="${m.title}" />
         <h2>${m.title}</h2>
         <p>${m.description}</p>
@@ -256,28 +291,57 @@ function showMovieDetails(i, originSection = null) {
         </div>
         <button onclick="goBackToList('movies')" class="back">Back</button>
       `;
+    // Save state including the originSection for 'Go Back' navigation
+    saveState('movies', 'movie', i, localStorage.getItem('activeGenre'), originSection); 
+    window.scrollTo(0, 0); // Scroll to top of details
 
-    saveState('movies', 'movie', i, localStorage.getItem('activeGenre'), originSection);
+    // --- Hide Navigation, Search Bar, and Genre Buttons ---
     document.querySelector('nav').style.display = 'none';
-    window.scrollTo(0, 0);
+    document.querySelectorAll('.search-box').forEach(sb => sb.style.display = 'none');
+    document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 }
 
-// --- Navigation ---
+// --- Go Back to List Function (FIXED: Uses originSection to determine return path) ---
 function goBackToList(type) {
-    const originSection = localStorage.getItem('originSection');
-    const targetSectionId = originSection === 'watchLater' ? 'watchLater' : type;
-    
+    const activeGenre = localStorage.getItem('activeGenre') || 'All'; 
+    const originSection = localStorage.getItem('originSection'); // Retrieve origin section
+
+    // Hide the current detail view
     if (type === 'series') {
         document.getElementById('seriesDetails').style.display = 'none';
     } else {
         document.getElementById('movieDetails').style.display = 'none';
     }
 
-    showSection(targetSectionId);
-    window.scrollTo(0, 0);
+    // Determine where to go back to based on origin
+    let targetSectionId;
+    if (originSection === 'watchLater') {
+        targetSectionId = 'watchLater';
+    } else {
+        targetSectionId = type; // 'series' or 'movies'
+    }
+
+    // Call showSection to handle the transition correctly
+    showSection(targetSectionId); // This will clear detail state and origin via saveState inside showSection
+
+    // Explicitly re-render the content if going back to series/movies list (showSection handles this too)
+    // No need to explicitly call filterContentByGenre or showWatchLater here, as showSection does it.
+
+    window.scrollTo(0, 0); // Scroll to top of the target list
+
+    // Restore Navigation, Search Bar, and Genre Buttons (showSection already handles this)
+    // This block is now fully redundant as showSection manages these elements.
+    // document.querySelector('nav').style.display = 'flex';
+    // if (targetSectionId === 'series') {
+    //     document.getElementById('seriesSearch').style.display = 'block';
+    //     document.getElementById('seriesGenreButtons').style.display = 'flex';
+    // } else if (targetSectionId === 'movies') {
+    //     document.getElementById('movieSearch').style.display = 'block';
+    //     document.getElementById('movieGenreButtons').style.display = 'flex';
+    // }
 }
 
-// --- Video Player ---
+// --- Video Player Functions ---
 function playEpisode(link) {
     const player = document.getElementById('videoFullScreen');
     player.querySelector('iframe').src = link;
@@ -291,7 +355,7 @@ function closeFullScreen() {
     restoreScrollPosition();
 }
 
-// --- Watch Later ---
+// --- Watch Later Functionality (FIXED: Pass originSection to detail view) ---
 function getWatchLaterList() {
     const watchLaterJson = localStorage.getItem('watchLater');
     return watchLaterJson ? JSON.parse(watchLaterJson) : [];
@@ -302,17 +366,16 @@ function saveWatchLaterList(list) {
 }
 
 function addToWatchLater(type, index) {
-    const item = content[type][index];
+    const item = type === 'series' ? content.series[index] : content.movies[index];
     const watchLaterList = getWatchLaterList();
-    const itemId = `${type}-${index}`;
+    const itemId = `${type}-${index}`; // Unique ID for the item
 
-    if (!watchLaterList.some(wlItem => wlItem.uniqueId === itemId)) {
-        watchLaterList.push({ 
-            uniqueId: itemId, 
-            type: type, 
-            originalIndex: index, 
-            itemData: item 
-        });
+    const isAlreadyAdded = watchLaterList.some(
+        (wlItem) => wlItem.uniqueId === itemId
+    );
+
+    if (!isAlreadyAdded) {
+        watchLaterList.push({ uniqueId: itemId, type: type, originalIndex: index, itemData: item });
         saveWatchLaterList(watchLaterList);
         alert(`${item.title} added to Watch Later!`);
     } else {
@@ -323,81 +386,107 @@ function addToWatchLater(type, index) {
 function removeFromWatchLater(type, originalIndex) {
     let watchLaterList = getWatchLaterList();
     const initialLength = watchLaterList.length;
+    const itemIdToRemove = `${type}-${originalIndex}`;
     watchLaterList = watchLaterList.filter(
-        wlItem => wlItem.uniqueId !== `${type}-${originalIndex}`
+        (wlItem) => wlItem.uniqueId !== itemIdToRemove
     );
 
     if (watchLaterList.length < initialLength) {
         saveWatchLaterList(watchLaterList);
-        showWatchLater();
+        alert('Item removed from Watch Later!');
+        showWatchLater(); // Refresh the Watch Later list to reflect removal
     }
 }
 
 function showWatchLater() {
+    // Hide search, genre, and detail views when in Watch Later section
     document.querySelectorAll('.search-box').forEach(sb => sb.style.display = 'none');
     document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
     document.getElementById('seriesDetails').style.display = 'none';
     document.getElementById('movieDetails').style.display = 'none';
 
+    // Ensure the watchLater section is active
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById('watchLater').classList.add('active');
 
     const container = document.getElementById('watchLaterList');
+    container.innerHTML = ''; // Clear previous content
+
     const watchLaterItems = getWatchLaterList();
 
-    container.innerHTML = watchLaterItems.length === 0
-        ? '<p style="text-align: center; color: #aaa;">Your Watch Later list is empty.</p>'
-        : watchLaterItems.map(wlItem => {
-            const item = wlItem.itemData;
-            return `
-                <div class="series-item">
-                    <img src="${item.image}" alt="${item.title}" />
-                    <h4>${item.title}</h4>
-                    <button onclick="${wlItem.type === 'series' 
-                        ? `showSeriesDetails(${wlItem.originalIndex}, 'watchLater')` 
-                        : `showMovieDetails(${wlItem.originalIndex}, 'watchLater')`}" 
-                        class="btn">View</button>
-                    <button onclick="removeFromWatchLater('${wlItem.type}', ${wlItem.originalIndex})" 
-                        class="remove-watch-later-btn">Remove</button>
-                </div>
-            `;
-        }).join('');
+    if (watchLaterItems.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #aaa;">Your Watch Later list is empty. Add some series or movies!</p>';
+    } else {
+        watchLaterItems.forEach((wlItem) => {
+            const item = wlItem.itemData; // Use the stored itemData
+            const div = document.createElement('div');
+            div.className = 'series-item'; // Re-use existing styling
 
-    saveState('watchLater', null, null, null, null);
-    window.scrollTo(0, 0);
+            // Pass 'watchLater' as the origin section when calling detail views from here
+            const detailFunctionCall = wlItem.type === 'series'
+                ? `showSeriesDetails(${wlItem.originalIndex}, 'watchLater')`
+                : `showMovieDetails(${wlItem.originalIndex}, 'watchLater')`;
+
+            div.innerHTML = `
+                <img src="${item.image}" alt="${item.title}" />
+                <h4>${item.title}</h4>
+                <button onclick="${detailFunctionCall}" class="btn">View Details</button>
+                <button onclick="removeFromWatchLater('${wlItem.type}', ${wlItem.originalIndex})" class="remove-watch-later-btn">Remove</button>
+            `;
+            container.appendChild(div);
+        });
+    }
+    // Save the active section as 'watchLater' and clear detail-specific state
+    saveState('watchLater', null, null, null, null); 
+    window.scrollTo(0, 0); // Scroll to top of watch later list
 }
 
-// --- Initialization ---
+
+// --- Initialize on DOM Content Loaded (Simplified and Robust) ---
 document.addEventListener('DOMContentLoaded', function() {
     const lastActiveSection = localStorage.getItem('lastActiveSection');
     const lastDetailType = localStorage.getItem('lastDetailType');
     const lastDetailIndex = localStorage.getItem('lastDetailIndex');
-    const originSection = localStorage.getItem('originSection');
+    const activeGenre = localStorage.getItem('activeGenre'); // No default here, let filterContentByGenre handle it
+    const originSection = localStorage.getItem('originSection'); // Get origin if exists
 
+    // Render genre buttons initially for both series and movies
     renderGenreButtons('series');
     renderGenreButtons('movies');
 
     if (lastActiveSection) {
+        // If restoring to a detail view
         if (lastDetailType && lastDetailIndex !== null) {
+            // Hide standard UI elements immediately
             document.querySelector('nav').style.display = 'none';
+            document.querySelectorAll('.search-box').forEach(sb => sb.style.display = 'none');
+            document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
+
+            // Call detail view functions, passing the origin if it was saved
             if (lastDetailType === 'series') {
                 showSeriesDetails(parseInt(lastDetailIndex, 10), originSection);
-            } else {
+            } else if (lastDetailType === 'movie') {
                 showMovieDetails(parseInt(lastDetailIndex, 10), originSection);
             }
         } else {
+            // If restoring to a regular section list, use showSection which handles everything
             showSection(lastActiveSection);
         }
-        restoreScrollPosition();
+        restoreScrollPosition(); // Restore scroll position after content is loaded
     } else {
+        // If no state is remembered, default to 'home'
         showSection('home');
     }
 
+    // Add a global scroll listener to save position periodically
     let scrollTimer;
     window.addEventListener('scroll', function() {
         clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(saveScrollPosition, 200);
+        scrollTimer = setTimeout(() => {
+            saveScrollPosition();
+        }, 200);
     });
 
+    // Save scroll position before the user leaves the page
     window.addEventListener('beforeunload', saveScrollPosition);
 });
