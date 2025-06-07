@@ -1,7 +1,83 @@
-Const content = {
+const content = {
   series: seriesData,
   movies: movieData,
 };
+
+// --- Video Position Tracking ---
+function saveVideoPosition(videoId, currentTime, duration) {
+    const videoProgress = JSON.parse(localStorage.getItem('videoProgress') || '{}');
+    videoProgress[videoId] = {
+        currentTime: currentTime,
+        duration: duration,
+        timestamp: Date.now()
+    };
+    localStorage.setItem('videoProgress', JSON.stringify(videoProgress));
+}
+
+function getVideoPosition(videoId) {
+    const videoProgress = JSON.parse(localStorage.getItem('videoProgress') || '{}');
+    return videoProgress[videoId] || null;
+}
+
+function clearVideoPosition(videoId) {
+    const videoProgress = JSON.parse(localStorage.getItem('videoProgress') || '{}');
+    delete videoProgress[videoId];
+    localStorage.setItem('videoProgress', JSON.stringify(videoProgress));
+}
+
+function playEpisode(link, episodeTitle = null) {
+    const player = document.getElementById('videoFullScreen');
+    const iframe = player.querySelector('iframe');
+
+    // Generate a unique ID for this video
+    const videoId = episodeTitle ? `${link}-${episodeTitle}` : link;
+
+    // Check for saved position
+    const savedPosition = getVideoPosition(videoId);
+    const startTime = savedPosition ? savedPosition.currentTime : 0;
+
+    // Add the start time to the video URL
+    let videoUrl = link;
+    if (startTime > 0) {
+        const separator = link.includes('?') ? '&' : '?';
+        videoUrl = `${link}${separator}t=${Math.floor(startTime)}`;
+    }
+
+    iframe.src = videoUrl;
+    player.style.display = 'flex';
+
+    // Set up message listener for tracking progress
+    window.addEventListener('message', function videoProgressListener(event) {
+        if (event.source !== iframe.contentWindow) return;
+
+        try {
+            const data = JSON.parse(event.data);
+            if (data.currentTime && data.duration) {
+                saveVideoPosition(videoId, data.currentTime, data.duration);
+            }
+        } catch (e) {
+            console.log('Received non-progress message from iframe');
+        }
+    });
+
+    // Store the listener so we can remove it later
+    iframe._progressListener = videoProgressListener;
+}
+
+function closeFullScreen() {
+    const player = document.getElementById('videoFullScreen');
+    const iframe = player.querySelector('iframe');
+
+    // Remove the progress listener
+    if (iframe._progressListener) {
+        window.removeEventListener('message', iframe._progressListener);
+        delete iframe._progressListener;
+    }
+
+    iframe.src = '';
+    player.style.display = 'none';
+    restoreScrollPosition();
+}
 
 // --- Local Storage Utilities ---
 function saveScrollPosition() {
@@ -47,7 +123,6 @@ function showSection(id) {
     document.getElementById('movieDetails').style.display = 'none';
     document.querySelector('nav').style.display = 'flex';
 
-    // Hide all search boxes and genre buttons first
     document.querySelectorAll('.search-box').forEach(sb => sb.style.display = 'none');
     document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 
@@ -154,9 +229,16 @@ function showSeriesList(list = null) {
         const originalIndex = content.series.indexOf(s);
         if (originalIndex === -1) return;
 
+        // Check if any episode has progress
+        const hasProgress = s.episodes && s.episodes.some(ep => {
+            const videoId = `${ep.link}-${ep.title}`;
+            return getVideoPosition(videoId);
+        });
+
         div.innerHTML = `
           <img src="${s.image}" alt="${s.title}" />
           <h4>${s.title}</h4>
+          ${hasProgress ? '<div class="resume-badge">Continue Watching</div>' : ''}
           <button onclick="showSeriesDetails(${originalIndex})" class="btn">Open</button>
           <button onclick="addToWatchLater('series', ${originalIndex})" class="watch-later-btn">Watch Later</button>
         `;
@@ -183,9 +265,13 @@ function showMovieList(list = null) {
         const originalIndex = content.movies.indexOf(m);
         if (originalIndex === -1) return;
 
+        const videoId = m.link;
+        const hasProgress = getVideoPosition(videoId);
+
         div.innerHTML = `
           <img src="${m.image}" alt="${m.title}" />
           <h4>${m.title}</h4>
+          ${hasProgress ? '<div class="resume-badge">Continue Watching</div>' : ''}
           <button onclick="showMovieDetails(${originalIndex})" class="btn">Watch</button>
           <button onclick="addToWatchLater('movie', ${originalIndex})" class="watch-later-btn">Watch Later</button>
         `;
@@ -222,7 +308,12 @@ function showSeriesDetails(i, originSection = null) {
         <h2>${s.title}</h2>
         <p>${s.description}</p>
         <div class="episode-buttons">
-          ${s.episodes.map(ep => `<button onclick="playEpisode('${ep.link}')">${ep.title}</button>`).join('')}
+          ${s.episodes.map(ep => {
+              const videoId = `${ep.link}-${ep.title}`;
+              const progress = getVideoPosition(videoId);
+              const progressText = progress ? ` (${formatTime(progress.currentTime)}/${formatTime(progress.duration)})` : '';
+              return `<button onclick="playEpisode('${ep.link}', '${ep.title.replace(/'/g, "\\'")}')">${ep.title}${progressText}</button>`;
+          }).join('')}
         </div>
         <button onclick="goBackToList('series')" class="back">Back</button>
       `;
@@ -255,12 +346,16 @@ function showMovieDetails(i, originSection = null) {
     document.getElementById('movieList').innerHTML = '';
     document.getElementById('movieDetails').style.display = 'block';
 
+    const videoId = m.link;
+    const progress = getVideoPosition(videoId);
+    const progressText = progress ? ` (${formatTime(progress.currentTime)}/${formatTime(progress.duration)})` : '';
+
     container.innerHTML = `
         <img src="${m.image}" alt="${m.title}" />
         <h2>${m.title}</h2>
         <p>${m.description}</p>
         <div class="episode-buttons">
-          <button onclick="playEpisode('${m.link}')">Watch Now</button>
+          <button onclick="playEpisode('${m.link}', '${m.title.replace(/'/g, "\\'")}')">Watch Now${progressText}</button>
         </div>
         <button onclick="goBackToList('movies')" class="back">Back</button>
       `;
@@ -270,6 +365,13 @@ function showMovieDetails(i, originSection = null) {
     document.querySelector('nav').style.display = 'none';
     document.querySelectorAll('.search-box').forEach(sb => sb.style.display = 'none');
     document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
+}
+
+function formatTime(seconds) {
+    if (!seconds) return "0:00";
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
 function goBackToList(type) {
@@ -291,20 +393,6 @@ function goBackToList(type) {
 
     showSection(targetSectionId);
     window.scrollTo(0, 0);
-}
-
-// --- Video Player Functions ---
-function playEpisode(link) {
-    const player = document.getElementById('videoFullScreen');
-    player.querySelector('iframe').src = link;
-    player.style.display = 'flex';
-}
-
-function closeFullScreen() {
-    const player = document.getElementById('videoFullScreen');
-    player.querySelector('iframe').src = '';
-    player.style.display = 'none';
-    restoreScrollPosition();
 }
 
 // --- Watch Later Functionality ---
