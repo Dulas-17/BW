@@ -64,10 +64,11 @@ nav button:hover {
   margin: 2rem 0;
   text-align: center;
 display:flex;
+justify-content:center;
 }
 
 .search-box input {
-  width: 90%;
+  width: 100%;
   max-width: 500px;
   padding: 1rem;
   font-size: 1rem;
