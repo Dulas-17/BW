@@ -1,7 +1,11 @@
 const content = {
-  series: seriesData,
-  movies: movieData,
+  series: seriesData, // Assumes seriesData is loaded from 11.js
+  movies: movieData,  // Assumes movieData is loaded from 12.js
 };
+
+// Global variables for debouncing
+let searchDebounceTimeout;   // For the actual search triggered by enter/button
+let suggestionDebounceTimeout; // For displaying suggestions as user types
 
 // --- Video Position Tracking ---
 function saveVideoPosition(videoId, currentTime, duration) {
@@ -123,16 +127,27 @@ function showSection(id) {
     document.getElementById('movieDetails').style.display = 'none';
     document.querySelector('nav').style.display = 'flex';
 
-    document.querySelectorAll('.search-box').forEach(sb => sb.style.display = 'none');
+    // Use .search-container instead of .search-box for display control
+    document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
     document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 
+    // Clear search input and hide suggestions when changing sections to prevent stale searches
+    if (document.getElementById('seriesSearch')) {
+        document.getElementById('seriesSearch').value = '';
+        hideSuggestions('series');
+    }
+    if (document.getElementById('movieSearch')) {
+        document.getElementById('movieSearch').value = '';
+        hideSuggestions('movies');
+    }
+
     if (id === 'series') {
-        document.querySelector('#series .search-box').style.display = 'flex';
+        document.querySelector('#series .search-container').style.display = 'block'; // Or 'flex' if you want it aligned
         document.getElementById('seriesGenreButtons').style.display = 'flex';
         renderGenreButtons('series');
         filterContentByGenre('series', localStorage.getItem('activeGenre') || 'All');
     } else if (id === 'movies') {
-        document.querySelector('#movies .search-box').style.display = 'flex';
+        document.querySelector('#movies .search-container').style.display = 'block'; // Or 'flex'
         document.getElementById('movieGenreButtons').style.display = 'flex';
         renderGenreButtons('movies');
         filterContentByGenre('movies', localStorage.getItem('activeGenre') || 'All');
@@ -143,19 +158,112 @@ function showSection(id) {
 }
 
 // --- Search Functionality ---
-function searchContent(type) {
-    const input = document.getElementById(type === 'series' ? 'seriesSearch' : 'movieSearch').value.toLowerCase();
-    const filtered = content[type].filter(item => item.title.toLowerCase().includes(input));
+function performSearch(type) {
+    const inputElement = document.getElementById(type === 'series' ? 'seriesSearch' : 'movieSearch');
+    const query = inputElement.value.toLowerCase().trim();
 
-    localStorage.setItem('activeGenre', 'All');
-    renderGenreButtons(type);
+    // Hide suggestions after performing a search
+    hideSuggestions(type);
 
-    if (type === 'series') {
-        showSeriesList(filtered);
+    const filtered = content[type].filter(item => {
+        // Search in title
+        if (item.title.toLowerCase().includes(query)) {
+            return true;
+        }
+        // Search in description
+        if (item.description && item.description.toLowerCase().includes(query)) {
+            return true;
+        }
+        // Search in genres
+        if (item.genres && item.genres.some(genre => genre.toLowerCase().includes(query))) {
+            return true;
+        }
+        return false;
+    });
+
+    localStorage.setItem('activeGenre', 'All'); // Reset genre filter on search
+    renderGenreButtons(type); // Re-render genre buttons to reflect "All" being active
+
+    // Display "No results" message if needed
+    const listContainer = document.getElementById(type === 'series' ? 'seriesList' : 'movieList');
+    if (filtered.length === 0 && query !== '') {
+        listContainer.innerHTML = `<p style="text-align: center; color: #aaa; margin-top: 2rem;">No results found for "${query}".</p>`;
     } else {
-        showMovieList(filtered);
+        if (type === 'series') {
+            showSeriesList(filtered, query); // Pass query for highlighting
+        } else {
+            showMovieList(filtered, query); // Pass query for highlighting
+        }
     }
     saveScrollPosition();
+}
+
+// Explicit search trigger (from button or Enter key)
+function searchContent(type) {
+    clearTimeout(searchDebounceTimeout); // Clear any pending debounced search
+    clearTimeout(suggestionDebounceTimeout); // Clear any pending suggestion update
+    performSearch(type);
+}
+
+// Debounced handler for *suggestions only* (called on input)
+function handleSearchInputForSuggestions(type) {
+    const inputElement = document.getElementById(type === 'series' ? 'seriesSearch' : 'movieSearch');
+    const query = inputElement.value.toLowerCase().trim();
+
+    clearTimeout(suggestionDebounceTimeout);
+    if (query.length > 0) { // Show suggestions even for 1 char, but only if query isn't empty
+        suggestionDebounceTimeout = setTimeout(() => {
+            showSuggestions(type, query);
+        }, 100); // Show suggestions relatively quickly
+    } else {
+        hideSuggestions(type); // Hide if input is empty
+    }
+}
+
+// --- Search Suggestions ---
+function showSuggestions(type, query) {
+    const suggestionsContainer = document.getElementById(type === 'series' ? 'seriesSuggestions' : 'movieSuggestions');
+    suggestionsContainer.innerHTML = '';
+
+    if (query.length === 0) { // Only show suggestions if query is not empty
+        hideSuggestions(type);
+        return;
+    }
+
+    const relevantContent = content[type];
+    const matchingSuggestions = relevantContent.filter(item =>
+        item.title.toLowerCase().includes(query)
+    ).slice(0, 5); // Limit to top 5 suggestions
+
+    if (matchingSuggestions.length > 0) {
+        matchingSuggestions.forEach(item => {
+            const suggestionItem = document.createElement('div');
+            suggestionItem.className = 'suggestion-item';
+            // Highlight the matching part
+            const highlightedText = item.title.replace(new RegExp(query, 'gi'), match => `<span style="background-color: #5a9bd8; color: #121212; border-radius: 3px; padding: 0 2px;">${match}</span>`);
+            suggestionItem.innerHTML = highlightedText;
+            // Use an anonymous function for click to avoid immediate execution
+            suggestionItem.onclick = () => selectSuggestion(type, item.title);
+            suggestionsContainer.appendChild(suggestionItem);
+        });
+        suggestionsContainer.classList.add('active');
+    } else {
+        hideSuggestions(type);
+    }
+}
+
+function selectSuggestion(type, title) {
+    const inputElement = document.getElementById(type === 'series' ? 'seriesSearch' : 'movieSearch');
+    inputElement.value = title;
+    hideSuggestions(type);
+    performSearch(type); // Immediately perform search on selection
+}
+
+function hideSuggestions(type) {
+    const suggestionsContainer = document.getElementById(type === 'series' ? 'seriesSuggestions' : 'movieSuggestions');
+    suggestionsContainer.classList.remove('active');
+    // We don't clear innerHTML immediately on blur, in case user clicks a suggestion
+    // It will be cleared before new suggestions are shown or when section changes.
 }
 
 // --- Genre Filtering ---
@@ -203,6 +311,15 @@ function filterContentByGenre(type, genre) {
         filteredList = content[type].filter(item => item.genres && item.genres.includes(genre));
     }
 
+    // Clear search input and hide suggestions when filtering by genre
+    if (type === 'series' && document.getElementById('seriesSearch')) {
+        document.getElementById('seriesSearch').value = '';
+        hideSuggestions('series');
+    } else if (type === 'movies' && document.getElementById('movieSearch')) {
+        document.getElementById('movieSearch').value = '';
+        hideSuggestions('movies');
+    }
+
     if (type === 'series') {
         showSeriesList(filteredList);
     } else {
@@ -213,19 +330,32 @@ function filterContentByGenre(type, genre) {
 }
 
 // --- Display List Functions ---
-function showSeriesList(list = null) {
+// Modified to accept an optional 'query' for highlighting
+function showSeriesList(list = null, query = '') {
     const currentList = list || content.series;
     const container = document.getElementById('seriesList');
     container.innerHTML = '';
 
     const activeGenre = localStorage.getItem('activeGenre');
+    // If a specific list is provided (e.g., from search), use it. Otherwise, filter by active genre.
     const displayList = (list === null && activeGenre && activeGenre !== 'All')
         ? currentList.filter(s => s.genres && s.genres.includes(activeGenre))
         : currentList;
 
+    if (displayList.length === 0 && query !== '') {
+        container.innerHTML = `<p style="text-align: center; color: #aaa; margin-top: 2rem;">No results found for "${query}".</p>`;
+        return;
+    } else if (displayList.length === 0) {
+        container.innerHTML = `<p style="text-align: center; color: #aaa; margin-top: 2rem;">No items to display here.</p>`;
+        return;
+    }
+
+
     displayList.forEach((s) => {
         const div = document.createElement('div');
         div.className = 'series-item';
+        // Ensure we get the original index from the *full* content.series array
+        // to correctly pass to showSeriesDetails for state saving/data retrieval.
         const originalIndex = content.series.indexOf(s);
         if (originalIndex === -1) return;
 
@@ -235,9 +365,12 @@ function showSeriesList(list = null) {
             return getVideoPosition(videoId);
         });
 
+        // Simple highlighting: replace query with highlighted query
+        const highlightedTitle = query ? s.title.replace(new RegExp(query, 'gi'), match => `<span style="background-color: #5a9bd8; color: #121212; border-radius: 3px; padding: 0 2px;">${match}</span>`) : s.title;
+
         div.innerHTML = `
           <img src="${s.image}" alt="${s.title}" />
-          <h4>${s.title}</h4>
+          <h4>${highlightedTitle}</h4>
           ${hasProgress ? '<div class="resume-badge">Continue Watching</div>' : ''}
           <button onclick="showSeriesDetails(${originalIndex})" class="btn">Open</button>
           <button onclick="addToWatchLater('series', ${originalIndex})" class="watch-later-btn">Watch Later</button>
@@ -249,7 +382,8 @@ function showSeriesList(list = null) {
     }
 }
 
-function showMovieList(list = null) {
+// Modified to accept an optional 'query' for highlighting
+function showMovieList(list = null, query = '') {
     const currentList = list || content.movies;
     const container = document.getElementById('movieList');
     container.innerHTML = '';
@@ -259,18 +393,31 @@ function showMovieList(list = null) {
         ? currentList.filter(m => m.genres && m.genres.includes(activeGenre))
         : currentList;
 
+    if (displayList.length === 0 && query !== '') {
+        container.innerHTML = `<p style="text-align: center; color: #aaa; margin-top: 2rem;">No results found for "${query}".</p>`;
+        return;
+    } else if (displayList.length === 0) {
+        container.innerHTML = `<p style="text-align: center; color: #aaa; margin-top: 2rem;">No items to display here.</p>`;
+        return;
+    }
+
     displayList.forEach((m) => {
         const div = document.createElement('div');
         div.className = 'series-item';
+        // Ensure we get the original index from the *full* content.movies array
+        // to correctly pass to showMovieDetails for state saving/data retrieval.
         const originalIndex = content.movies.indexOf(m);
         if (originalIndex === -1) return;
 
         const videoId = m.link;
         const hasProgress = getVideoPosition(videoId);
 
+        // Simple highlighting: replace query with highlighted query
+        const highlightedTitle = query ? m.title.replace(new RegExp(query, 'gi'), match => `<span style="background-color: #5a9bd8; color: #121212; border-radius: 3px; padding: 0 2px;">${match}</span>`) : m.title;
+
         div.innerHTML = `
           <img src="${m.image}" alt="${m.title}" />
-          <h4>${m.title}</h4>
+          <h4>${highlightedTitle}</h4>
           ${hasProgress ? '<div class="resume-badge">Continue Watching</div>' : ''}
           <button onclick="showMovieDetails(${originalIndex})" class="btn">Watch</button>
           <button onclick="addToWatchLater('movie', ${originalIndex})" class="watch-later-btn">Watch Later</button>
@@ -281,6 +428,7 @@ function showMovieList(list = null) {
         restoreScrollPosition();
     }
 }
+
 
 // --- Detail View Functions ---
 function showSeriesDetails(i, originSection = null) {
@@ -300,7 +448,7 @@ function showSeriesDetails(i, originSection = null) {
     document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
     document.getElementById('series').classList.add('active');
 
-    document.getElementById('seriesList').innerHTML = '';
+    document.getElementById('seriesList').innerHTML = ''; // Clear list when showing details
     document.getElementById('seriesDetails').style.display = 'block';
 
     container.innerHTML = `
@@ -322,7 +470,7 @@ function showSeriesDetails(i, originSection = null) {
     window.scrollTo(0, 0);
 
     document.querySelector('nav').style.display = 'none';
-    document.querySelectorAll('.search-box').forEach(sb => sb.style.display = 'none');
+    document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
     document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 }
 
@@ -343,7 +491,7 @@ function showMovieDetails(i, originSection = null) {
     document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
     document.getElementById('movies').classList.add('active');
 
-    document.getElementById('movieList').innerHTML = '';
+    document.getElementById('movieList').innerHTML = ''; // Clear list when showing details
     document.getElementById('movieDetails').style.display = 'block';
 
     const videoId = m.link;
@@ -363,7 +511,7 @@ function showMovieDetails(i, originSection = null) {
     window.scrollTo(0, 0);
 
     document.querySelector('nav').style.display = 'none';
-    document.querySelectorAll('.search-box').forEach(sb => sb.style.display = 'none');
+    document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
     document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 }
 
@@ -375,6 +523,13 @@ function formatTime(seconds) {
 }
 
 function goBackToList(type) {
+    // Before going back, ensure the search input is cleared
+    if (type === 'series' && document.getElementById('seriesSearch')) {
+        document.getElementById('seriesSearch').value = '';
+    } else if (type === 'movies' && document.getElementById('movieSearch')) {
+        document.getElementById('movieSearch').value = '';
+    }
+
     const activeGenre = localStorage.getItem('activeGenre') || 'All';
     const originSection = localStorage.getItem('originSection');
 
@@ -439,7 +594,7 @@ function removeFromWatchLater(type, originalIndex) {
 }
 
 function showWatchLater() {
-    document.querySelectorAll('.search-box').forEach(sb => sb.style.display = 'none');
+    document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
     document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
     document.getElementById('seriesDetails').style.display = 'none';
     document.getElementById('movieDetails').style.display = 'none';
@@ -488,10 +643,55 @@ document.addEventListener('DOMContentLoaded', function() {
     renderGenreButtons('series');
     renderGenreButtons('movies');
 
+    // Attach event listeners for search inputs
+    const seriesSearchInput = document.getElementById('seriesSearch');
+    if (seriesSearchInput) {
+        // Trigger suggestions on 'input' event (real-time typing)
+        seriesSearchInput.addEventListener('input', () => handleSearchInputForSuggestions('series'));
+        // Trigger search on 'Enter' key press
+        seriesSearchInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent default form submission if input is part of a form
+                searchContent('series');
+            }
+        });
+        // Hide suggestions when input loses focus (with a small delay for click events to register)
+        seriesSearchInput.addEventListener('blur', () => setTimeout(() => hideSuggestions('series'), 100));
+        // Show suggestions again if user focuses on the input with text already present
+        seriesSearchInput.addEventListener('focus', (event) => {
+            const query = event.target.value.toLowerCase().trim();
+            if (query.length > 0) { // Show on focus if there's text
+                showSuggestions('series', query);
+            }
+        });
+    }
+
+    const movieSearchInput = document.getElementById('movieSearch');
+    if (movieSearchInput) {
+        // Trigger suggestions on 'input' event (real-time typing)
+        movieSearchInput.addEventListener('input', () => handleSearchInputForSuggestions('movies'));
+        // Trigger search on 'Enter' key press
+        movieSearchInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent default form submission
+                searchContent('movies');
+            }
+        });
+        // Hide suggestions when input loses focus (with a small delay for click events to register)
+        movieSearchInput.addEventListener('blur', () => setTimeout(() => hideSuggestions('movies'), 100));
+        // Show suggestions again if user focuses on the input with text already present
+        movieSearchInput.addEventListener('focus', (event) => {
+            const query = event.target.value.toLowerCase().trim();
+            if (query.length > 0) { // Show on focus if there's text
+                showSuggestions('movies', query);
+            }
+        });
+    }
+
     if (lastActiveSection) {
         if (lastDetailType && lastDetailIndex !== null) {
             document.querySelector('nav').style.display = 'none';
-            document.querySelectorAll('.search-box').forEach(sb => sb.style.display = 'none');
+            document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
             document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 
             if (lastDetailType === 'series') {
