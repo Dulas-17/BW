@@ -1,13 +1,13 @@
 const content = {
-  series: seriesData, // Assumes seriesData is loaded from 11.js
-  movies: movieData,  // Assumes movieData is loaded from 12.js
+    series: seriesData, // Assumes seriesData is loaded from 11.js
+    movies: movieData,  // Assumes movieData is loaded from 12.js
 };
 
 // Global variables for debouncing
 let searchDebounceTimeout;   // For the actual search triggered by enter/button
 let suggestionDebounceTimeout; // For displaying suggestions as user types
 
-// --- Video Position Tracking ---
+// --- Video Position Tracking (No changes needed here) ---
 function saveVideoPosition(videoId, currentTime, duration) {
     const videoProgress = JSON.parse(localStorage.getItem('videoProgress') || '{}');
     videoProgress[videoId] = {
@@ -83,7 +83,7 @@ function closeFullScreen() {
     restoreScrollPosition();
 }
 
-// --- Local Storage Utilities ---
+// --- Local Storage Utilities (No changes needed here for scroll position) ---
 function saveScrollPosition() {
     localStorage.setItem('scrollPosition', window.scrollY);
 }
@@ -95,7 +95,8 @@ function restoreScrollPosition() {
     }
 }
 
-function saveState(sectionId, detailType = null, detailIndex = null, activeGenre = null, originSection = null) {
+// *** MODIFIED saveState FUNCTION ***
+function saveState(sectionId, detailType = null, detailIndex = null, activeGenreForSection = null, originSection = null) {
     localStorage.setItem('lastActiveSection', sectionId);
     if (detailType !== null && detailIndex !== null) {
         localStorage.setItem('lastDetailType', detailType);
@@ -104,11 +105,22 @@ function saveState(sectionId, detailType = null, detailIndex = null, activeGenre
         localStorage.removeItem('lastDetailType');
         localStorage.removeItem('lastDetailIndex');
     }
-    if (activeGenre !== null) {
-        localStorage.setItem('activeGenre', activeGenre);
-    } else {
-        localStorage.removeItem('activeGenre');
+
+    // Store active genre independently for each section
+    if (sectionId === 'series' && activeGenreForSection !== null) {
+        localStorage.setItem('activeGenre_series', activeGenreForSection);
+    } else if (sectionId === 'series' && activeGenreForSection === null) {
+        localStorage.removeItem('activeGenre_series');
     }
+    if (sectionId === 'movies' && activeGenreForSection !== null) {
+        localStorage.setItem('activeGenre_movies', activeGenreForSection);
+    } else if (sectionId === 'movies' && activeGenreForSection === null) {
+        localStorage.removeItem('activeGenre_movies');
+    }
+    // Remove the old 'activeGenre' key as it's no longer used
+    localStorage.removeItem('activeGenre');
+
+
     if (originSection !== null) {
         localStorage.setItem('originSection', originSection);
     } else {
@@ -118,10 +130,14 @@ function saveState(sectionId, detailType = null, detailIndex = null, activeGenre
 }
 
 // --- Section Management ---
+// *** MODIFIED showSection FUNCTION ***
 function showSection(id) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    saveState(id, null, null, localStorage.getItem('activeGenre'), null);
+
+    // saveState will now handle section-specific active genre based on the 'id'
+    // For general section display, we don't pass an active genre to saveState
+    saveState(id, null, null, null, null); // Pass null for activeGenreForSection
 
     document.getElementById('seriesDetails').style.display = 'none';
     document.getElementById('movieDetails').style.display = 'none';
@@ -145,12 +161,14 @@ function showSection(id) {
         document.querySelector('#series .search-container').style.display = 'block'; // Or 'flex' if you want it aligned
         document.getElementById('seriesGenreButtons').style.display = 'flex';
         renderGenreButtons('series');
-        filterContentByGenre('series', localStorage.getItem('activeGenre') || 'All');
+        // Retrieve the series-specific active genre
+        filterContentByGenre('series', localStorage.getItem('activeGenre_series') || 'All');
     } else if (id === 'movies') {
         document.querySelector('#movies .search-container').style.display = 'block'; // Or 'flex'
         document.getElementById('movieGenreButtons').style.display = 'flex';
         renderGenreButtons('movies');
-        filterContentByGenre('movies', localStorage.getItem('activeGenre') || 'All');
+        // Retrieve the movies-specific active genre
+        filterContentByGenre('movies', localStorage.getItem('activeGenre_movies') || 'All');
     } else if (id === 'watchLater') {
         showWatchLater();
     }
@@ -158,6 +176,7 @@ function showSection(id) {
 }
 
 // --- Search Functionality ---
+// *** MODIFIED performSearch FUNCTION ***
 function performSearch(type) {
     const inputElement = document.getElementById(type === 'series' ? 'seriesSearch' : 'movieSearch');
     const query = inputElement.value.toLowerCase().trim();
@@ -181,7 +200,8 @@ function performSearch(type) {
         return false;
     });
 
-    localStorage.setItem('activeGenre', 'All'); // Reset genre filter on search
+    // Reset the genre filter for the specific section being searched
+    localStorage.setItem(`activeGenre_${type}`, 'All');
     renderGenreButtons(type); // Re-render genre buttons to reflect "All" being active
 
     // Display "No results" message if needed
@@ -220,7 +240,7 @@ function handleSearchInputForSuggestions(type) {
     }
 }
 
-// --- Search Suggestions ---
+// --- Search Suggestions (No changes needed here) ---
 function showSuggestions(type, query) {
     const suggestionsContainer = document.getElementById(type === 'series' ? 'seriesSuggestions' : 'movieSuggestions');
     suggestionsContainer.innerHTML = '';
@@ -272,6 +292,7 @@ function getUniqueGenres(type) {
     return ['All', ...new Set(allGenres)].sort();
 }
 
+// *** MODIFIED renderGenreButtons FUNCTION ***
 function renderGenreButtons(type) {
     const containerId = type === 'series' ? 'seriesGenreButtons' : 'movieGenreButtons';
     const container = document.getElementById(containerId);
@@ -280,7 +301,8 @@ function renderGenreButtons(type) {
     container.innerHTML = '';
 
     const genres = getUniqueGenres(type);
-    const activeGenre = localStorage.getItem('activeGenre') || 'All';
+    // Get the active genre for the specific section
+    const activeGenre = localStorage.getItem(`activeGenre_${type}`) || 'All';
 
     genres.forEach(genre => {
         const button = document.createElement('button');
@@ -293,6 +315,7 @@ function renderGenreButtons(type) {
     });
 }
 
+// *** MODIFIED filterContentByGenre FUNCTION ***
 function filterContentByGenre(type, genre) {
     const genreButtonsContainerId = type === 'series' ? 'seriesGenreButtons' : 'movieGenreButtons';
     const buttons = document.getElementById(genreButtonsContainerId).querySelectorAll('button');
@@ -325,18 +348,20 @@ function filterContentByGenre(type, genre) {
     } else {
         showMovieList(filteredList);
     }
+    // Save the active genre for the *specific* section
     saveState(type, null, null, genre, null);
     window.scrollTo(0, 0);
 }
 
 // --- Display List Functions ---
 // Modified to accept an optional 'query' for highlighting
+// *** MODIFIED showSeriesList FUNCTION (retrieves section-specific genre) ***
 function showSeriesList(list = null, query = '') {
     const currentList = list || content.series;
     const container = document.getElementById('seriesList');
     container.innerHTML = '';
 
-    const activeGenre = localStorage.getItem('activeGenre');
+    const activeGenre = localStorage.getItem('activeGenre_series'); // Get series-specific genre
     // If a specific list is provided (e.g., from search), use it. Otherwise, filter by active genre.
     const displayList = (list === null && activeGenre && activeGenre !== 'All')
         ? currentList.filter(s => s.genres && s.genres.includes(activeGenre))
@@ -349,7 +374,6 @@ function showSeriesList(list = null, query = '') {
         container.innerHTML = `<p style="text-align: center; color: #aaa; margin-top: 2rem;">No items to display here.</p>`;
         return;
     }
-
 
     displayList.forEach((s) => {
         const div = document.createElement('div');
@@ -377,18 +401,21 @@ function showSeriesList(list = null, query = '') {
         `;
         container.appendChild(div);
     });
+    // This condition might need adjustment if `list === null` is always true when reloading section
+    // but the restoreScrollPosition is primarily for initial page load or back from details.
     if (list === null && localStorage.getItem('lastActiveSection') === 'series' && !localStorage.getItem('lastDetailType')) {
         restoreScrollPosition();
     }
 }
 
 // Modified to accept an optional 'query' for highlighting
+// *** MODIFIED showMovieList FUNCTION (retrieves section-specific genre) ***
 function showMovieList(list = null, query = '') {
     const currentList = list || content.movies;
     const container = document.getElementById('movieList');
     container.innerHTML = '';
 
-    const activeGenre = localStorage.getItem('activeGenre');
+    const activeGenre = localStorage.getItem('activeGenre_movies'); // Get movies-specific genre
     const displayList = (list === null && activeGenre && activeGenre !== 'All')
         ? currentList.filter(m => m.genres && m.genres.includes(activeGenre))
         : currentList;
@@ -431,6 +458,7 @@ function showMovieList(list = null, query = '') {
 
 
 // --- Detail View Functions ---
+// *** MODIFIED showSeriesDetails FUNCTION (for saving state) ***
 function showSeriesDetails(i, originSection = null) {
     const s = content.series[i];
     if (!s) {
@@ -466,7 +494,8 @@ function showSeriesDetails(i, originSection = null) {
         <button onclick="goBackToList('series')" class="back">Back</button>
       `;
 
-    saveState('series', 'series', i, localStorage.getItem('activeGenre'), originSection);
+    // When showing details, the active genre for the section should still be the one saved
+    saveState('series', 'series', i, localStorage.getItem('activeGenre_series'), originSection);
     window.scrollTo(0, 0);
 
     document.querySelector('nav').style.display = 'none';
@@ -474,6 +503,7 @@ function showSeriesDetails(i, originSection = null) {
     document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 }
 
+// *** MODIFIED showMovieDetails FUNCTION (for saving state) ***
 function showMovieDetails(i, originSection = null) {
     const m = content.movies[i];
     if (!m) {
@@ -507,7 +537,8 @@ function showMovieDetails(i, originSection = null) {
         </div>
         <button onclick="goBackToList('movies')" class="back">Back</button>
       `;
-    saveState('movies', 'movie', i, localStorage.getItem('activeGenre'), originSection);
+    // When showing details, the active genre for the section should still be the one saved
+    saveState('movies', 'movie', i, localStorage.getItem('activeGenre_movies'), originSection);
     window.scrollTo(0, 0);
 
     document.querySelector('nav').style.display = 'none';
@@ -522,6 +553,7 @@ function formatTime(seconds) {
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
+// *** MODIFIED goBackToList FUNCTION (retrieves section-specific genre) ***
 function goBackToList(type) {
     // Before going back, ensure the search input is cleared
     if (type === 'series' && document.getElementById('seriesSearch')) {
@@ -530,7 +562,7 @@ function goBackToList(type) {
         document.getElementById('movieSearch').value = '';
     }
 
-    const activeGenre = localStorage.getItem('activeGenre') || 'All';
+    // No longer need to retrieve activeGenre here, as showSection will handle it
     const originSection = localStorage.getItem('originSection');
 
     if (type === 'series') {
@@ -546,11 +578,11 @@ function goBackToList(type) {
         targetSectionId = type;
     }
 
-    showSection(targetSectionId);
+    showSection(targetSectionId); // showSection now automatically re-applies the correct genre
     window.scrollTo(0, 0);
 }
 
-// --- Watch Later Functionality ---
+// --- Watch Later Functionality (No changes needed here) ---
 function getWatchLaterList() {
     const watchLaterJson = localStorage.getItem('watchLater');
     return watchLaterJson ? JSON.parse(watchLaterJson) : [];
@@ -628,18 +660,21 @@ function showWatchLater() {
             container.appendChild(div);
         });
     }
+    // When showing Watch Later, no active genre for series/movies is relevant, so pass null
     saveState('watchLater', null, null, null, null);
     window.scrollTo(0, 0);
 }
 
 // --- Initialize on DOM Content Loaded ---
+// *** MODIFIED DOMContentLoaded LISTENER ***
 document.addEventListener('DOMContentLoaded', function() {
     const lastActiveSection = localStorage.getItem('lastActiveSection');
     const lastDetailType = localStorage.getItem('lastDetailType');
     const lastDetailIndex = localStorage.getItem('lastDetailIndex');
-    const activeGenre = localStorage.getItem('activeGenre');
+    // We no longer retrieve a single 'activeGenre' here
     const originSection = localStorage.getItem('originSection');
 
+    // Initialize genre buttons for both sections, they will pick up their specific active genre
     renderGenreButtons('series');
     renderGenreButtons('movies');
 
@@ -704,6 +739,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         restoreScrollPosition();
     } else {
+        // If no last active section, default to 'home' or your desired starting section
         showSection('home');
     }
 
