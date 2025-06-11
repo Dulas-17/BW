@@ -1,30 +1,7 @@
 // series.js
 const seriesData = [
 
-{
-    title: "The Good Doctor (s1)",
-    image: "Images/cour5.jpeg",
-    description: "Dr. Shaun Murphy, a young surgeon with autism and savant syndrome, as he navigates hospital life, proving his medical skills while facing personal and professional challenges.",
-    genres: ["Drama", "Family", ],
-    episodes: [
-                      { title: "Episode 1", link: " " },
-                      { title: "Episode 2", link: " " },
-                      { title: "Episode 3", link: " " },
-    ]
-  },
 
-  {
-    title: "Scorpion (s1)",
-    image: "Images/cour6.jpeg",
-    description: " A team of brilliant misfits led by tech genius Walter O'Brien. Recruited by Homeland Security, they tackle high-risk threats using their unique skills to solve complex problems. As they face life-or-death missions, the team also learns to navigate personal relationships and the challenges of working together.
-.",
-    genres: ["Drama", "Action","Crime" ],
-    episodes: [
-                      { title: "Episode 1", link: " " },
-                      { title: "Episode 2", link: " " },
-                      { title: "Episode 3", link: " " },
-    ]
-  },
 
 
   {
@@ -38,6 +15,8 @@ const seriesData = [
       { title: "Episode 3", link: "https://drive.google.com/file/d/1-TQNzstys6szmuu-5iPmnxmZ6-oznFc2/preview" },
     ]
   },
+
+
   {
     title: "Konosuba (s1)",
     image: "Images/Cover4.jpg",
@@ -56,4 +35,6 @@ const seriesData = [
       { title: "Episode 10", link: "https://drive.google.com/file/d/11uRZmLQxY52jeIsQKiw6vf2d1jTiCBlr/preview" },
     ]
   },
+
+
 ];
