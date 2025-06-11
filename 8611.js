@@ -1,13 +1,19 @@
+// Ensure seriesData and movieData are loaded before this script runs.
+// For example, they might be defined in separate <script> tags in your HTML
+// or fetched asynchronously and assigned to these global variables.
+// Example:
+// <script src="11.js"></script> // <script src="12.js"></script> // <script src="your-main-script.js"></script>
+
 const content = {
-    series: seriesData, // Assumes seriesData is loaded from 11.js
-    movies: movieData,  // Assumes movieData is loaded from 12.js
+  series: seriesData, // Assumes seriesData is loaded from 11.js
+  movies: movieData,  // Assumes movieData is loaded from 12.js
 };
 
 // Global variables for debouncing
 let searchDebounceTimeout;   // For the actual search triggered by enter/button
 let suggestionDebounceTimeout; // For displaying suggestions as user types
 
-// --- Video Position Tracking (No changes needed here) ---
+// --- Video Position Tracking ---
 function saveVideoPosition(videoId, currentTime, duration) {
     const videoProgress = JSON.parse(localStorage.getItem('videoProgress') || '{}');
     videoProgress[videoId] = {
@@ -83,7 +89,7 @@ function closeFullScreen() {
     restoreScrollPosition();
 }
 
-// --- Local Storage Utilities (No changes needed here for scroll position) ---
+// --- Local Storage Utilities ---
 function saveScrollPosition() {
     localStorage.setItem('scrollPosition', window.scrollY);
 }
@@ -117,7 +123,7 @@ function saveState(sectionId, detailType = null, detailIndex = null, activeGenre
     } else if (sectionId === 'movies' && activeGenreForSection === null) {
         localStorage.removeItem('activeGenre_movies');
     }
-    // Remove the old 'activeGenre' key as it's no longer used
+    // Remove the old 'activeGenre' key if it still exists from previous versions
     localStorage.removeItem('activeGenre');
 
 
@@ -130,24 +136,23 @@ function saveState(sectionId, detailType = null, detailIndex = null, activeGenre
 }
 
 // --- Section Management ---
-// *** MODIFIED showSection FUNCTION ***
+// *** REFINED showSection FUNCTION ***
 function showSection(id) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
 
-    // saveState will now handle section-specific active genre based on the 'id'
-    // For general section display, we don't pass an active genre to saveState
-    saveState(id, null, null, null, null); // Pass null for activeGenreForSection
+    // Save the current section state without explicitly touching the genre here.
+    // The genre will be set when filterContentByGenre is called, or retrieved on section load.
+    saveState(id, null, null, null, null); // Pass null for activeGenreForSection here
 
     document.getElementById('seriesDetails').style.display = 'none';
     document.getElementById('movieDetails').style.display = 'none';
     document.querySelector('nav').style.display = 'flex';
 
-    // Use .search-container instead of .search-box for display control
     document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
     document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 
-    // Clear search input and hide suggestions when changing sections to prevent stale searches
+    // Clear search input and hide suggestions when changing sections
     if (document.getElementById('seriesSearch')) {
         document.getElementById('seriesSearch').value = '';
         hideSuggestions('series');
@@ -158,17 +163,25 @@ function showSection(id) {
     }
 
     if (id === 'series') {
-        document.querySelector('#series .search-container').style.display = 'block'; // Or 'flex' if you want it aligned
+        document.querySelector('#series .search-container').style.display = 'block';
         document.getElementById('seriesGenreButtons').style.display = 'flex';
+
+        // 1. Get the last active genre for series
+        const activeGenreSeries = localStorage.getItem('activeGenre_series') || 'All';
+        // 2. Render the genre buttons, ensuring the correct one is 'active'
         renderGenreButtons('series');
-        // Retrieve the series-specific active genre
-        filterContentByGenre('series', localStorage.getItem('activeGenre_series') || 'All');
+        // 3. Filter and display the content based on that genre
+        filterContentByGenre('series', activeGenreSeries); // This will also update the 'active-genre' class
     } else if (id === 'movies') {
-        document.querySelector('#movies .search-container').style.display = 'block'; // Or 'flex'
+        document.querySelector('#movies .search-container').style.display = 'block';
         document.getElementById('movieGenreButtons').style.display = 'flex';
+
+        // 1. Get the last active genre for movies
+        const activeGenreMovies = localStorage.getItem('activeGenre_movies') || 'All';
+        // 2. Render the genre buttons, ensuring the correct one is 'active'
         renderGenreButtons('movies');
-        // Retrieve the movies-specific active genre
-        filterContentByGenre('movies', localStorage.getItem('activeGenre_movies') || 'All');
+        // 3. Filter and display the content based on that genre
+        filterContentByGenre('movies', activeGenreMovies); // This will also update the 'active-genre' class
     } else if (id === 'watchLater') {
         showWatchLater();
     }
@@ -240,7 +253,7 @@ function handleSearchInputForSuggestions(type) {
     }
 }
 
-// --- Search Suggestions (No changes needed here) ---
+// --- Search Suggestions ---
 function showSuggestions(type, query) {
     const suggestionsContainer = document.getElementById(type === 'series' ? 'seriesSuggestions' : 'movieSuggestions');
     suggestionsContainer.innerHTML = '';
@@ -374,6 +387,7 @@ function showSeriesList(list = null, query = '') {
         container.innerHTML = `<p style="text-align: center; color: #aaa; margin-top: 2rem;">No items to display here.</p>`;
         return;
     }
+
 
     displayList.forEach((s) => {
         const div = document.createElement('div');
@@ -582,7 +596,7 @@ function goBackToList(type) {
     window.scrollTo(0, 0);
 }
 
-// --- Watch Later Functionality (No changes needed here) ---
+// --- Watch Later Functionality ---
 function getWatchLaterList() {
     const watchLaterJson = localStorage.getItem('watchLater');
     return watchLaterJson ? JSON.parse(watchLaterJson) : [];
