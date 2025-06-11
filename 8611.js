@@ -101,8 +101,9 @@ function restoreScrollPosition() {
     }
 }
 
-// *** MODIFIED saveState FUNCTION ***
+// *** MODIFIED saveState FUNCTION (console.log added) ***
 function saveState(sectionId, detailType = null, detailIndex = null, activeGenreForSection = null, originSection = null) {
+    console.log(`saveState called: sectionId=${sectionId}, detailType=${detailType}, detailIndex=${detailIndex}, activeGenreForSection=${activeGenreForSection}, originSection=${originSection}`);
     localStorage.setItem('lastActiveSection', sectionId);
     if (detailType !== null && detailIndex !== null) {
         localStorage.setItem('lastDetailType', detailType);
@@ -113,15 +114,18 @@ function saveState(sectionId, detailType = null, detailIndex = null, activeGenre
     }
 
     // Store active genre independently for each section
-    if (sectionId === 'series' && activeGenreForSection !== null) {
-        localStorage.setItem('activeGenre_series', activeGenreForSection);
-    } else if (sectionId === 'series' && activeGenreForSection === null) {
-        localStorage.removeItem('activeGenre_series');
-    }
-    if (sectionId === 'movies' && activeGenreForSection !== null) {
-        localStorage.setItem('activeGenre_movies', activeGenreForSection);
-    } else if (sectionId === 'movies' && activeGenreForSection === null) {
-        localStorage.removeItem('activeGenre_movies');
+    if (sectionId === 'series') {
+        if (activeGenreForSection !== null) {
+            localStorage.setItem('activeGenre_series', activeGenreForSection);
+        } else {
+            localStorage.removeItem('activeGenre_series');
+        }
+    } else if (sectionId === 'movies') {
+        if (activeGenreForSection !== null) {
+            localStorage.setItem('activeGenre_movies', activeGenreForSection);
+        } else {
+            localStorage.removeItem('activeGenre_movies');
+        }
     }
     // Remove the old 'activeGenre' key if it still exists from previous versions
     localStorage.removeItem('activeGenre');
@@ -136,14 +140,14 @@ function saveState(sectionId, detailType = null, detailIndex = null, activeGenre
 }
 
 // --- Section Management ---
-// *** REFINED showSection FUNCTION ***
+// *** REFINED showSection FUNCTION (more robust genre handling on section switch) ***
 function showSection(id) {
+    console.log(`showSection called for: ${id}`);
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
 
-    // Save the current section state without explicitly touching the genre here.
-    // The genre will be set when filterContentByGenre is called, or retrieved on section load.
-    saveState(id, null, null, null, null); // Pass null for activeGenreForSection here
+    // Save the current section state. Note: genre state is handled internally within the section.
+    saveState(id, null, null, null, null);
 
     document.getElementById('seriesDetails').style.display = 'none';
     document.getElementById('movieDetails').style.display = 'none';
@@ -166,22 +170,22 @@ function showSection(id) {
         document.querySelector('#series .search-container').style.display = 'block';
         document.getElementById('seriesGenreButtons').style.display = 'flex';
 
-        // 1. Get the last active genre for series
+        // Get the last active genre for series
         const activeGenreSeries = localStorage.getItem('activeGenre_series') || 'All';
-        // 2. Render the genre buttons, ensuring the correct one is 'active'
-        renderGenreButtons('series');
-        // 3. Filter and display the content based on that genre
-        filterContentByGenre('series', activeGenreSeries); // This will also update the 'active-genre' class
+        console.log(`Series section active. Stored genre: ${activeGenreSeries}`);
+        // Render buttons and then filter content using the stored genre
+        renderGenreButtons('series'); // Ensure buttons are rendered first
+        filterContentByGenre('series', activeGenreSeries); // This will update active class and display list
     } else if (id === 'movies') {
         document.querySelector('#movies .search-container').style.display = 'block';
         document.getElementById('movieGenreButtons').style.display = 'flex';
 
-        // 1. Get the last active genre for movies
+        // Get the last active genre for movies
         const activeGenreMovies = localStorage.getItem('activeGenre_movies') || 'All';
-        // 2. Render the genre buttons, ensuring the correct one is 'active'
-        renderGenreButtons('movies');
-        // 3. Filter and display the content based on that genre
-        filterContentByGenre('movies', activeGenreMovies); // This will also update the 'active-genre' class
+        console.log(`Movies section active. Stored genre: ${activeGenreMovies}`);
+        // Render buttons and then filter content using the stored genre
+        renderGenreButtons('movies'); // Ensure buttons are rendered first
+        filterContentByGenre('movies', activeGenreMovies); // This will update active class and display list
     } else if (id === 'watchLater') {
         showWatchLater();
     }
@@ -189,10 +193,11 @@ function showSection(id) {
 }
 
 // --- Search Functionality ---
-// *** MODIFIED performSearch FUNCTION ***
+// *** MODIFIED performSearch FUNCTION (console.log added) ***
 function performSearch(type) {
     const inputElement = document.getElementById(type === 'series' ? 'seriesSearch' : 'movieSearch');
     const query = inputElement.value.toLowerCase().trim();
+    console.log(`Performing search for ${type} with query: "${query}"`);
 
     // Hide suggestions after performing a search
     hideSuggestions(type);
@@ -215,6 +220,7 @@ function performSearch(type) {
 
     // Reset the genre filter for the specific section being searched
     localStorage.setItem(`activeGenre_${type}`, 'All');
+    console.log(`Search performed, resetting activeGenre_${type} to 'All'.`);
     renderGenreButtons(type); // Re-render genre buttons to reflect "All" being active
 
     // Display "No results" message if needed
@@ -305,7 +311,7 @@ function getUniqueGenres(type) {
     return ['All', ...new Set(allGenres)].sort();
 }
 
-// *** MODIFIED renderGenreButtons FUNCTION ***
+// *** MODIFIED renderGenreButtons FUNCTION (console.log added) ***
 function renderGenreButtons(type) {
     const containerId = type === 'series' ? 'seriesGenreButtons' : 'movieGenreButtons';
     const container = document.getElementById(containerId);
@@ -316,6 +322,7 @@ function renderGenreButtons(type) {
     const genres = getUniqueGenres(type);
     // Get the active genre for the specific section
     const activeGenre = localStorage.getItem(`activeGenre_${type}`) || 'All';
+    console.log(`Rendering genre buttons for ${type}. Active genre: ${activeGenre}`);
 
     genres.forEach(genre => {
         const button = document.createElement('button');
@@ -328,8 +335,9 @@ function renderGenreButtons(type) {
     });
 }
 
-// *** MODIFIED filterContentByGenre FUNCTION ***
+// *** MODIFIED filterContentByGenre FUNCTION (console.log added) ***
 function filterContentByGenre(type, genre) {
+    console.log(`filterContentByGenre called for ${type} with genre: ${genre}`);
     const genreButtonsContainerId = type === 'series' ? 'seriesGenreButtons' : 'movieGenreButtons';
     const buttons = document.getElementById(genreButtonsContainerId).querySelectorAll('button');
     buttons.forEach(button => {
@@ -368,13 +376,15 @@ function filterContentByGenre(type, genre) {
 
 // --- Display List Functions ---
 // Modified to accept an optional 'query' for highlighting
-// *** MODIFIED showSeriesList FUNCTION (retrieves section-specific genre) ***
+// *** MODIFIED showSeriesList FUNCTION (console.log added) ***
 function showSeriesList(list = null, query = '') {
     const currentList = list || content.series;
     const container = document.getElementById('seriesList');
     container.innerHTML = '';
 
     const activeGenre = localStorage.getItem('activeGenre_series'); // Get series-specific genre
+    console.log(`showSeriesList called. Active series genre: ${activeGenre}. Query: "${query}"`);
+
     // If a specific list is provided (e.g., from search), use it. Otherwise, filter by active genre.
     const displayList = (list === null && activeGenre && activeGenre !== 'All')
         ? currentList.filter(s => s.genres && s.genres.includes(activeGenre))
@@ -423,13 +433,15 @@ function showSeriesList(list = null, query = '') {
 }
 
 // Modified to accept an optional 'query' for highlighting
-// *** MODIFIED showMovieList FUNCTION (retrieves section-specific genre) ***
+// *** MODIFIED showMovieList FUNCTION (console.log added) ***
 function showMovieList(list = null, query = '') {
     const currentList = list || content.movies;
     const container = document.getElementById('movieList');
     container.innerHTML = '';
 
     const activeGenre = localStorage.getItem('activeGenre_movies'); // Get movies-specific genre
+    console.log(`showMovieList called. Active movie genre: ${activeGenre}. Query: "${query}"`);
+
     const displayList = (list === null && activeGenre && activeGenre !== 'All')
         ? currentList.filter(m => m.genres && m.genres.includes(activeGenre))
         : currentList;
@@ -472,8 +484,9 @@ function showMovieList(list = null, query = '') {
 
 
 // --- Detail View Functions ---
-// *** MODIFIED showSeriesDetails FUNCTION (for saving state) ***
+// *** MODIFIED showSeriesDetails FUNCTION (console.log added) ***
 function showSeriesDetails(i, originSection = null) {
+    console.log(`showSeriesDetails called for index: ${i}, origin: ${originSection}`);
     const s = content.series[i];
     if (!s) {
         console.error("Error: Series item not found at index:", i);
@@ -517,8 +530,9 @@ function showSeriesDetails(i, originSection = null) {
     document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 }
 
-// *** MODIFIED showMovieDetails FUNCTION (for saving state) ***
+// *** MODIFIED showMovieDetails FUNCTION (console.log added) ***
 function showMovieDetails(i, originSection = null) {
+    console.log(`showMovieDetails called for index: ${i}, origin: ${originSection}`);
     const m = content.movies[i];
     if (!m) {
         console.error("Error: Movie item not found at index:", i);
@@ -567,8 +581,9 @@ function formatTime(seconds) {
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
-// *** MODIFIED goBackToList FUNCTION (retrieves section-specific genre) ***
+// *** MODIFIED goBackToList FUNCTION (console.log added) ***
 function goBackToList(type) {
+    console.log(`goBackToList called for: ${type}`);
     // Before going back, ensure the search input is cleared
     if (type === 'series' && document.getElementById('seriesSearch')) {
         document.getElementById('seriesSearch').value = '';
@@ -640,6 +655,7 @@ function removeFromWatchLater(type, originalIndex) {
 }
 
 function showWatchLater() {
+    console.log('showWatchLater called');
     document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
     document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
     document.getElementById('seriesDetails').style.display = 'none';
@@ -680,12 +696,12 @@ function showWatchLater() {
 }
 
 // --- Initialize on DOM Content Loaded ---
-// *** MODIFIED DOMContentLoaded LISTENER ***
+// *** MODIFIED DOMContentLoaded LISTENER (console.log added) ***
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded. Initializing...');
     const lastActiveSection = localStorage.getItem('lastActiveSection');
     const lastDetailType = localStorage.getItem('lastDetailType');
     const lastDetailIndex = localStorage.getItem('lastDetailIndex');
-    // We no longer retrieve a single 'activeGenre' here
     const originSection = localStorage.getItem('originSection');
 
     // Initialize genre buttons for both sections, they will pick up their specific active genre
@@ -695,21 +711,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Attach event listeners for search inputs
     const seriesSearchInput = document.getElementById('seriesSearch');
     if (seriesSearchInput) {
-        // Trigger suggestions on 'input' event (real-time typing)
         seriesSearchInput.addEventListener('input', () => handleSearchInputForSuggestions('series'));
-        // Trigger search on 'Enter' key press
         seriesSearchInput.addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
-                event.preventDefault(); // Prevent default form submission if input is part of a form
+                event.preventDefault();
                 searchContent('series');
             }
         });
-        // Hide suggestions when input loses focus (with a small delay for click events to register)
         seriesSearchInput.addEventListener('blur', () => setTimeout(() => hideSuggestions('series'), 100));
-        // Show suggestions again if user focuses on the input with text already present
         seriesSearchInput.addEventListener('focus', (event) => {
             const query = event.target.value.toLowerCase().trim();
-            if (query.length > 0) { // Show on focus if there's text
+            if (query.length > 0) {
                 showSuggestions('series', query);
             }
         });
@@ -717,28 +729,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const movieSearchInput = document.getElementById('movieSearch');
     if (movieSearchInput) {
-        // Trigger suggestions on 'input' event (real-time typing)
         movieSearchInput.addEventListener('input', () => handleSearchInputForSuggestions('movies'));
-        // Trigger search on 'Enter' key press
         movieSearchInput.addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
-                event.preventDefault(); // Prevent default form submission
+                event.preventDefault();
                 searchContent('movies');
             }
         });
-        // Hide suggestions when input loses focus (with a small delay for click events to register)
         movieSearchInput.addEventListener('blur', () => setTimeout(() => hideSuggestions('movies'), 100));
-        // Show suggestions again if user focuses on the input with text already present
         movieSearchInput.addEventListener('focus', (event) => {
             const query = event.target.value.toLowerCase().trim();
-            if (query.length > 0) { // Show on focus if there's text
+            if (query.length > 0) {
                 showSuggestions('movies', query);
             }
         });
     }
 
     if (lastActiveSection) {
+        console.log(`Restoring last active section: ${lastActiveSection}`);
         if (lastDetailType && lastDetailIndex !== null) {
+            console.log(`Restoring detail view: ${lastDetailType} at index ${lastDetailIndex}`);
             document.querySelector('nav').style.display = 'none';
             document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
             document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
@@ -753,7 +763,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         restoreScrollPosition();
     } else {
-        // If no last active section, default to 'home' or your desired starting section
+        console.log('No last active section found. Defaulting to "home".');
         showSection('home');
     }
 
