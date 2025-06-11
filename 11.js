@@ -1,6 +1,19 @@
 // series.js
 const seriesData = [
 
+{
+    title: "The Good Doctor (s1)",
+    image: "Images/cour5.jpeg",
+    description: "Dr. Shaun Murphy, a young surgeon with autism and savant syndrome, as he navigates hospital life, proving his medical skills while facing personal and professional challenges.",
+    genres: ["Drama", "Family", ],
+    episodes: [
+                      { title: "Episode 1", link: "https://drive.google.com/file/d/1DO8jLiL0mvJPTbteZuhkvcaeBwtjLA4I/preview " },
+                      { title: "Episode 2", link: " https://drive.google.com/file/d/1Dm3Cqt4P55e0oD7ERBDNZF73mkV9nLrM/preview" },
+                      { title: "Episode 3", link: "https://drive.google.com/file/d/1DoAejUM2Z3JgHj9wTbfVX-2x_g4pcBzA/preview " },
+    ]
+  },
+
+
 
 
 
