@@ -15,7 +15,7 @@ const seriesData = [
 
 
 {
-    title: "The Good Doctor(s1)",
+    title: "Good Doctor (s1)",
     image: "Images/cover5.jpeg",
     description: "Dr. Shaun Murphy, a young surgeon with autism and savant syndrome, as he navigates hospital life, proving his medical skills while facing personal and professional challenges.",
     genres: ["Drama", "Family", ],
