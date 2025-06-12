@@ -394,7 +394,7 @@ function showMovieList(list = null, query = '') {
           <img src="${m.image}" alt="${m.title}" />
           <h4>${highlightedTitle}</h4>
           ${hasProgress ? '<div class="resume-badge">Continue Watching</div>' : ''}
-          <button onclick="playEpisode('${m.link}', '${m.title.replace(/'/g, "\\'")}')">Watch Now</button>
+          <button onclick="showMovieDetails(${originalIndex})" class="btn">Open</button>
           <button onclick="addToWatchLater('movie', ${originalIndex})" class="watch-later-btn">Watch Later</button>
         `;
         container.appendChild(div);
@@ -495,7 +495,7 @@ function showSeriesDetails(i, originSection = null) {
           }).join('')}
         </div>
         <div class="detail-bottom-actions">  <button onclick="goBackToList('series')" class="back">Back</button>
-            <button onclick="shareContent('series', ${i})" class="back">Share</button> <button onclick="copyLinkToClipboard('series', ${i})" class="back">Copy Link</button> </div>
+            <button onclick="shareContent('series', ${i})" class="btn share-btn">Share</button> <button onclick="copyLinkToClipboard('series', ${i})" class="btn copy-link-btn">Copy Link</button> </div>
       `;
 
     saveState('series', 'series', i, originSection);
@@ -536,7 +536,7 @@ function showMovieDetails(i, originSection = null) {
           <button onclick="playEpisode('${m.link}', '${m.title.replace(/'/g, "\\'")}')">Watch Now${progressText}</button>
         </div>
         <div class="detail-bottom-actions">  <button onclick="goBackToList('movies')" class="back">Back</button>
-            <button onclick="shareContent('movie', ${i})" class="back">Share</button> <button onclick="copyLinkToClipboard('movie', ${i})" class="back">Copy Link</button> </div>
+            <button onclick="shareContent('movie', ${i})" class="btn share-btn">Share</button> <button onclick="copyLinkToClipboard('movie', ${i})" class="btn copy-link-btn">Copy Link</button> </div>
       `;
     saveState('movies', 'movie', i, originSection);
     window.scrollTo(0, 0);
