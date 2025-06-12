@@ -2,6 +2,21 @@
 const seriesData = [
 
 {
+    title: "Scorpion (s1)",
+    image: "Images/cour6.jpeg",
+    description: " A team of brilliant misfits led by tech genius Walter O'Brien. Recruited by Homeland Security, they tackle high-risk threats using their unique skills to solve complex problems. As they face life-or-death missions, the team also learns to navigate personal relationships and the challenges of working together.
+.",
+    genres: ["Drama", "Action","Crime" ],
+    episodes: [
+                      { title: "Episode 1", link: "https://drive.google.com/file/d/1EJAx-1uee9V7MzE9M3hijPVFbvvNUfoN/preview " },
+                      
+                   
+    ]
+  },
+
+
+
+{
     title: "The Good Doctor (s1)",
     image: "Images/cover5.jpeg",
     description: "Dr. Shaun Murphy, a young surgeon with autism and savant syndrome, as he navigates hospital life, proving his medical skills while facing personal and professional challenges.",
