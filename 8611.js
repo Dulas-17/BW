@@ -87,8 +87,8 @@ function restoreScrollPosition() {
     }
 }
 
-function saveState(sectionId, detailType = null, detailIndex = null, activeGenreForSection = null, originSection = null) {
-    console.log(`saveState called: sectionId=${sectionId}, detailType=${detailType}, detailIndex=${detailIndex}, activeGenreForSection=${activeGenreForSection}, originSection=${originSection}`);
+function saveState(sectionId, detailType = null, detailIndex = null, originSection = null) {
+    console.log(`saveState called: sectionId=${sectionId}, detailType=${detailType}, detailIndex=${detailIndex}, originSection=${originSection}`);
     localStorage.setItem('lastActiveSection', sectionId);
     
     if (detailType !== null && detailIndex !== null) {
@@ -99,20 +99,7 @@ function saveState(sectionId, detailType = null, detailIndex = null, activeGenre
         localStorage.removeItem('lastDetailIndex');
     }
 
-    if (sectionId === 'series') {
-        if (activeGenreForSection !== null) {
-            localStorage.setItem('activeGenre_series', activeGenreForSection);
-        } else {
-            localStorage.removeItem('activeGenre_series');
-        }
-    } else if (sectionId === 'movies') {
-        if (activeGenreForSection !== null) {
-            localStorage.setItem('activeGenre_movies', activeGenreForSection);
-        } else {
-            localStorage.removeItem('activeGenre_movies');
-        }
-    }
-    localStorage.removeItem('activeGenre');
+    localStorage.removeItem('activeGenre'); // Clean up old generic key if it exists
 
     if (originSection !== null) {
         localStorage.setItem('originSection', originSection);
@@ -127,7 +114,8 @@ function showSection(id) {
     console.log(`showSection called for: ${id}`);
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    saveState(id, null, null, null, null);
+    
+    saveState(id); 
 
     document.getElementById('seriesDetails').style.display = 'none';
     document.getElementById('movieDetails').style.display = 'none';
@@ -151,16 +139,14 @@ function showSection(id) {
         const activeGenreSeries = localStorage.getItem('activeGenre_series') || 'All';
         console.log(`Series section active. Stored genre: ${activeGenreSeries}`);
         renderGenreButtons('series');
-        filterContentByGenre('series', activeGenreSeries, true);
-
+        filterContentByGenre('series', activeGenreSeries); 
     } else if (id === 'movies') {
         document.querySelector('#movies .search-container').style.display = 'block';
         document.getElementById('movieGenreButtons').style.display = 'flex';
         const activeGenreMovies = localStorage.getItem('activeGenre_movies') || 'All';
         console.log(`Movies section active. Stored genre: ${activeGenreMovies}`);
         renderGenreButtons('movies');
-        filterContentByGenre('movies', activeGenreMovies, true);
-
+        filterContentByGenre('movies', activeGenreMovies); 
     } else if (id === 'watchLater') {
         showWatchLater();
     }
@@ -183,8 +169,8 @@ function performSearch(type) {
     });
 
     localStorage.setItem(`activeGenre_${type}`, 'All');
-    console.log(`Search performed, resetting activeGenre_${type} to 'All'.`);
-    renderGenreButtons(type);
+    console.log(`Search performed, activeGenre_${type} set to 'All'.`);
+    renderGenreButtons(type); 
 
     const listContainer = document.getElementById(type === 'series' ? 'seriesList' : 'movieList');
     if (filtered.length === 0 && query !== '') {
@@ -275,7 +261,7 @@ function renderGenreButtons(type) {
     container.innerHTML = '';
     const genres = getUniqueGenres(type);
     const activeGenre = localStorage.getItem(`activeGenre_${type}`) || 'All';
-    console.log(`Rendering genre buttons for ${type}. Active genre: ${activeGenre}`);
+    console.log(`Rendering genre buttons for ${type}. Active genre from storage: ${activeGenre}`);
 
     genres.forEach(genre => {
         const button = document.createElement('button');
@@ -288,10 +274,11 @@ function renderGenreButtons(type) {
     });
 }
 
-function filterContentByGenre(type, genre, skipSave = false) {
+function filterContentByGenre(type, genre) { 
     console.log(`filterContentByGenre called for ${type} with genre: ${genre}`);
     const genreButtonsContainerId = type === 'series' ? 'seriesGenreButtons' : 'movieGenreButtons';
     const buttons = document.getElementById(genreButtonsContainerId).querySelectorAll('button');
+    
     buttons.forEach(button => {
         button.classList.toggle('active-genre', button.textContent === genre);
     });
@@ -317,9 +304,8 @@ function filterContentByGenre(type, genre, skipSave = false) {
         showMovieList(filteredList);
     }
 
-    if (!skipSave) {
-        saveState(type, null, null, genre, null);
-    }
+    localStorage.setItem(`activeGenre_${type}`, genre);
+    console.log(`activeGenre_${type} saved as: ${genre}`);
     window.scrollTo(0, 0);
 }
 
@@ -339,7 +325,7 @@ function showSeriesList(list = null, query = '') {
     if (displayList.length === 0 && query !== '') {
         container.innerHTML = `<p style="text-align: center; color: #aaa; margin-top: 2rem;">No results found for "${query}".</p>`;
         return;
-    } else if (displayList.length === 0) {
+    } else if (displayList.length === 0 && (list === null || query === '')) {
         container.innerHTML = `<p style="text-align: center; color: #aaa; margin-top: 2rem;">No items to display here.</p>`;
         return;
     }
@@ -387,7 +373,7 @@ function showMovieList(list = null, query = '') {
     if (displayList.length === 0 && query !== '') {
         container.innerHTML = `<p style="text-align: center; color: #aaa; margin-top: 2rem;">No results found for "${query}".</p>`;
         return;
-    } else if (displayList.length === 0) {
+    } else if (displayList.length === 0 && (list === null || query === '')) {
         container.innerHTML = `<p style="text-align: center; color: #aaa; margin-top: 2rem;">No items to display here.</p>`;
         return;
     }
@@ -417,6 +403,65 @@ function showMovieList(list = null, query = '') {
         restoreScrollPosition();
     }
 }
+
+// --- Share Functionality ---
+function generateShareLink(type, index) {
+    const baseUrl = window.location.origin + window.location.pathname;
+    return `${baseUrl}?type=${type}&id=${index}`;
+}
+
+async function shareContent(type, index) {
+    const item = type === 'series' ? content.series[index] : content.movies[index];
+    if (!item) {
+        console.error('Item not found for sharing:', type, index);
+        alert('Could not find item to share.');
+        return;
+    }
+
+    const shareUrl = generateShareLink(type, index);
+    const shareData = {
+        title: `Check out ${item.title} on My Streaming App!`,
+        text: item.description ? `"${item.description}"` : '',
+        url: shareUrl,
+    };
+
+    console.log("Attempting to share:", shareData);
+
+    try {
+        if (navigator.share) {
+            await navigator.share(shareData);
+            console.log('Content shared successfully via Web Share API!');
+        } else {
+            // Fallback for browsers that don't support Web Share API
+            // Or if you specifically want to open WhatsApp
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareData.title + '\n' + shareData.text + '\n' + shareData.url)}`;
+            window.open(whatsappUrl, '_blank');
+            console.log('Opened WhatsApp for sharing.');
+            // Alternatively, you could just copy to clipboard:
+            // await navigator.clipboard.writeText(shareUrl);
+            // alert('Link copied to clipboard: ' + shareUrl);
+        }
+    } catch (error) {
+        console.error('Error sharing content:', error);
+        if (error.name !== 'AbortError') { // AbortError means user cancelled
+            alert('Failed to share. Please try again or copy the link directly.');
+        }
+    }
+}
+
+function copyLinkToClipboard(type, index) {
+    const shareUrl = generateShareLink(type, index);
+    navigator.clipboard.writeText(shareUrl)
+        .then(() => {
+            alert('Link copied to clipboard!');
+            console.log('Link copied:', shareUrl);
+        })
+        .catch(err => {
+            console.error('Failed to copy link:', err);
+            alert('Failed to copy link. Please try again.');
+        });
+}
+
 
 // --- Detail View Functions ---
 function showSeriesDetails(i, originSection = null) {
@@ -448,10 +493,14 @@ function showSeriesDetails(i, originSection = null) {
               return `<button onclick="playEpisode('${ep.link}', '${ep.title.replace(/'/g, "\\'")}')">${ep.title}${progressText}</button>`;
           }).join('')}
         </div>
+        <div class="detail-actions">
+            <button onclick="shareContent('series', ${i})" class="btn share-btn">Share</button>
+            <button onclick="copyLinkToClipboard('series', ${i})" class="btn copy-link-btn">Copy Link</button>
+        </div>
         <button onclick="goBackToList('series')" class="back">Back</button>
       `;
 
-    saveState('series', 'series', i, localStorage.getItem('activeGenre_series'), originSection);
+    saveState('series', 'series', i, originSection);
     window.scrollTo(0, 0);
 
     document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
@@ -486,9 +535,13 @@ function showMovieDetails(i, originSection = null) {
         <div class="episode-buttons">
           <button onclick="playEpisode('${m.link}', '${m.title.replace(/'/g, "\\'")}')">Watch Now${progressText}</button>
         </div>
+        <div class="detail-actions">
+            <button onclick="shareContent('movie', ${i})" class="btn share-btn">Share</button>
+            <button onclick="copyLinkToClipboard('movie', ${i})" class="btn copy-link-btn">Copy Link</button>
+        </div>
         <button onclick="goBackToList('movies')" class="back">Back</button>
       `;
-    saveState('movies', 'movie', i, localStorage.getItem('activeGenre_movies'), originSection);
+    saveState('movies', 'movie', i, originSection);
     window.scrollTo(0, 0);
 
     document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
@@ -519,7 +572,7 @@ function goBackToList(type) {
     }
 
     let targetSectionId = originSection === 'watchLater' ? 'watchLater' : type;
-    showSection(targetSectionId);
+    showSection(targetSectionId); 
     window.scrollTo(0, 0);
 }
 
@@ -602,17 +655,71 @@ function showWatchLater() {
             container.appendChild(div);
         });
     }
-    saveState('watchLater', null, null, null, null);
+    saveState('watchLater');
     window.scrollTo(0, 0);
 }
 
 // --- Initialize on DOM Content Loaded ---
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM Content Loaded. Initializing...');
-    const lastActiveSection = localStorage.getItem('lastActiveSection');
-    const lastDetailType = localStorage.getItem('lastDetailType');
-    const lastDetailIndex = localStorage.getItem('lastDetailIndex');
-    const originSection = localStorage.getItem('originSection');
+    
+    // --- NEW: Check for direct link parameters ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramType = urlParams.get('type');
+    const paramId = urlParams.get('id');
+
+    if (paramType && paramId !== null) {
+        const id = parseInt(paramId, 10);
+        if (!isNaN(id)) {
+            console.log(`Direct link detected: type=${paramType}, id=${id}`);
+            // Clear any previous state to ensure clean load
+            localStorage.removeItem('lastActiveSection');
+            localStorage.removeItem('lastDetailType');
+            localStorage.removeItem('lastDetailIndex');
+            localStorage.removeItem('originSection');
+
+            // Show the specific detail page
+            if (paramType === 'series' && content.series[id]) {
+                showSeriesDetails(id);
+            } else if (paramType === 'movie' && content.movies[id]) {
+                showMovieDetails(id);
+            } else {
+                console.warn('Direct link item not found or invalid type. Loading home.');
+                showSection('home');
+            }
+        } else {
+            console.warn('Invalid ID in direct link. Loading home.');
+            showSection('home');
+        }
+    } else {
+        // --- Existing logic for restoring state ---
+        const lastActiveSection = localStorage.getItem('lastActiveSection');
+        const lastDetailType = localStorage.getItem('lastDetailType');
+        const lastDetailIndex = localStorage.getItem('lastDetailIndex');
+        const originSection = localStorage.getItem('originSection');
+
+        if (lastActiveSection) {
+            console.log(`Restoring last active section: ${lastActiveSection}`);
+            if (lastDetailType && lastDetailIndex !== null) {
+                console.log(`Restoring detail view: ${lastDetailType} at index ${lastDetailIndex}`);
+                document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
+                document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
+
+                if (lastDetailType === 'series') {
+                    showSeriesDetails(parseInt(lastDetailIndex, 10), originSection);
+                } else if (lastDetailType === 'movie') {
+                    showMovieDetails(parseInt(lastDetailIndex, 10), originSection);
+                }
+            } else {
+                showSection(lastActiveSection);
+            }
+            restoreScrollPosition();
+        } else {
+            console.log('No last active section found. Defaulting to "home".');
+            showSection('home');
+        }
+    }
+
 
     renderGenreButtons('series');
     renderGenreButtons('movies');
@@ -651,27 +758,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 showSuggestions('movies', query);
             }
         });
-    }
-
-    if (lastActiveSection) {
-        console.log(`Restoring last active section: ${lastActiveSection}`);
-        if (lastDetailType && lastDetailIndex !== null) {
-            console.log(`Restoring detail view: ${lastDetailType} at index ${lastDetailIndex}`);
-            document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
-            document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
-
-            if (lastDetailType === 'series') {
-                showSeriesDetails(parseInt(lastDetailIndex, 10), originSection);
-            } else if (lastDetailType === 'movie') {
-                showMovieDetails(parseInt(lastDetailIndex, 10), originSection);
-            }
-        } else {
-            showSection(lastActiveSection);
-        }
-        restoreScrollPosition();
-    } else {
-        console.log('No last active section found. Defaulting to "home".');
-        showSection('home');
     }
 
     let scrollTimer;
