@@ -119,7 +119,8 @@ function showSection(id) {
 
     document.getElementById('seriesDetails').style.display = 'none';
     document.getElementById('movieDetails').style.display = 'none';
-    document.querySelector('nav').style.display = 'flex';
+    // Ensure the navigation bar is visible when showing a main section
+    document.querySelector('nav').style.display = 'flex'; 
 
     document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
     document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
@@ -393,7 +394,7 @@ function showMovieList(list = null, query = '') {
           <img src="${m.image}" alt="${m.title}" />
           <h4>${highlightedTitle}</h4>
           ${hasProgress ? '<div class="resume-badge">Continue Watching</div>' : ''}
-          <button onclick="showMovieDetails(${originalIndex})" class="btn">Watch</button>
+          <button onclick="playEpisode('${m.link}', '${m.title.replace(/'/g, "\\'")}')">Watch Now</button>
           <button onclick="addToWatchLater('movie', ${originalIndex})" class="watch-later-btn">Watch Later</button>
         `;
         container.appendChild(div);
@@ -432,18 +433,13 @@ async function shareContent(type, index) {
             await navigator.share(shareData);
             console.log('Content shared successfully via Web Share API!');
         } else {
-            // Fallback for browsers that don't support Web Share API
-            // Or if you specifically want to open WhatsApp
             const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareData.title + '\n' + shareData.text + '\n' + shareData.url)}`;
             window.open(whatsappUrl, '_blank');
             console.log('Opened WhatsApp for sharing.');
-            // Alternatively, you could just copy to clipboard:
-            // await navigator.clipboard.writeText(shareUrl);
-            // alert('Link copied to clipboard: ' + shareUrl);
         }
     } catch (error) {
         console.error('Error sharing content:', error);
-        if (error.name !== 'AbortError') { // AbortError means user cancelled
+        if (error.name !== 'AbortError') { 
             alert('Failed to share. Please try again or copy the link directly.');
         }
     }
@@ -481,6 +477,11 @@ function showSeriesDetails(i, originSection = null) {
     document.getElementById('seriesList').innerHTML = '';
     document.getElementById('seriesDetails').style.display = 'block';
 
+    // Hide navigation bar, search, and genre buttons
+    document.querySelector('nav').style.display = 'none'; 
+    document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
+    document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
+
     container.innerHTML = `
         <img src="${s.image}" alt="${s.title}" />
         <h2>${s.title}</h2>
@@ -493,18 +494,12 @@ function showSeriesDetails(i, originSection = null) {
               return `<button onclick="playEpisode('${ep.link}', '${ep.title.replace(/'/g, "\\'")}')">${ep.title}${progressText}</button>`;
           }).join('')}
         </div>
-        <div class="detail-actions">
-            <button onclick="shareContent('series', ${i})" class="btn share-btn">Share</button>
-            <button onclick="copyLinkToClipboard('series', ${i})" class="btn copy-link-btn">Copy Link</button>
-        </div>
-        <button onclick="goBackToList('series')" class="back">Back</button>
+        <div class="detail-bottom-actions">  <button onclick="goBackToList('series')" class="back">Back</button>
+            <button onclick="shareContent('series', ${i})" class="back">Share</button> <button onclick="copyLinkToClipboard('series', ${i})" class="back">Copy Link</button> </div>
       `;
 
     saveState('series', 'series', i, originSection);
     window.scrollTo(0, 0);
-
-    document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
-    document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 }
 
 function showMovieDetails(i, originSection = null) {
@@ -524,6 +519,11 @@ function showMovieDetails(i, originSection = null) {
     document.getElementById('movieList').innerHTML = '';
     document.getElementById('movieDetails').style.display = 'block';
 
+    // Hide navigation bar, search, and genre buttons
+    document.querySelector('nav').style.display = 'none';
+    document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
+    document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
+
     const videoId = m.link;
     const progress = getVideoPosition(videoId);
     const progressText = progress ? ` (${formatTime(progress.currentTime)}/${formatTime(progress.duration)})` : '';
@@ -535,17 +535,11 @@ function showMovieDetails(i, originSection = null) {
         <div class="episode-buttons">
           <button onclick="playEpisode('${m.link}', '${m.title.replace(/'/g, "\\'")}')">Watch Now${progressText}</button>
         </div>
-        <div class="detail-actions">
-            <button onclick="shareContent('movie', ${i})" class="btn share-btn">Share</button>
-            <button onclick="copyLinkToClipboard('movie', ${i})" class="btn copy-link-btn">Copy Link</button>
-        </div>
-        <button onclick="goBackToList('movies')" class="back">Back</button>
+        <div class="detail-bottom-actions">  <button onclick="goBackToList('movies')" class="back">Back</button>
+            <button onclick="shareContent('movie', ${i})" class="back">Share</button> <button onclick="copyLinkToClipboard('movie', ${i})" class="back">Copy Link</button> </div>
       `;
     saveState('movies', 'movie', i, originSection);
     window.scrollTo(0, 0);
-
-    document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
-    document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 }
 
 function formatTime(seconds) {
@@ -623,6 +617,8 @@ function showWatchLater() {
     console.log('showWatchLater called');
     document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
     document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
+    // Ensure the navigation bar is visible when in watch later section
+    document.querySelector('nav').style.display = 'flex'; 
     document.getElementById('seriesDetails').style.display = 'none';
     document.getElementById('movieDetails').style.display = 'none';
 
@@ -663,7 +659,6 @@ function showWatchLater() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM Content Loaded. Initializing...');
     
-    // --- NEW: Check for direct link parameters ---
     const urlParams = new URLSearchParams(window.location.search);
     const paramType = urlParams.get('type');
     const paramId = urlParams.get('id');
@@ -678,7 +673,6 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.removeItem('lastDetailIndex');
             localStorage.removeItem('originSection');
 
-            // Show the specific detail page
             if (paramType === 'series' && content.series[id]) {
                 showSeriesDetails(id);
             } else if (paramType === 'movie' && content.movies[id]) {
@@ -692,7 +686,6 @@ document.addEventListener('DOMContentLoaded', function() {
             showSection('home');
         }
     } else {
-        // --- Existing logic for restoring state ---
         const lastActiveSection = localStorage.getItem('lastActiveSection');
         const lastDetailType = localStorage.getItem('lastDetailType');
         const lastDetailIndex = localStorage.getItem('lastDetailIndex');
@@ -702,6 +695,8 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(`Restoring last active section: ${lastActiveSection}`);
             if (lastDetailType && lastDetailIndex !== null) {
                 console.log(`Restoring detail view: ${lastDetailType} at index ${lastDetailIndex}`);
+                // Ensure nav, search, and genre buttons are hidden if restoring to detail view
+                document.querySelector('nav').style.display = 'none';
                 document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
                 document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 
@@ -719,7 +714,6 @@ document.addEventListener('DOMContentLoaded', function() {
             showSection('home');
         }
     }
-
 
     renderGenreButtons('series');
     renderGenreButtons('movies');
