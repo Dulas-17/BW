@@ -1,5 +1,17 @@
 // movies.js
 const movieData = [
+
+  {
+    title: "The Maze Runner ",
+    image: "Images/cover6.jpeg",
+    description: "Thomas loses his memory and finds himself trapped in a massive maze called the Glade. He and his friends try to escape from the maze and eventually learn that they are subjects of an experiment. ",
+    genres: ["Adventure", "Action",
+"Thriller", "Mystery","Sci-Fi"],
+    link: "https://drive.google.com/file/d/1EDZUjrtc-fCUeaLyEx-Bes_wchTs-JAV/preview "
+  },
+
+
+
   {
     title: "Your Name(sub)",
     image: "Images/Cover3.jpeg",
