@@ -372,7 +372,7 @@ function showMovieList(list = null, query = '') {
         : currentList;
 
     if (displayList.length === 0 && query !== '') {
-        container.innerHTML = `<p style="text-align: center; color: #aaa; margin-top: 2rem;">No results found for "${query}".</p>`;
+        container.innerHTML = `<p style="text-align: center; color: #aaa; margin-top: 2rem; justify-content:center; font-size:1.5rem;">No results found for "${query}".</p>`;
         return;
     } else if (displayList.length === 0 && (list === null || query === '')) {
         container.innerHTML = `<p style="text-align: center; color: #aaa; margin-top: 2rem;">No items to display here.</p>`;
@@ -494,8 +494,10 @@ function showSeriesDetails(i, originSection = null) {
               return `<button onclick="playEpisode('${ep.link}', '${ep.title.replace(/'/g, "\\'")}')">${ep.title}${progressText}</button>`;
           }).join('')}
         </div>
-        <div class="detail-bottom-actions">  <button onclick="goBackToList('series')" class="back">Back</button>
-            <button onclick="shareContent('series', ${i})" class="btn share-btn">Share</button> <button onclick="copyLinkToClipboard('series', ${i})" class="btn copy-link-btn">Copy Link</button> </div>
+        <div class="detail-bottom-actions"> 
+<button onclick="shareContent('series', ${i})" class="btn share-btn">Share</button>
+ <button onclick="goBackToList('series')" class="back">Back</button>
+             <button onclick="copyLinkToClipboard('series', ${i})" class="btn copy-link-btn">Copy Link</button> </div>
       `;
 
     saveState('series', 'series', i, originSection);
