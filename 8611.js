@@ -421,7 +421,7 @@ async function shareContent(type, index) {
 
     const shareUrl = generateShareLink(type, index);
     const shareData = {
-        title: `Check out ${item.title} on My Streaming App!`,
+        title: `Stream ${item.title} on BayWatch!`,
         text: item.description ? `"${item.description}"` : '',
         url: shareUrl,
     };
