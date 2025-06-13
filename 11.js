@@ -43,7 +43,7 @@ const seriesData = [
  title: "Episode 4", link: "https://drive.google.com/file/d/19ln3Gofwt97mvsIod7x6X33UXXjYjxjb/preview"},
 
 {
- title: "Episode 5", link: "https://drive.google.com/file/d/1A4cR5foWbEwlpz9QfXhPMvnwdAHqLIfM/view?usp=drivesdk"},
+ title: "Episode 5", link: "https://drive.google.com/file/d/1A4cR5foWbEwlpz9QfXhPMvnwdAHqLIfM/preview"},
 
 
     ]
