@@ -39,6 +39,13 @@ const seriesData = [
       { title: "Episode 1", link: "https://drive.google.com/file/d/10D0xtKf_CPz5ODJAiX2A5wfyCg57NcIg/preview" },
       { title: "Episode 2", link: "https://drive.google.com/file/d/1-K6_2qaz1ZCz7u54FSnNX-hPq3qbqmZf/preview" },
       { title: "Episode 3", link: "https://drive.google.com/file/d/1-TQNzstys6szmuu-5iPmnxmZ6-oznFc2/preview" },
+{
+ title: "Episode 4", link: "https://drive.google.com/file/d/19ln3Gofwt97mvsIod7x6X33UXXjYjxjb/preview"},
+
+{
+ title: "Episode 5", link: "https://drive.google.com/file/d/1A4cR5foWbEwlpz9QfXhPMvnwdAHqLIfM/view?usp=drivesdk"},
+
+
     ]
   },
 
