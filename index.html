@@ -15,14 +15,18 @@
     <button onclick="showWatchLater()">Watch Later</button>
   </nav>
 
-   <div id="home" class="section">
+     <div id="home" class="section">
   <h1>Baywatch</h1>
-  
-    
-   
+  <div class="search-container">
+    <div class="search-box">
+      <input type="text" id="homeSearch" placeholder="Search news...">
+      <button class="search-button" onclick="searchContent('home')">Search</button>
+    </div>
+    <div id="homeSuggestions" class="suggestions-container"></div>
+  </div>
   <div id="featuredContent" class="featured-container"></div>
   <div id="newsFeed" class="news-grid"></div>
-</div> 
+</div>
 
 
 
