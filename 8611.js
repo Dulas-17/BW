@@ -1,7 +1,8 @@
 // Ensure seriesData and movieData are loaded before this script runs.
 const content = {
-  series: seriesData, // Assumes seriesData is loaded from 11.js
-  movies: movieData,  // Assumes movieData is loaded from 12.js
+  series: seriesData, // From 11.js
+  movies: movieData,  // From 12.js
+  home: homeData      // From 10.js
 };
 
 // Global variables for debouncing
@@ -99,7 +100,7 @@ function saveState(sectionId, detailType = null, detailIndex = null, originSecti
         localStorage.removeItem('lastDetailIndex');
     }
 
-    localStorage.removeItem('activeGenre'); // Clean up old generic key if it exists
+    localStorage.removeItem('activeGenre');
 
     if (originSection !== null) {
         localStorage.setItem('originSection', originSection);
@@ -107,6 +108,74 @@ function saveState(sectionId, detailType = null, detailIndex = null, originSecti
         localStorage.removeItem('originSection');
     }
     saveScrollPosition();
+}
+
+// --- Home Section Functions ---
+function renderHomeContent() {
+    renderFeaturedContent();
+    renderNewsFeed();
+}
+
+function renderFeaturedContent() {
+    const container = document.getElementById('featuredContent');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    content.home.featuredContent.forEach(item => {
+        const contentItem = item.type === 'movie' ? content.movies[item.id] : content.series[item.id];
+        if (!contentItem) return;
+
+        const div = document.createElement('div');
+        div.className = 'featured-item';
+        div.innerHTML = `
+            <img src="${contentItem.image}" alt="${contentItem.title}">
+            <div class="featured-content">
+                <h3>${item.title}</h3>
+                <h4>${contentItem.title}</h4>
+                <button onclick="${item.type === 'movie' ? `showMovieDetails(${item.id})` : `showSeriesDetails(${item.id})`}" class="btn">
+                    View ${item.type === 'movie' ? 'Movie' : 'Series'}
+                </button>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function renderNewsFeed(filteredItems = null) {
+    const container = document.getElementById('newsFeed');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    const itemsToRender = filteredItems || content.home.newsFeed;
+
+    if (itemsToRender.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #aaa;">No news items found.</p>';
+        return;
+    }
+
+    itemsToRender.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'news-item';
+        div.innerHTML = `
+            <span class="news-type">${item.type.toUpperCase()}</span>
+            <span class="news-date">${item.date}</span>
+            ${item.image ? `<img src="${item.image}" alt="${item.title}">` : ''}
+            <h3>${item.title}</h3>
+            <p>${item.content}</p>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function searchHomeContent(query) {
+    const filtered = content.home.newsFeed.filter(item => 
+        item.title.toLowerCase().includes(query) || 
+        item.content.toLowerCase().includes(query) ||
+        item.type.toLowerCase().includes(query)
+    );
+    renderNewsFeed(filtered);
 }
 
 // --- Section Management ---
@@ -119,7 +188,6 @@ function showSection(id) {
 
     document.getElementById('seriesDetails').style.display = 'none';
     document.getElementById('movieDetails').style.display = 'none';
-    // Ensure the navigation bar is visible when showing a main section
     document.querySelector('nav').style.display = 'flex'; 
 
     document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
@@ -133,8 +201,15 @@ function showSection(id) {
         document.getElementById('movieSearch').value = '';
         hideSuggestions('movies');
     }
+    if (document.getElementById('homeSearch')) {
+        document.getElementById('homeSearch').value = '';
+        hideSuggestions('home');
+    }
 
-    if (id === 'series') {
+    if (id === 'home') {
+        document.querySelector('#home .search-container').style.display = 'block';
+        renderHomeContent();
+    } else if (id === 'series') {
         document.querySelector('#series .search-container').style.display = 'block';
         document.getElementById('seriesGenreButtons').style.display = 'flex';
         const activeGenreSeries = localStorage.getItem('activeGenre_series') || 'All';
@@ -156,6 +231,13 @@ function showSection(id) {
 
 // --- Search Functionality ---
 function performSearch(type) {
+    if (type === 'home') {
+        const inputElement = document.getElementById('homeSearch');
+        const query = inputElement.value.toLowerCase().trim();
+        searchHomeContent(query);
+        return;
+    }
+
     const inputElement = document.getElementById(type === 'series' ? 'seriesSearch' : 'movieSearch');
     const query = inputElement.value.toLowerCase().trim();
     console.log(`Performing search for ${type} with query: "${query}"`);
@@ -193,7 +275,7 @@ function searchContent(type) {
 }
 
 function handleSearchInputForSuggestions(type) {
-    const inputElement = document.getElementById(type === 'series' ? 'seriesSearch' : 'movieSearch');
+    const inputElement = document.getElementById(type === 'series' ? 'seriesSearch' : type === 'movies' ? 'movieSearch' : 'homeSearch');
     const query = inputElement.value.toLowerCase().trim();
 
     clearTimeout(suggestionDebounceTimeout);
@@ -208,6 +290,11 @@ function handleSearchInputForSuggestions(type) {
 
 // --- Search Suggestions ---
 function showSuggestions(type, query) {
+    if (type === 'home') {
+        hideSuggestions(type);
+        return;
+    }
+
     const suggestionsContainer = document.getElementById(type === 'series' ? 'seriesSuggestions' : 'movieSuggestions');
     suggestionsContainer.innerHTML = '';
 
@@ -244,8 +331,8 @@ function selectSuggestion(type, title) {
 }
 
 function hideSuggestions(type) {
-    const suggestionsContainer = document.getElementById(type === 'series' ? 'seriesSuggestions' : 'movieSuggestions');
-    suggestionsContainer.classList.remove('active');
+    const suggestionsContainer = document.getElementById(type === 'series' ? 'seriesSuggestions' : type === 'movies' ? 'movieSuggestions' : 'homeSuggestions');
+    suggestionsContainer?.classList.remove('active');
 }
 
 // --- Genre Filtering ---
@@ -458,7 +545,6 @@ function copyLinkToClipboard(type, index) {
         });
 }
 
-
 // --- Detail View Functions ---
 function showSeriesDetails(i, originSection = null) {
     console.log(`showSeriesDetails called for index: ${i}, origin: ${originSection}`);
@@ -477,7 +563,6 @@ function showSeriesDetails(i, originSection = null) {
     document.getElementById('seriesList').innerHTML = '';
     document.getElementById('seriesDetails').style.display = 'block';
 
-    // Hide navigation bar, search, and genre buttons
     document.querySelector('nav').style.display = 'none'; 
     document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
     document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
@@ -495,9 +580,10 @@ function showSeriesDetails(i, originSection = null) {
           }).join('')}
         </div>
         <div class="detail-bottom-actions"> 
-<button onclick="shareContent('series', ${i})" class="btn share-btn">Share</button>
- <button onclick="goBackToList('series')" class="back">Back</button>
-             <button onclick="copyLinkToClipboard('series', ${i})" class="btn copy-link-btn">Copy Link</button> </div>
+            <button onclick="shareContent('series', ${i})" class="btn share-btn">Share</button>
+            <button onclick="goBackToList('series')" class="back">Back</button>
+            <button onclick="copyLinkToClipboard('series', ${i})" class="btn copy-link-btn">Copy Link</button>
+        </div>
       `;
 
     saveState('series', 'series', i, originSection);
@@ -521,7 +607,6 @@ function showMovieDetails(i, originSection = null) {
     document.getElementById('movieList').innerHTML = '';
     document.getElementById('movieDetails').style.display = 'block';
 
-    // Hide navigation bar, search, and genre buttons
     document.querySelector('nav').style.display = 'none';
     document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
     document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
@@ -537,8 +622,11 @@ function showMovieDetails(i, originSection = null) {
         <div class="episode-buttons">
           <button onclick="playEpisode('${m.link}', '${m.title.replace(/'/g, "\\'")}')">Watch Now${progressText}</button>
         </div>
-        <div class="detail-bottom-actions">  <button onclick="goBackToList('movies')" class="back">Back</button>
-            <button onclick="shareContent('movie', ${i})" class="btn share-btn">Share</button> <button onclick="copyLinkToClipboard('movie', ${i})" class="btn copy-link-btn">Copy Link</button> </div>
+        <div class="detail-bottom-actions">  
+            <button onclick="goBackToList('movies')" class="back">Back</button>
+            <button onclick="shareContent('movie', ${i})" class="btn share-btn">Share</button>
+            <button onclick="copyLinkToClipboard('movie', ${i})" class="btn copy-link-btn">Copy Link</button>
+        </div>
       `;
     saveState('movies', 'movie', i, originSection);
     window.scrollTo(0, 0);
@@ -619,7 +707,6 @@ function showWatchLater() {
     console.log('showWatchLater called');
     document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
     document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
-    // Ensure the navigation bar is visible when in watch later section
     document.querySelector('nav').style.display = 'flex'; 
     document.getElementById('seriesDetails').style.display = 'none';
     document.getElementById('movieDetails').style.display = 'none';
@@ -669,7 +756,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const id = parseInt(paramId, 10);
         if (!isNaN(id)) {
             console.log(`Direct link detected: type=${paramType}, id=${id}`);
-            // Clear any previous state to ensure clean load
             localStorage.removeItem('lastActiveSection');
             localStorage.removeItem('lastDetailType');
             localStorage.removeItem('lastDetailIndex');
@@ -697,7 +783,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(`Restoring last active section: ${lastActiveSection}`);
             if (lastDetailType && lastDetailIndex !== null) {
                 console.log(`Restoring detail view: ${lastDetailType} at index ${lastDetailIndex}`);
-                // Ensure nav, search, and genre buttons are hidden if restoring to detail view
                 document.querySelector('nav').style.display = 'none';
                 document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
                 document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
@@ -720,41 +805,30 @@ document.addEventListener('DOMContentLoaded', function() {
     renderGenreButtons('series');
     renderGenreButtons('movies');
 
-    const seriesSearchInput = document.getElementById('seriesSearch');
-    if (seriesSearchInput) {
-        seriesSearchInput.addEventListener('input', () => handleSearchInputForSuggestions('series'));
-        seriesSearchInput.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                searchContent('series');
-            }
-        });
-        seriesSearchInput.addEventListener('blur', () => setTimeout(() => hideSuggestions('series'), 100));
-        seriesSearchInput.addEventListener('focus', (event) => {
-            const query = event.target.value.toLowerCase().trim();
-            if (query.length > 0) {
-                showSuggestions('series', query);
-            }
-        });
-    }
+    // Setup search inputs
+    const setupSearchInput = (type) => {
+        const inputElement = document.getElementById(`${type}Search`);
+        if (inputElement) {
+            inputElement.addEventListener('input', () => handleSearchInputForSuggestions(type));
+            inputElement.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    searchContent(type);
+                }
+            });
+            inputElement.addEventListener('blur', () => setTimeout(() => hideSuggestions(type), 100));
+            inputElement.addEventListener('focus', (event) => {
+                const query = event.target.value.toLowerCase().trim();
+                if (query.length > 0) {
+                    showSuggestions(type, query);
+                }
+            });
+        }
+    };
 
-    const movieSearchInput = document.getElementById('movieSearch');
-    if (movieSearchInput) {
-        movieSearchInput.addEventListener('input', () => handleSearchInputForSuggestions('movies'));
-        movieSearchInput.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                searchContent('movies');
-            }
-        });
-        movieSearchInput.addEventListener('blur', () => setTimeout(() => hideSuggestions('movies'), 100));
-        movieSearchInput.addEventListener('focus', (event) => {
-            const query = event.target.value.toLowerCase().trim();
-            if (query.length > 0) {
-                showSuggestions('movies', query);
-            }
-        });
-    }
+    setupSearchInput('series');
+    setupSearchInput('movies');
+    setupSearchInput('home');
 
     let scrollTimer;
     window.addEventListener('scroll', function() {
