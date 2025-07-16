@@ -1,4 +1,3 @@
-
 // Ensure seriesData and movieData are loaded before this script runs.
 const content = {
   series: seriesData, // Assumes seriesData is loaded from 11.js
@@ -9,72 +8,6 @@ const content = {
 let searchDebounceTimeout;
 let suggestionDebounceTimeout;
 
-// --- Video Position Tracking ---
-function saveVideoPosition(videoId, currentTime, duration) {
-    const videoProgress = JSON.parse(localStorage.getItem('videoProgress') || '{}');
-    videoProgress[videoId] = {
-        currentTime: currentTime,
-        duration: duration,
-        timestamp: Date.now()
-    };
-    localStorage.setItem('videoProgress', JSON.stringify(videoProgress));
-}
-
-function getVideoPosition(videoId) {
-    const videoProgress = JSON.parse(localStorage.getItem('videoProgress') || '{}');
-    return videoProgress[videoId] || null;
-}
-
-function clearVideoPosition(videoId) {
-    const videoProgress = JSON.parse(localStorage.getItem('videoProgress') || '{}');
-    delete videoProgress[videoId];
-    localStorage.setItem('videoProgress', JSON.stringify(videoProgress));
-}
-
-function playEpisode(link, episodeTitle = null) {
-    const player = document.getElementById('videoFullScreen');
-    const iframe = player.querySelector('iframe');
-    const videoId = episodeTitle ? `${link}-${episodeTitle}` : link;
-    const savedPosition = getVideoPosition(videoId);
-    const startTime = savedPosition ? savedPosition.currentTime : 0;
-
-    let videoUrl = link;
-    if (startTime > 0) {
-        const separator = link.includes('?') ? '&' : '?';
-        videoUrl = `${link}${separator}t=${Math.floor(startTime)}`;
-    }
-
-    iframe.src = videoUrl;
-    player.style.display = 'flex';
-
-    window.addEventListener('message', function videoProgressListener(event) {
-        if (event.source !== iframe.contentWindow) return;
-        try {
-            const data = JSON.parse(event.data);
-            if (data.currentTime && data.duration) {
-                saveVideoPosition(videoId, data.currentTime, data.duration);
-            }
-        } catch (e) {
-            console.log('Received non-progress message from iframe');
-        }
-    });
-
-    iframe._progressListener = videoProgressListener;
-}
-
-function closeFullScreen() {
-    const player = document.getElementById('videoFullScreen');
-    const iframe = player.querySelector('iframe');
-
-    if (iframe._progressListener) {
-        window.removeEventListener('message', iframe._progressListener);
-        delete iframe._progressListener;
-    }
-
-    iframe.src = '';
-    player.style.display = 'none';
-    restoreScrollPosition();
-}
 
 // --- Local Storage Utilities ---
 function saveScrollPosition() {
