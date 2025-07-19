@@ -471,8 +471,10 @@ function showMovieDetails(i, originSection = null) {
         <div class="episode-buttons">
           <button onclick="playEpisode('${m.link}', '${m.title.replace(/'/g, "\\'")}')">Watch Now</button>
         </div>
-        <div class="detail-bottom-actions">  <button onclick="goBackToList('movies')" class="back">Back</button>
-            <button onclick="shareContent('movie', ${i})" class="btn share-btn">Share</button> <button onclick="copyLinkToClipboard('movie', ${i})" class="btn copy-link-btn">Copy Link</button> </div>
+        <div class="detail-bottom-actions"> 
+<button onclick="shareContent('movie', ${i})" class="btn share-btn">Share</button>
+ <button onclick="goBackToList('movies')" class="back">Back</button>
+             <button onclick="copyLinkToClipboard('movie', ${i})" class="btn copy-link-btn">Copy Link</button> </div>
       `;
   saveState('movies', 'movie', i, originSection);
   window.scrollTo(0, 0);
