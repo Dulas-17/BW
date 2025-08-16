@@ -13,11 +13,11 @@ const movieData = [
 
 
   {
-    title: "Your Name(sub)",
+    title: "Your Name",
     image: "Images/Cover3.jpeg",
     description: "A beautiful romantic fantasy that transcends time and space.",
     genres: ["Animation", "Romance", "Fantasy", "Drama"],
-    link: "https://drive.google.com/file/d/10e007gPw7-zykD4XnHU_v_HV3mS7Y72Y/preview"
+    link: "https://drive.google.com/file/d/1apFvCPgIKV4t3y27dlzwCUqqMRI8UjJz/preview"
   },
   {
     title: "The Life List",
