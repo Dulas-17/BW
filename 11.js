@@ -72,7 +72,7 @@ const seriesData = [
     title: "Demon Slayer (s3)",
     image: "Images/DM.jpg",
     description: "A youth begins a quest to fight demons and save his sister after he finds his family slaughtered and his sister turned into a demon.",
-    genres: ["Anime", "Adventure","Action" "Fantasy","Shonen", ],
+    genres: ["Anime","Adventure","Action", "Fantasy","Shonen", ],
     episodes: [
                       { title: "Episode 1", link: "https://drive.google.com/file/d/1XLQqntnaNZcYTaXIu_McK1m2mo_LZv56/preview " },
                       { title: "Episode 2", link: " https://drive.google.com/file/d/1XmN5vFRFNesn-gMaEKP7J12UCmJLXd0s/preview" },
