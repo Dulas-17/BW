@@ -68,6 +68,29 @@ const seriesData = [
       { title: "Episode 10", link: "https://drive.google.com/file/d/11uRZmLQxY52jeIsQKiw6vf2d1jTiCBlr/preview" },
     ]
   },
+  {
+    title: "Demon Slayer (s3)",
+    image: "Images/DM.jpg",
+    description: "A youth begins a quest to fight demons and save his sister after he finds his family slaughtered and his sister turned into a demon.",
+    genres: ["Anime", "Adventure","Action" "Fantasy","Shonen", ],
+    episodes: [
+                      { title: "Episode 1", link: "https://drive.google.com/file/d/1XLQqntnaNZcYTaXIu_McK1m2mo_LZv56/preview " },
+                      { title: "Episode 2", link: " https://drive.google.com/file/d/1XmN5vFRFNesn-gMaEKP7J12UCmJLXd0s/preview" },
+                      
+    ]
+  },
+  {
+    title: "Wind Breaker (s1)",
+    image: "Images/images(1)(21).jpeg",
+    description: "Haruka Sakura wants nothing to do with weaklings; he's only interested in the strongest of the strong. ",
+    genres: ["Anime", "Action","Shonen" ],
+    episodes: [
+                      { title: "Episode 1", link: "https://drive.google.com/file/d/1az4hVHLA1vH_xrROD8VjiUPGEQESDm8Q/preview " },
+                  { title: "Episode 2", link: "https://drive.google.com/file/d/1b1RR4bk-IHYHCF-7DsinO-5HSdqpcgOv/preview " },   
+                   
+    ]
+  },
+
 
 
 ];
