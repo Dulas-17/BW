@@ -1,6 +1,17 @@
 // movies.js
 const movieData = [
 
+
+{
+    title: "Free Guy",
+    image: "Images/fg.jpeg",
+    description: " ",
+    genres: ["Adventure", "Comedy","Action","Fantasy"],
+    link: "https://drive.google.com/file/d/1cRVyAhKAWqFxwnUW21mJrjIWkqWeh0hk/preview"
+  },
+
+
+
   {
     title: "The Maze Runner",
     image: "Images/cover7 .jpeg",
