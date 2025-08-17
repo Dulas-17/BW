@@ -35,7 +35,7 @@ const movieData = [
 
   {
     title: "Fight or Flight",
-    image: "Images/images(1)(22).jpeg",
+    image: "Images/fof.jpeg",
     description: "A mercenary takes on the job of tracking a high-value asset known only as \"The Ghost\" on an international flight. Realizing the plane is filled with assassins assigned to kill them both, the pair must work together in a fight for their lives.",
     genres: ["Action", "Thriller"],
     link: "https://drive.google.com/file/d/1N0mVKcv5iDy3cEDIvgTb9j9801lQTQc1/preview"
@@ -43,7 +43,7 @@ const movieData = [
 
   {
     title: "The Swimmers",
-    image: "Images/images(1)(23).jpeg",
+    image: "Images/ts.jpeg",
     description: "Two Syrian sisters flee their war-torn home in Damascus, swim for hours in choppy Mediterranean seas to reach Greece as asylum seekers before going on to compete at the Rio Olympic Games.",
     genres: ["Adventure", "Documentary", "Drama"],
     link: "https://drive.google.com/file/d/1JkUj0q7_zGiIhegH40aDmYQW8wxmW5mR/preview"
@@ -51,7 +51,7 @@ const movieData = [
 
   {
     title: "The Kissing Booth",
-    image: "Images/images(1)(24).jpeg",
+    image: "Images/tkb.jpeg",
     description: "A high school student finds herself face-to-face with her long-term crush when she signs up to run a kissing booth at the spring carnival.",
     genres: ["Romance", "Comedy"],
     link: "https://drive.google.com/file/d/1KeGGJbVLWWEXeZH_CAOotK75Wdi-yR7C/preview"
