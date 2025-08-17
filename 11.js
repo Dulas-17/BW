@@ -81,7 +81,7 @@ const seriesData = [
   },
   {
     title: "Wind Breaker (s1)",
-    image: "Images/images(1)(21).jpeg",
+    image: "Images/wb.jpeg",
     description: "Haruka Sakura wants nothing to do with weaklings; he's only interested in the strongest of the strong. ",
     genres: ["Anime", "Action","Shonen" ],
     episodes: [
