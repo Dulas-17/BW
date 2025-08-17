@@ -1,6 +1,21 @@
 // series.js
 const seriesData = [
 
+
+  {
+    title: "Highschool of the Dead",
+    image: "Images/hd.jpeg",
+    description: " . ",
+    genres: ["Anime", "Action","Horror","Ecchi" ,"Adventure"],
+    episodes: [
+                      { title: "Episode 1", link: "https://drive.google.com/file/d/1du5EZvUQ7UDoG_GKNb6DO1P8VpQZ7N7l/preview  " },
+                       { title: "Episode 2", link: "https://drive.google.com/file/d/1dv8qvFClTYJQB6oEBts0pveP7l1h5y1I/preview " },   
+
+    ]
+  },
+
+
+
 {
     title:"Scorpion (s1)",
     image:"Images/cover6.jpeg",
