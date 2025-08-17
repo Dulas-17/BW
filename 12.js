@@ -4,7 +4,7 @@ const movieData = [
 
 {
     title: "Free Guy",
-    image: "Images/fg.jpeg",
+    image: "Images/fg.webp",
     description: " ",
     genres: ["Adventure", "Comedy","Action","Fantasy"],
     link: "https://drive.google.com/file/d/1cRVyAhKAWqFxwnUW21mJrjIWkqWeh0hk/preview"
