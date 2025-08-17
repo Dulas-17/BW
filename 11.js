@@ -1,6 +1,25 @@
 // series.js
 const seriesData = [
 
+{
+    title: "Attack On Titan(1)",
+    image: "Images/aot.jpeg",
+    description: " ",
+    genres: ["Adventure","Shonen","Mystery","Action", "Thriller", "Anime"],
+    episodes: [
+      { title: "Episode 1" ,link:" https://drive.google.com/file/d/1dVytq0QiSTu8Kb7FvKubT8FzwZ6wrsbd/preview" },
+      { title: "Episode 2", link: "https://drive.google.com/file/d/1dXMt9HRbYFBqXj9lEUDq4GI7BQDiEtn9/preview " },
+      { title: "Episode 3", link: "https://drive.google.com/file/d/1daZxMAOLS4yJQ9oTUGeqIEPzb9eirqzU/preview " },
+      { title: "Episode 4", link: "https://drive.google.com/file/d/1dbE2oinR8rKyz5U4K-dJ-0GybJnCVs_H/preview "},
+      { title: "Episode 5", link:"https://drive.google.com/file/d/1dl9thmq8A3yaZ04PVXjyyjo4FZqLhWQ8/preview "},
+
+
+    ]
+  },
+
+
+
+
 
   {
     title: "Highschool of the Dead",
