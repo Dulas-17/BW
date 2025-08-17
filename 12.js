@@ -38,7 +38,7 @@ const movieData = [
     image: "Images/fof.jpeg",
     description: "A mercenary takes on the job of tracking a high-value asset known only as \"The Ghost\" on an international flight. Realizing the plane is filled with assassins assigned to kill them both, the pair must work together in a fight for their lives.",
     genres: ["Action", "Thriller"],
-    link: "https://drive.google.com/file/d/1N0mVKcv5iDy3cEDIvgTb9j9801lQTQc1/preview"
+    link: "https://drive.google.com/file/d/1NOmVKcv5iDy3cEDIvgTb9j9801lQTQc1/preview"
   },
 
   {
@@ -54,6 +54,6 @@ const movieData = [
     image: "Images/tkb.jpeg",
     description: "A high school student finds herself face-to-face with her long-term crush when she signs up to run a kissing booth at the spring carnival.",
     genres: ["Romance", "Comedy"],
-    link: "https://drive.google.com/file/d/1KeGGJbVLWWEXeZH_CAOotK75Wdi-yR7C/preview"
+    link: "https://drive.google.com/file/d/1KeGGJbvLWWEXeZH_CAOotK75Wdi-yR7C/preview"
   },
 ];
