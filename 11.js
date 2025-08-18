@@ -18,7 +18,21 @@ const seriesData = [
   },
 
 
+ {
+    title: "Wrong way of using healing magic",
+    image: "Images/magic.jpeg",
+    description: " ",
+    genres: ["Adventure","Isekai","Comedy",  "Anime", "Fantasy"],
+    episodes: [
+      { title: "Episode 1", link: "https://drive.google.com/file/d/1bGS7uEp-48wpOBOqD0SmOWHGmdJ4sRBO/preview " },
+      { title: "Episode 2", link: "https://drive.google.com/file/d/1bhyk4q8kRkJZtMATBEJzUL02ELYG6MKk/preview " },
+      { title: "Episode 3", link: "https://drive.google.com/file/d/1c0EDAR5iMhfSnz3iX_8-0hbEHa4tg-zu/preview " },
+      { title: "Episode 4", link: " https://drive.google.com/file/d/1dzxT0RDut56FnysMA1HX-tm9catC6lQ9/preview" },
+      { title: "Episode 5", link: "https://drive.google.com/file/d/1e-cXrZSX_GMx-2mj1tuuGBX9vl-mgA_j/preview " },
 
+
+    ]
+  },
 
 
   {
