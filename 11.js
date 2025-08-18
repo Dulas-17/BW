@@ -135,6 +135,17 @@ const seriesData = [
     episodes: [
                       { title: "Episode 1", link: "https://drive.google.com/file/d/1az4hVHLA1vH_xrROD8VjiUPGEQESDm8Q/preview " },
                   { title: "Episode 2", link: "https://drive.google.com/file/d/1b1RR4bk-IHYHCF-7DsinO-5HSdqpcgOv/preview " },   
+                     { title: "Episode 3", link: "https:drive.google.com/file/d/1cgQ2EGa8GZQNLQFHmH-NUlRkLztL8Rqj/preview " },
+{ title: "Episode 4", link: "https://drive.google.com/file/d/1cngB9Nx1TysiG9W1_mpSRDSNbr3DivUX/preview " },
+{ title: "Episode 5", link: "https://drive.google.com/file/d/1cszf6WptniPQQgm-imt6Y7nkSGJRDVvE/preview " },
+{ title: "Episode 6", link: "https://drive.google.com/file/d/1cwwVcMVjL0VM_llB0R-ToTFAF0LtR4Qn/preview " },
+{ title: "Episode 7", link: "https://drive.google.com/file/d/1d8c9U9vArqGV1ITvJ-7Tz2TL1FX0FUcL/preview " },
+{ title: "Episode 8", link: "https://drive.google.com/file/d/1dPNK8ZUwAGn_tVINxAcqU1mwoH63Ihlq/preview " },
+{ title: "Episode 9", link: "https://drive.google.com/file/d/1dOu_dLg4IM0IiclRsiK_vcQkMyNh2sXJ/preview " },
+{ title: "Episode 10", link: "https://drive.google.com/file/d/1dIqSmm6E55RfSKI8NoL6OHbZOM1bZN4F/preview "},
+{ title: "Episode 11", link: "https://drive.google.com/file/d/1dGl4ZDsYWMcXH5NtSHN9EU9aHVZNMyTb/preview "},
+{ title: "Episode 12", link: "https://drive.google.com/file/d/1d9BFwVuNt1RWSGDo8gmnO2_KiW3IH67z/preview " },
+{ title: "Episode 13", link: "https://drive.google.com/file/d/1d9fMQO6Db4SKvhJCaljOhyIjdt8ogF9i/preview " },
                    
     ]
   },
