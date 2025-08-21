@@ -35,7 +35,30 @@ function restoreScrollPosition() {
   const storedScrollY = localStorage.getItem('scrollPosition');
   if (storedScrollY) {
     window.scrollTo(0, parseInt(storedScrollY, 10));
+    // It's a good practice to clear the scroll position after restoring to prevent
+    // unwanted behavior on subsequent page loads or refreshes.
+    localStorage.removeItem('scrollPosition');
   }
+}
+
+// *** ADDED: Save Search State
+function saveSearchState(type) {
+    const searchTerm = document.getElementById(`${type}Search`).value;
+    localStorage.setItem(`${type}SearchQuery`, searchTerm);
+    localStorage.removeItem(`${type}ActiveGenre`); // Clear genre state if a search is active
+}
+
+// *** ADDED: Restore Search State
+function restoreSearchState(type) {
+    const savedSearchTerm = localStorage.getItem(`${type}SearchQuery`);
+    if (savedSearchTerm) {
+        console.log(`Restoring saved search query for ${type}: "${savedSearchTerm}"`);
+        document.getElementById(`${type}Search`).value = savedSearchTerm;
+        performSearch(type, true); // The 'true' flag tells performSearch not to reset scroll
+        localStorage.removeItem(`${type}SearchQuery`); // Clear after restoring
+        return true;
+    }
+    return false;
 }
 
 function saveState(sectionId, detailType = null, detailIndex = null, originSection = null) {
@@ -50,7 +73,9 @@ function saveState(sectionId, detailType = null, detailIndex = null, originSecti
     localStorage.removeItem('lastDetailIndex');
   }
 
-  localStorage.removeItem('activeGenre'); // Clean up old generic key if it exists
+  // Use section-specific genre keys
+  localStorage.removeItem('activeGenre_series'); 
+  localStorage.removeItem('activeGenre_movies');
 
   if (originSection !== null) {
     localStorage.setItem('originSection', originSection);
@@ -61,7 +86,7 @@ function saveState(sectionId, detailType = null, detailIndex = null, originSecti
 }
 
 // --- Section Management ---
-function showSection(id) {
+function showSection(id, shouldRestoreScroll = true) {
   console.log(`showSection called for: ${id}`);
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -70,46 +95,53 @@ function showSection(id) {
 
   document.getElementById('seriesDetails').style.display = 'none';
   document.getElementById('movieDetails').style.display = 'none';
-  // Ensure the navigation bar is visible when showing a main section
   document.querySelector('nav').style.display = 'flex';
 
   document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
   document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 
-  if (document.getElementById('seriesSearch')) {
-    document.getElementById('seriesSearch').value = '';
-    hideSuggestions('series');
-  }
-  if (document.getElementById('movieSearch')) {
-    document.getElementById('movieSearch').value = '';
-    hideSuggestions('movies');
-  }
-
   if (id === 'series') {
     document.querySelector('#series .search-container').style.display = 'block';
     document.getElementById('seriesGenreButtons').style.display = 'flex';
-    const activeGenreSeries = localStorage.getItem('activeGenre_series') || 'All';
-    console.log(`Series section active. Stored genre: ${activeGenreSeries}`);
-    renderGenreButtons('series');
-    filterContentByGenre('series', activeGenreSeries);
+
+    if (!restoreSearchState('series')) {
+      const activeGenreSeries = localStorage.getItem('activeGenre_series') || 'All';
+      renderGenreButtons('series');
+      filterContentByGenre('series', activeGenreSeries);
+      if (shouldRestoreScroll) restoreScrollPosition();
+    } else {
+      // Search state was restored, do not restore scroll immediately
+      // The search function handles its own display
+    }
   } else if (id === 'movies') {
     document.querySelector('#movies .search-container').style.display = 'block';
     document.getElementById('movieGenreButtons').style.display = 'flex';
-    const activeGenreMovies = localStorage.getItem('activeGenre_movies') || 'All';
-    console.log(`Movies section active. Stored genre: ${activeGenreMovies}`);
-    renderGenreButtons('movies');
-    filterContentByGenre('movies', activeGenreMovies);
+
+    if (!restoreSearchState('movies')) {
+      const activeGenreMovies = localStorage.getItem('activeGenre_movies') || 'All';
+      renderGenreButtons('movies');
+      filterContentByGenre('movies', activeGenreMovies);
+      if (shouldRestoreScroll) restoreScrollPosition();
+    }
   } else if (id === 'watchLater') {
     showWatchLater();
+    if (shouldRestoreScroll) restoreScrollPosition();
   }
-  window.scrollTo(0, 0);
+  if (!shouldRestoreScroll) {
+    window.scrollTo(0, 0);
+  }
 }
 
 // --- Search Functionality ---
-function performSearch(type) {
+// *** MODIFIED: Added `resetScroll` parameter to control scroll behavior
+function performSearch(type, resetScroll = true) {
   const inputElement = document.getElementById(type === 'series' ? 'seriesSearch' : 'movieSearch');
   const query = inputElement.value.toLowerCase().trim();
   console.log(`Performing search for ${type} with query: "${query}"`);
+
+  // Clear genre state when searching
+  localStorage.removeItem(`activeGenre_${type}`);
+  renderGenreButtons(type); // Rerender buttons to unselect any genre
 
   hideSuggestions(type);
 
@@ -119,10 +151,6 @@ function performSearch(type) {
     if (item.genres && item.genres.some(genre => genre.toLowerCase().includes(query))) return true;
     return false;
   });
-
-  localStorage.setItem(`activeGenre_${type}`, 'All');
-  console.log(`Search performed, activeGenre_${type} set to 'All'.`);
-  renderGenreButtons(type);
 
   const listContainer = document.getElementById(type === 'series' ? 'seriesList' : 'movieList');
   if (filtered.length === 0 && query !== '') {
@@ -134,7 +162,12 @@ function performSearch(type) {
       showMovieList(filtered, query);
     }
   }
-  saveScrollPosition();
+
+  // *** MODIFIED: Only reset scroll if the flag is true
+  if (resetScroll) {
+    window.scrollTo(0, 0);
+    saveScrollPosition(); // Save the new top position
+  }
 }
 
 function searchContent(type) {
@@ -213,7 +246,6 @@ function renderGenreButtons(type) {
   container.innerHTML = '';
   const genres = getUniqueGenres(type);
   const activeGenre = localStorage.getItem(`activeGenre_${type}`) || 'All';
-  console.log(`Rendering genre buttons for ${type}. Active genre from storage: ${activeGenre}`);
 
   genres.forEach(genre => {
     const button = document.createElement('button');
@@ -227,7 +259,6 @@ function renderGenreButtons(type) {
 }
 
 function filterContentByGenre(type, genre) {
-  console.log(`filterContentByGenre called for ${type} with genre: ${genre}`);
   const genreButtonsContainerId = type === 'series' ? 'seriesGenreButtons' : 'movieGenreButtons';
   const buttons = document.getElementById(genreButtonsContainerId).querySelectorAll('button');
 
@@ -241,23 +272,19 @@ function filterContentByGenre(type, genre) {
   } else {
     filteredList = content[type].filter(item => item.genres && item.genres.includes(genre));
   }
-
-  if (type === 'series') {
-    document.getElementById('seriesSearch').value = '';
-    hideSuggestions('series');
-  } else if (type === 'movies') {
-    document.getElementById('movieSearch').value = '';
-    hideSuggestions('movies');
-  }
+  
+  // Clear search state when a genre is selected
+  localStorage.removeItem(`${type}SearchQuery`);
+  document.getElementById(`${type}Search`).value = '';
+  hideSuggestions(type);
 
   if (type === 'series') {
     showSeriesList(filteredList);
   } else {
     showMovieList(filteredList);
   }
-
+  
   localStorage.setItem(`activeGenre_${type}`, genre);
-  console.log(`activeGenre_${type} saved as: ${genre}`);
   window.scrollTo(0, 0);
 }
 
@@ -268,8 +295,7 @@ function showSeriesList(list = null, query = '') {
   container.innerHTML = '';
 
   const activeGenre = localStorage.getItem('activeGenre_series');
-  console.log(`showSeriesList called. Active series genre: ${activeGenre}. Query: "${query}"`);
-
+  
   const displayList = (list === null && activeGenre && activeGenre !== 'All')
     ? currentList.filter(s => s.genres && s.genres.includes(activeGenre))
     : currentList;
@@ -298,10 +324,6 @@ function showSeriesList(list = null, query = '') {
         `;
     container.appendChild(div);
   });
-
-  if (list === null && localStorage.getItem('lastActiveSection') === 'series' && !localStorage.getItem('lastDetailType')) {
-    restoreScrollPosition();
-  }
 }
 
 function showMovieList(list = null, query = '') {
@@ -310,7 +332,6 @@ function showMovieList(list = null, query = '') {
   container.innerHTML = '';
 
   const activeGenre = localStorage.getItem('activeGenre_movies');
-  console.log(`showMovieList called. Active movie genre: ${activeGenre}. Query: "${query}"`);
 
   const displayList = (list === null && activeGenre && activeGenre !== 'All')
     ? currentList.filter(m => m.genres && m.genres.includes(activeGenre))
@@ -340,10 +361,6 @@ function showMovieList(list = null, query = '') {
         `;
     container.appendChild(div);
   });
-
-  if (list === null && localStorage.getItem('lastActiveSection') === 'movies' && !localStorage.getItem('lastDetailType')) {
-    restoreScrollPosition();
-  }
 }
 
 // --- Share Functionality ---
@@ -489,11 +506,6 @@ function formatTime(seconds) {
 
 function goBackToList(type) {
   console.log(`goBackToList called for: ${type}`);
-  if (type === 'series') {
-    document.getElementById('seriesSearch').value = '';
-  } else if (type === 'movies') {
-    document.getElementById('movieSearch').value = '';
-  }
 
   const originSection = localStorage.getItem('originSection');
 
@@ -504,8 +516,8 @@ function goBackToList(type) {
   }
 
   let targetSectionId = originSection === 'watchLater' ? 'watchLater' : type;
-  showSection(targetSectionId);
-  window.scrollTo(0, 0);
+  showSection(targetSectionId, true);
+  // No need to manually scroll, showSection now handles it
 }
 
 // --- Watch Later Functionality ---
@@ -644,9 +656,9 @@ document.addEventListener('DOMContentLoaded', function() {
           showMovieDetails(parseInt(lastDetailIndex, 10), originSection);
         }
       } else {
-        showSection(lastActiveSection);
+        // *** MODIFIED: Don't restore scroll immediately, let showSection handle it.
+        showSection(lastActiveSection, true);
       }
-      restoreScrollPosition();
     } else {
       console.log('No last active section found. Defaulting to "home".');
       showSection('home');
@@ -692,13 +704,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  let scrollTimer;
-  window.addEventListener('scroll', function() {
-    clearTimeout(scrollTimer);
-    scrollTimer = setTimeout(() => {
-      saveScrollPosition();
-    }, 200);
+  // Use the beforeunload event to save scroll position and search query
+  window.addEventListener('beforeunload', () => {
+    const currentSection = localStorage.getItem('lastActiveSection');
+    if (currentSection === 'series' || currentSection === 'movies') {
+        saveSearchState(currentSection);
+    }
+    saveScrollPosition();
   });
-
-  window.addEventListener('beforeunload', saveScrollPosition);
 });
