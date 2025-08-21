@@ -1,87 +1,10 @@
-/* Home Section Styles */
-.featured-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
-}
-
-.featured-item {
-  background: #1f1f1f;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid #4a6fa5;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.featured-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(90, 155, 216, 0.3);
-}
-
-.featured-item img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.featured-content {
-  padding: 1rem;
-}
-
-.news-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
-.news-item {
-  background: #1f1f1f;
-  border-radius: 12px;
-  padding: 1rem;
-  border: 1px solid #4a6fa5;
-  transition: transform 0.3s;
-}
-
-.news-item:hover {
-  transform: translateY(-3px);
-}
-
-.news-item img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-}
-
-.news-date {
-  color: #5a9bd8;
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
-}
-
-.news-type {
-  display: inline-block;
-  background: #5a9bd8;
-  color: #121212;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
-
-@media (max-width: 768px) {
-  .featured-container {
-    grid-template-columns: 1fr;
-  }
-
-  .news-grid {
-    grid-template-columns: 1fr;
-  }
-}
-/* Blue-themed version */
+/*
+  ==========================================
+  Base Styles (Mobile First)
+  These styles are the default for all screen sizes,
+  optimized for the smallest devices.
+  ==========================================
+*/
 * {
   box-sizing: border-box;
 }
@@ -99,6 +22,7 @@ body {
   touch-action: manipulation;
 }
 
+/* Nav & Search Components */
 nav {
   background: #1c1c1c;
   padding: 1rem;
@@ -143,24 +67,24 @@ nav button:hover {
   display: block;
 }
 
-.search-container { /* New wrapper for search input + button + suggestions */
+.search-container {
   margin: 2rem auto 0.5rem auto;
   width: 90%;
   max-width: 500px;
   position: relative;
-  z-index: 10; /* Ensure search-related elements are on top */
+  z-index: 10;
 }
 
-.search-box { /* Now specifically for the input and button */
+.search-box {
   display: flex;
   width: 100%;
 }
 
 .search-box input {
-  flex-grow: 1; /* Allows input to take up available space */
-  padding: 1rem 1rem 1rem 2.8rem; /* Increased left padding for icon */
+  flex-grow: 1;
+  padding: 1rem 1rem 1rem 2.8rem;
   font-size: 1rem;
-  border-radius: 8px 0 0 8px; /* Rounded left corners, sharp right */
+  border-radius: 8px 0 0 8px;
   border: 2px solid #4a6fa5;
   background: #121212;
   color: #d6ecff;
@@ -183,12 +107,12 @@ nav button:hover {
   background: #5a9bd8;
   color: #121212;
   border: 2px solid #5a9bd8;
-  border-radius: 0 8px 8px 0; /* Rounded right corners, sharp left */
+  border-radius: 0 8px 8px 0;
   font-weight: bold;
   cursor: pointer;
   font-size: 1rem;
   transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-  white-space: nowrap; /* Prevent button text from wrapping */
+  white-space: nowrap;
 }
 
 .search-button:hover {
@@ -198,25 +122,25 @@ nav button:hover {
   box-shadow: 0 0 8px #5a9bd8;
 }
 
-/* Styles for the suggestions container */
+/* Suggestions container */
 .suggestions-container {
   position: absolute;
-  top: 100%; /* Position right below the input */
+  top: 100%;
   left: 0;
   right: 0;
   max-height: 200px;
   overflow-y: auto;
-  background: #1c1c1c; /* Same as nav for consistency */
+  background: #1c1c1c;
   border: 1px solid #4a6fa5;
-  border-top: none; /* No top border, blends with input */
-  border-radius: 0 0 8px 8px; /* Rounded corners only at the bottom */
+  border-top: none;
+  border-radius: 0 0 8px 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
-  z-index: 9; /* Below the input, but above other content */
-  display: none; /* Hidden by default */
+  z-index: 9;
+  display: none;
 }
 
 .suggestions-container.active {
-  display: block; /* Show when active */
+  display: block;
 }
 
 .suggestion-item {
@@ -224,19 +148,20 @@ nav button:hover {
   font-size: 0.95rem;
   color: #d6ecff;
   cursor: pointer;
-  border-bottom: 1px solid #2b3c57; /* Separator for items */
+  border-bottom: 1px solid #2b3c57;
 }
 
 .suggestion-item:last-child {
-  border-bottom: none; /* No border for the last item */
+  border-bottom: none;
 }
 
 .suggestion-item:hover,
-.suggestion-item.highlighted { /* Optional: for keyboard navigation */
+.suggestion-item.highlighted {
   background: #2b3c57;
   color: #fff;
 }
 
+/* Genre Buttons */
 .genre-buttons {
   margin: 1.5rem 0;
   text-align: center;
@@ -273,9 +198,79 @@ nav button:hover {
   transform: scale(1.05);
 }
 
+/* Home Section Grids */
+.featured-container,
+.news-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Mobile default: single column */
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.featured-item {
+  background: #1f1f1f;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #4a6fa5;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.featured-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(90, 155, 216, 0.3);
+}
+
+.featured-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.featured-content {
+  padding: 1rem;
+}
+
+.news-item {
+  background: #1f1f1f;
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid #4a6fa5;
+  transition: transform 0.3s;
+}
+
+.news-item:hover {
+  transform: translateY(-3px);
+}
+
+.news-item img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.news-date {
+  color: #5a9bd8;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.news-type {
+  display: inline-block;
+  background: #5a9bd8;
+  color: #121212;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+/* Series & Movie Grid */
 .series-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
 }
 
@@ -298,7 +293,7 @@ nav button:hover {
 .series-item img {
   width: 100%;
   height: auto;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1 / 1.4;
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
@@ -389,66 +384,6 @@ nav button:hover {
   z-index: 1;
 }
 
-@media (min-width: 481px) {
-  .series-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 768px) {
-  .series-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  nav {
-    justify-content: flex-start;
-    padding: 0.8rem;
-  }
-  nav button {
-    margin-right: 0.5rem;
-  }
-  .h4 {
-    font-size: 1.3rem;
-  }
-}
-
-@media (min-width: 1200px) {
-  .series-grid {
-    grid-template-columns: repeat(5, 1fr);
-  }
-}
-
-@media (max-width: 480px) {
-  html {
-    font-size: 12px;
-  }
-  .series-item {
-    padding: 0.3rem;
-  }
-  .episode-buttons button {
-    padding: 0.8rem;
-    font-size: 0.9rem;
-  }
-  .h4 {
-    font-size: 1rem;
-  }
-  .genre-buttons {
-    gap: 0.5rem;
-  }
-  .genre-buttons button {
-    padding: 0.5rem 0.8rem;
-    font-size: 0.8rem;
-  }
-  /* Adjust search button for smaller screens */
-  .search-button {
-    padding: 0.8rem; /* Smaller padding */
-    font-size: 0.9rem;
-  }
-  .search-box input {
-    padding-left: 2.2rem; /* Adjust padding for icon */
-    background-position: 10px center; /* Adjust icon position */
-  }
-}
-
 .btn {
   padding: 0.4rem;
   font-size: 0.8rem;
@@ -523,4 +458,181 @@ nav button:hover {
   background: #c0392b;
   transform: translateY(-2px);
   box-shadow: 0 0 8px #e74c3c;
+}
+
+/*
+  ==========================================
+  Media Queries for Responsiveness
+  ==========================================
+*/
+
+/* Extra small devices (phones, 480px and down) */
+@media (max-width: 480px) {
+  html {
+    font-size: 12px;
+  }
+  
+  .series-item, .featured-item, .news-item {
+    padding: 0.3rem;
+  }
+  
+  .h4 {
+    font-size: 1rem;
+  }
+  
+  .genre-buttons {
+    gap: 0.5rem;
+  }
+  
+  .genre-buttons button {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  
+  .search-button {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+  
+  .search-box input {
+    padding-left: 2.2rem;
+    background-position: 10px center;
+  }
+
+  .episode-buttons button {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 481px to 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  /* Layout adjustments */
+  .featured-container, .news-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+  
+  .series-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Font and padding adjustments */
+  .series-item h3, .featured-content h3, .news-item h3 {
+    font-size: 1.2rem;
+  }
+  
+  .series-details h2 {
+    font-size: 2rem;
+  }
+
+  .series-details p {
+    font-size: 1rem;
+  }
+  
+  .episode-buttons button {
+    padding: 1.2rem;
+    font-size: 1.5rem;
+  }
+}
+
+/* Medium devices (landscape tablets, 769px to 992px) */
+@media (min-width: 769px) and (max-width: 992px) {
+  /* Layout adjustments */
+  nav {
+    justify-content: flex-start;
+    padding: 0.8rem;
+  }
+  
+  nav button {
+    margin-right: 0.5rem;
+  }
+  
+  .h4 {
+    font-size: 1.3rem;
+  }
+  
+  .series-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .featured-container, .news-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Font and padding adjustments */
+  .series-item h3, .featured-content h3, .news-item h3 {
+    font-size: 1.3rem;
+  }
+
+  .series-details h2 {
+    font-size: 2.5rem;
+  }
+
+  .series-details p {
+    font-size: 1.1rem;
+  }
+}
+
+/* Large devices (laptops, 993px to 1200px) */
+@media (min-width: 993px) and (max-width: 1200px) {
+  /* Layout adjustments */
+  .series-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  
+  .featured-container, .news-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Font and padding adjustments */
+  .series-item h3, .featured-content h3, .news-item h3 {
+    font-size: 1.4rem;
+  }
+  
+  .series-details h2 {
+    font-size: 2.8rem;
+  }
+  
+  .series-details p {
+    font-size: 1.2rem;
+  }
+  
+  .episode-buttons button {
+    padding: 1.5rem;
+    font-size: 2rem;
+  }
+}
+
+/* Extra large devices (large desktops, 1201px and up) */
+@media (min-width: 1201px) {
+  /* Layout adjustments */
+  .series-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .featured-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .news-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Font and padding adjustments */
+  .series-item h3, .featured-content h3, .news-item h3 {
+    font-size: 1.5rem;
+  }
+  
+  .series-details h2 {
+    font-size: 3rem;
+  }
+  
+  .series-details p {
+    font-size: 1.3rem;
+  }
+  
+  .episode-buttons button {
+    padding: 1.8rem;
+    font-size: 2.5rem;
+  }
 }
