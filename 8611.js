@@ -1,37 +1,5 @@
-// --- Start of New Code: Loader & Splash Screen Functions ---
-const splashScreen = document.getElementById('splash-screen');
-const loader = document.getElementById('loader');
-
-// Function to show the loader
-function showLoader() {
-    if (loader) {
-        loader.classList.remove('loader-hidden');
-    }
-}
-
-// Function to hide the loader
-function hideLoader() {
-    if (loader) {
-        // Use a short delay to ensure the loader is visible for at least a moment
-        setTimeout(() => {
-            loader.classList.add('loader-hidden');
-        }, 300);
-    }
-}
-
-// Function to hide the splash screen
-function hideSplashScreen() {
-    if (splashScreen) {
-        splashScreen.classList.add('splash-screen-hidden');
-        // Remove the splash screen element from the DOM after it has faded out
-        setTimeout(() => {
-            splashScreen.style.display = 'none';
-        }, 1000); // Matches CSS transition duration
-    }
-}
-// --- End of New Code ---
-
-Const content = {
+// Ensure seriesData and movieData are loaded before this script runs.
+const content = {
   series: seriesData, // Assumes seriesData is loaded from 11.js
   movies: movieData,  // Assumes movieData is loaded from 12.js
 };
@@ -95,8 +63,6 @@ function saveState(sectionId, detailType = null, detailIndex = null, originSecti
 // --- Section Management ---
 function showSection(id) {
   console.log(`showSection called for: ${id}`);
-  showLoader(); // Show loader at the beginning of section transition
-
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 
@@ -135,16 +101,12 @@ function showSection(id) {
     filterContentByGenre('movies', activeGenreMovies);
   } else if (id === 'watchLater') {
     showWatchLater();
-  } else {
-    hideLoader(); // Hide loader for sections that don't load data
   }
   window.scrollTo(0, 0);
 }
 
 // --- Search Functionality ---
 function performSearch(type) {
-  showLoader(); // Show loader when search begins
-
   const inputElement = document.getElementById(type === 'series' ? 'seriesSearch' : 'movieSearch');
   const query = inputElement.value.toLowerCase().trim();
   console.log(`Performing search for ${type} with query: "${query}"`);
@@ -173,15 +135,12 @@ function performSearch(type) {
     }
   }
   saveScrollPosition();
-  hideLoader(); // Hide loader after search results are rendered
 }
 
 function searchContent(type) {
   clearTimeout(searchDebounceTimeout);
   clearTimeout(suggestionDebounceTimeout);
-  searchDebounceTimeout = setTimeout(() => {
-      performSearch(type);
-  }, 300);
+  performSearch(type);
 }
 
 function handleSearchInputForSuggestions(type) {
@@ -269,8 +228,6 @@ function renderGenreButtons(type) {
 
 function filterContentByGenre(type, genre) {
   console.log(`filterContentByGenre called for ${type} with genre: ${genre}`);
-  showLoader(); // Show loader when filtering begins
-
   const genreButtonsContainerId = type === 'series' ? 'seriesGenreButtons' : 'movieGenreButtons';
   const buttons = document.getElementById(genreButtonsContainerId).querySelectorAll('button');
 
@@ -302,7 +259,6 @@ function filterContentByGenre(type, genre) {
   localStorage.setItem(`activeGenre_${type}`, genre);
   console.log(`activeGenre_${type} saved as: ${genre}`);
   window.scrollTo(0, 0);
-  hideLoader(); // Hide loader after content is filtered and rendered
 }
 
 // --- Display List Functions ---
@@ -447,14 +403,11 @@ function copyLinkToClipboard(type, index) {
 // --- Detail View Functions ---
 function showSeriesDetails(i, originSection = null) {
   console.log(`showSeriesDetails called for index: ${i}, origin: ${originSection}`);
-  showLoader(); // Show loader when details are loading
-
   const s = content.series[i];
   if (!s) {
     console.error("Error: Series item not found at index:", i);
     alert("Could not load series details. Data might be missing or corrupted.");
     showSection(originSection === 'watchLater' ? 'watchLater' : 'series');
-    hideLoader(); // Hide loader on error
     return;
   }
   const container = document.getElementById('seriesDetails');
@@ -487,19 +440,15 @@ function showSeriesDetails(i, originSection = null) {
 
   saveState('series', 'series', i, originSection);
   window.scrollTo(0, 0);
-  hideLoader(); // Hide loader after details are rendered
 }
 
 function showMovieDetails(i, originSection = null) {
   console.log(`showMovieDetails called for index: ${i}, origin: ${originSection}`);
-  showLoader(); // Show loader when details are loading
-
   const m = content.movies[i];
   if (!m) {
     console.error("Error: Movie item not found at index:", i);
     alert("Could not load movie details. Data might be missing or corrupted.");
     showSection(originSection === 'watchLater' ? 'watchLater' : 'movies');
-    hideLoader(); // Hide loader on error
     return;
   }
   const container = document.getElementById('movieDetails');
@@ -529,7 +478,6 @@ function showMovieDetails(i, originSection = null) {
       `;
   saveState('movies', 'movie', i, originSection);
   window.scrollTo(0, 0);
-  hideLoader(); // Hide loader after details are rendered
 }
 
 function formatTime(seconds) {
@@ -541,8 +489,6 @@ function formatTime(seconds) {
 
 function goBackToList(type) {
   console.log(`goBackToList called for: ${type}`);
-  showLoader(); // Show loader on back action
-
   if (type === 'series') {
     document.getElementById('seriesSearch').value = '';
   } else if (type === 'movies') {
@@ -560,7 +506,6 @@ function goBackToList(type) {
   let targetSectionId = originSection === 'watchLater' ? 'watchLater' : type;
   showSection(targetSectionId);
   window.scrollTo(0, 0);
-  hideLoader(); // Hide loader after going back
 }
 
 // --- Watch Later Functionality ---
@@ -592,7 +537,6 @@ function addToWatchLater(type, index) {
 }
 
 function removeFromWatchLater(type, originalIndex) {
-  showLoader(); // Show loader on remove action
   let watchLaterList = getWatchLaterList();
   const initialLength = watchLaterList.length;
   const itemIdToRemove = `${type}-${originalIndex}`;
@@ -605,13 +549,10 @@ function removeFromWatchLater(type, originalIndex) {
     alert('Item removed from Watch Later!');
     showWatchLater();
   }
-  hideLoader(); // Hide loader after remove action
 }
 
 function showWatchLater() {
   console.log('showWatchLater called');
-  showLoader(); // Show loader for watch later section
-
   document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
   document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
   // Ensure the navigation bar is visible when in watch later section
@@ -650,13 +591,11 @@ function showWatchLater() {
   }
   saveState('watchLater');
   window.scrollTo(0, 0);
-  hideLoader(); // Hide loader after watch later list is rendered
 }
 
 // --- Initialize on DOM Content Loaded ---
 document.addEventListener('DOMContentLoaded', function() {
   console.log('DOM Content Loaded. Initializing...');
-  showLoader(); // Show a loader on initial DOM content load
 
   const urlParams = new URLSearchParams(window.location.search);
   const paramType = urlParams.get('type');
@@ -762,12 +701,4 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   window.addEventListener('beforeunload', saveScrollPosition);
-
-  // --- New Code: Hide the initial loader after everything is done
-  hideLoader();
-});
-
-// --- New Code: Hide the splash screen after the page has fully loaded
-window.addEventListener('load', () => {
-  hideSplashScreen();
 });
