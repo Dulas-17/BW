@@ -1,3 +1,26 @@
+.genre-buttons {
+  display: flex;        /* Arranges the buttons in a row */
+  flex-wrap: nowrap;    /* Prevents buttons from wrapping to the next line */
+  overflow-x: auto;     /* Adds a horizontal scrollbar if content overflows */
+  overflow-y: hidden;   /* Hides any potential vertical scrollbar */
+  -webkit-overflow-scrolling: touch; /* Improves scrolling on iOS devices */
+  gap: 10px;            /* Adds space between the buttons */
+  padding: 10px 0;      /* Adds some vertical padding */
+}
+
+/* For better visual style of the scrollbar (optional) */
+.genre-buttons::-webkit-scrollbar {
+  height: 5px;
+}
+
+.genre-buttons::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+}
+
+.genre-buttons::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
 
 
 
