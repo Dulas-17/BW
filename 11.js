@@ -7,7 +7,7 @@ const seriesData = [
 {
     title: "Attack On Titan(1)",
     image: "Images/aot.jpeg",
-    description: " ",
+    description: "Attack on Titan: Season 1 follows Eren Yeager, his adopted sister Mikasa, and their friend Armin as humanity fights for survival against giant humanoid creatures known as Titans. After their hometown is destroyed, Eren vows to eradicate every Titan. Joining the military, they uncover dark secrets about the Titans, face brutal battles, and confront the limits of human courage and resilience. ",
     genres: ["Adventure","Shonen","Mystery","Action", "Thriller", "Anime"],
     episodes: [
       { title: "Episode 1" ,link:" https://drive.google.com/file/d/1dVytq0QiSTu8Kb7FvKubT8FzwZ6wrsbd/preview" },
@@ -24,7 +24,7 @@ const seriesData = [
  {
     title: "Wrong way of using healing magic",
     image: "Images/magic.jpeg",
-    description: " ",
+    description: "Wrong Way to Use Healing Magic follows Kevin, a skilled healer who discovers that his magic works far differently than expected—healing others often comes with unpredictable and comedic consequences. As he navigates adventures, battles, and misunderstandings, Kevin learns to control his powers while facing both enemies and hilarious mishaps along the way. ",
     genres: ["Adventure","Isekai","Comedy",  "Anime", "Fantasy"],
     episodes: [
       { title: "Episode 1", link: "https://drive.google.com/file/d/1bGS7uEp-48wpOBOqD0SmOWHGmdJ4sRBO/preview " },
@@ -41,7 +41,7 @@ const seriesData = [
   {
     title: "Highschool of the Dead",
     image: "Images/hd.jpeg",
-    description: " . ",
+    description: "Highschool of the Dead follows a group of high school students and their school nurse as they struggle to survive a sudden zombie apocalypse in Japan. Facing not only hordes of the undead but also human greed and fear, they must navigate danger, form alliances, and fight for survival while seeking safety and hope in a collapsing world. ",
     genres: ["Anime", "Action","Horror","Ecchi" ,"Adventure"],
     episodes: [
                       { title: "Episode 1", link: "https://drive.google.com/file/d/1du5EZvUQ7UDoG_GKNb6DO1P8VpQZ7N7l/preview  " },
@@ -104,7 +104,7 @@ const seriesData = [
   {
     title: "Konosuba (s1)",
     image: "Images/Cover4.jpg",
-    description: "An intergalactic adventure across unknown planets.",
+    description: "Konosuba: Season 1 follows Kazuma Satou, a shut-in gamer who dies in a freak accident and is reincarnated in a fantasy world. Tasked with defeating the Demon King, he forms a dysfunctional party with the goddess Aqua, the mage Megumin, and the crusader Darkness. Together, their misadventures and comical failures highlight the humorous side of fantasy quests.",
     genres: ["Comedy", "Fantasy", "Isekai", "Anime","Gooning","Adventure"],
     episodes: [
       { title: "Episode 1", link: "https://drive.google.com/file/d/110UyhRjYnSOomo3-9Wh30BZonjVHr7Nu/preview" },
@@ -133,7 +133,7 @@ const seriesData = [
   {
     title: "Wind Breaker (s1)",
     image: "Images/wb.jpeg",
-    description: "Haruka Sakura wants nothing to do with weaklings; he's only interested in the strongest of the strong. ",
+    description: "Wind Breaker follows Haruka Sakura, a loner with a fiery temper and a love for fighting, as he transfers to Furin High School—a school notorious for its delinquent students. Contrary to his expectations, he discovers that the school's toughest students, known as Bofurin, are the town's protectors. As Haruka becomes entangled with Bofurin, he learns about their complex dynamics and faces challenges that test his strength and resolve.",
     genres: ["Anime", "Action","Shonen" ],
     episodes: [
                       { title: "Episode 1", link: "https://drive.google.com/file/d/1az4hVHLA1vH_xrROD8VjiUPGEQESDm8Q/preview " },
