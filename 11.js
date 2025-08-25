@@ -1,6 +1,27 @@
 // series.js
 const seriesData = [
 
+ {
+    title: "Arcane (s1)",
+    image: "Images/A.jpg",
+    description: "
+Set in the divided cities of Piltover and Zaun, Arcane follows two sisters, Vi and Jinx, whose bond is tested as they find themselves on opposite sides of a growing conflict. As Piltover thrives on technological progress and Zaun struggles with poverty and rebellion, tensions ignite into war. Amid betrayal, ambition, and the rise of powerful inventions, personal rivalries turn into battles that shape the fate of both cities.",
+    genres: ["Action", "Adventure", "Drama","Sci-Fi"],
+    episodes: [
+      { title: "Episode 1", link: " " },
+      { title: "Episode 2", link: " " },
+      { title: "Episode 3", link: " " },
+      { title: "Episode 4", link: " " },
+      { title: "Episode 5", link: " " },
+      { title: "Episode 6", link: " " },
+      { title: "Episode 7", link: " " },
+      { title: "Episode 8", link: " " },
+      { title: "Episode 9", link: " " },
+      
+    ]
+  },
+
+
 {
     title: "Attack On Titan(1)",
     image: "Images/aot.jpeg",
