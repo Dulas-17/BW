@@ -4,7 +4,7 @@ const movieData = [
 {
     title: "Weathering with you",
     image: "Images/wwy.jpeg",
-    description: " ",
+    description: "Weathering With You follows Hodaka, a runaway teen in Tokyo, who meets Hina, a girl with the mysterious ability to control the weather. As they grow close, Hina’s gift becomes both a blessing and a curse, forcing them to make difficult choices about love, sacrifice, and the balance between human desires and nature’s power. ",
     genres: ["Adventure", "Romance","Fantasy","Slice of Life"],
     link: " "
   },
@@ -13,7 +13,7 @@ const movieData = [
 {
     title: "Free Guy",
     image: "Images/fg.webp",
-    description: " ",
+    description: "Free Guy follows Guy, a cheerful bank teller who discovers he is actually a background character in an open-world video game. As he becomes self-aware, Guy takes control of his destiny, teaming up with a real-world player to save the game from being shut down. Along the way, he learns what it means to be a true hero in both the digital and real worlds. ",
     genres: ["Animation","Adventure", "Comedy","Action","Fantasy"],
     link: "https://drive.google.com/file/d/1cRVyAhKAWqFxwnUW21mJrjIWkqWeh0hk/preview"
   },
@@ -31,7 +31,7 @@ const movieData = [
   {
     title: "Your Name",
     image: "Images/Cover3.jpeg",
-    description: "A beautiful romantic fantasy that transcends time and space.",
+    description: "Your Name tells the story of two teenagers, Mitsuha and Taki, who mysteriously begin swapping bodies despite living in different places. As they navigate each other’s lives, they form a deep connection that transcends time and distance. When a looming disaster threatens Mitsuha’s town, the two race against fate to save each other and uncover the truth behind their strange bond.",
     genres: ["Animation", "Slice of Life","Romance", "Fantasy", "Drama"],
     link: "https://drive.google.com/file/d/1apFvCPgIKV4t3y27dlzwCUqqMRI8UjJz/preview"
   },
@@ -39,7 +39,7 @@ const movieData = [
   {
     title: "The Life List",
     image: "Images/Cover1.jpeg",
-    description: "After her mother's passing Alex is forced to complete a list she compiled when she was 13 only so she could have some of her mother's inheritance, but on her Journey she finds secrets about herself.",
+    description: "The Life List follows Alex Rose, who, after her mother’s death, must complete a set of childhood aspirations she wrote at age 13 to inherit her estate. Guided by her mother’s sentimental video messages and aided by the estate’s executor, Brad, Alex embarks on a transformative year of stand-up comedy, family reunions, romantic missteps, and rediscovery—ultimately learning what truly matters and finding unexpected love. ",
     genres: ["Drama", "Family", "Adventure"],
     link: "https://drive.google.com/file/d/12tRqoJ9sXycE7RODnlxu11HVR7wcZbtL/preview"
   },
@@ -47,7 +47,7 @@ const movieData = [
   {
     title: "Power Rangers",
     image: "Images/Cover2.jpeg",
-    description: "Five ordinary teens must become something extraordinary when they learn that their small town of Angel Grove – and the world – is about to be annihilated by an alien threat. Chosen by destiny, our heroes quickly discover they are the only ones who can save the planet. But to do so, they will have to overcome their real-world issues and band together as the Power Rangers before it’s too late.",
+    description: "Power Rangers (2017) follows five ordinary teenagers who discover ancient Power Coins that grant them extraordinary abilities. Guided by the mentor Zordon, they must learn to work together and embrace their roles as the Power Rangers to stop the villainous Rita Repulsa from destroying the world. ",
     genres: ["Action", "Sci-Fi", "Adventure"],
     link: "https://drive.google.com/file/d/17looZTle9cX9De1f6gN5QUcBhopDoKvx/preview"
   },
