@@ -1,7 +1,17 @@
 // series.js
 const seriesData = [
 
+{
+    title: "Arcane",
+    image: "Images/A.jpg",
+    description: ".",
+    genres: ["Drama", "Action","Sci-Fi","Steampunk","Adventure"],
+    episodes: [
+                      { title: "Episode 1", link:"https://drive.google.com/file/d/1kjRAix1nSwnqaaLhTUo-Kq1dus6CwNbI/preview " },
+                      { title: "Episode 2", link: "https://drive.google.com/file/d/1kdjJlwn-0tDoNOsXjd2NIFqRR0dTE8nP/preview " },   
 
+    ]
+  },
 
 
 
@@ -157,17 +167,7 @@ const seriesData = [
 
 
 
-  {
-    title: "Arcane",
-    image: "Images/A.jpeg",
-    description: ".",
-    genres: ["Drama", "Action","Sci-Fi","Steampunk","Adventure"],
-    episodes: [
-                      { title: "Episode 1", link:"https://drive.google.com/file/d/1kjRAix1nSwnqaaLhTUo-Kq1dus6CwNbI/preview " },
-                      { title: "Episode 2", link: "https://drive.google.com/file/d/1kdjJlwn-0tDoNOsXjd2NIFqRR0dTE8nP/preview " },   
-
-    ]
-  },
+  
 
 
 
