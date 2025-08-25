@@ -84,8 +84,7 @@ nav {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   flex-wrap: wrap;
   width: 100vw;
-z-index:1000;
-position:fixed;
+
 }
 
 nav button {
@@ -112,7 +111,7 @@ nav button:hover {
   max-width: 1100px;
   margin: auto;
   background: var(--surface-light);
-  border-radius: 12px;
+  border-radius: 0;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
 }
 
