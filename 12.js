@@ -1,12 +1,20 @@
 // movies.js
 const movieData = [
 
+{
+    title: "Weathering with you",
+    image: "Images/wwy.jpeg",
+    description: " ",
+    genres: ["Adventure", "Romance","Fantasy","Slice of Life"],
+    link: " "
+  },
+
 
 {
     title: "Free Guy",
     image: "Images/fg.webp",
     description: " ",
-    genres: ["Adventure", "Comedy","Action","Fantasy"],
+    genres: ["Animation","Adventure", "Comedy","Action","Fantasy"],
     link: "https://drive.google.com/file/d/1cRVyAhKAWqFxwnUW21mJrjIWkqWeh0hk/preview"
   },
 
@@ -24,7 +32,7 @@ const movieData = [
     title: "Your Name",
     image: "Images/Cover3.jpeg",
     description: "A beautiful romantic fantasy that transcends time and space.",
-    genres: ["Animation", "Romance", "Fantasy", "Drama"],
+    genres: ["Animation", "Slice of Life","Romance", "Fantasy", "Drama"],
     link: "https://drive.google.com/file/d/1apFvCPgIKV4t3y27dlzwCUqqMRI8UjJz/preview"
   },
 
