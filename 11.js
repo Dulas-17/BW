@@ -160,8 +160,7 @@ const seriesData = [
   {
     title: "Arcane",
     image: "Images/A.jpeg",
-    description: "
-Set in the divided cities of Piltover and Zaun, Arcane follows two sisters, Vi and Jinx, whose bond is tested as they find themselves on opposite sides of a growing conflict. As Piltover thrives on technological progress and Zaun struggles with poverty and rebellion, tensions ignite into war. Amid betrayal, ambition, and the rise of powerful inventions, personal rivalries turn into battles that shape the fate of both cities. ",
+    description: ".",
     genres: ["Drama", "Action","Sci-Fi","Steampunk","Adventure"],
     episodes: [
                       { title: "Episode 1", link:"https://drive.google.com/file/d/1kjRAix1nSwnqaaLhTUo-Kq1dus6CwNbI/preview " },
