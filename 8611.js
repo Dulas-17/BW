@@ -8,36 +8,62 @@ const content = {
 let searchDebounceTimeout;
 let suggestionDebounceTimeout;
 
-function playEpisode(link, episodeTitle = null) {
-  const player = document.getElementById('videoFullScreen');
-  const iframe = player.querySelector('iframe');
-
-  // Video tracking removed: video always starts from the beginning.
-  iframe.src = link;
-  player.style.display = 'flex';
-}
-
-function closeFullScreen() {
-  const player = document.getElementById('videoFullScreen');
-  const iframe = player.querySelector('iframe');
-
-  iframe.src = '';
-  player.style.display = 'none';
-  restoreScrollPosition();
-}
-
-// --- Local Storage Utilities ---
-function saveScrollPosition() {
-  localStorage.setItem('scrollPosition', window.scrollY);
-}
-
-function restoreScrollPosition() {
-  const storedScrollY = localStorage.getItem('scrollPosition');
-  if (storedScrollY) {
-    window.scrollTo(0, parseInt(storedScrollY, 10));
+/* -------------------------
+   Scroll storage utilities
+   -------------------------
+   We use separate keys per section so movies/series/watchLater
+   each keep their own scroll positions.
+*/
+function getScrollKeyForSection(sectionId) {
+  switch (sectionId) {
+    case 'movies':
+      return 'scrollPosition_movies';
+    case 'series':
+      return 'scrollPosition_series';
+    case 'watchLater':
+      return 'scrollPosition_watchLater';
+    default:
+      return 'scrollPosition'; // fallback for older data
   }
 }
 
+/**
+ * Save scroll position for a given section.
+ * If sectionId omitted, use lastActiveSection from localStorage.
+ */
+function saveScrollPosition(sectionId = null) {
+  const section = sectionId || localStorage.getItem('lastActiveSection') || 'home';
+  const key = getScrollKeyForSection(section);
+  try {
+    localStorage.setItem(key, String(window.scrollY));
+    console.log(`Saved scroll for section "${section}" -> key "${key}" = ${window.scrollY}`);
+  } catch (e) {
+    console.warn('Could not save scroll position:', e);
+  }
+}
+
+/**
+ * Restore scroll position for a given section.
+ * If sectionId omitted, use lastActiveSection.
+ */
+function restoreScrollPosition(sectionId = null) {
+  const section = sectionId || localStorage.getItem('lastActiveSection') || 'home';
+  const key = getScrollKeyForSection(section);
+  const storedScrollY = localStorage.getItem(key);
+  if (storedScrollY !== null && storedScrollY !== undefined) {
+    const y = parseInt(storedScrollY, 10);
+    if (!isNaN(y)) {
+      window.scrollTo(0, y);
+      console.log(`Restored scroll for section "${section}" from key "${key}" -> ${y}`);
+      return;
+    }
+  }
+  console.log(`No stored scroll for section "${section}" (key "${key}").`);
+}
+
+/* -------------------------
+   Common behavior helpers
+   ------------------------- */
 function saveState(sectionId, detailType = null, detailIndex = null, originSection = null) {
   console.log(`saveState called: sectionId=${sectionId}, detailType=${detailType}, detailIndex=${detailIndex}, originSection=${originSection}`);
   localStorage.setItem('lastActiveSection', sectionId);
@@ -57,21 +83,35 @@ function saveState(sectionId, detailType = null, detailIndex = null, originSecti
   } else {
     localStorage.removeItem('originSection');
   }
-  saveScrollPosition();
+
+  // Save scroll for this section specifically
+  saveScrollPosition(sectionId);
 }
 
-// --- Section Management ---
+/* -------------------------
+   Section Management
+   ------------------------- */
 function showSection(id, restoreScroll = false) {
   console.log(`showSection called for: ${id}`);
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  const target = document.getElementById(id);
+  if (!target) {
+    console.warn(`showSection: element with id "${id}" not found.`);
+    return;
+  }
+  target.classList.add('active');
 
   saveState(id);
 
-  document.getElementById('seriesDetails').style.display = 'none';
-  document.getElementById('movieDetails').style.display = 'none';
+  // Hide details
+  const seriesDetailsEl = document.getElementById('seriesDetails');
+  const movieDetailsEl = document.getElementById('movieDetails');
+  if (seriesDetailsEl) seriesDetailsEl.style.display = 'none';
+  if (movieDetailsEl) movieDetailsEl.style.display = 'none';
+
   // Ensure the navigation bar is visible when showing a main section
-  document.querySelector('nav').style.display = 'flex';
+  const nav = document.querySelector('nav');
+  if (nav) nav.style.display = 'flex';
 
   document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
   document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
@@ -104,16 +144,20 @@ function showSection(id, restoreScroll = false) {
     }
   } else if (id === 'watchLater') {
     showWatchLater(restoreScroll);
+    return; // showWatchLater handles scroll behavior itself
   }
 
   if (restoreScroll) {
-    restoreScrollPosition();
+    restoreScrollPosition(id);
   } else {
+    // default to top for fresh section show
     window.scrollTo(0, 0);
   }
 }
 
-// --- Search Functionality ---
+/* -------------------------
+   Search / Suggestions
+   ------------------------- */
 function performSearch(type) {
   const inputElement = document.getElementById(type === 'series' ? 'seriesSearch' : 'movieSearch');
   const query = inputElement.value.toLowerCase().trim();
@@ -151,7 +195,8 @@ function performSearch(type) {
       showMovieList(filtered, query);
     }
   }
-  saveScrollPosition();
+  // Save current scroll position for the active section after search
+  saveScrollPosition(type);
 }
 
 function searchContent(type) {
@@ -174,7 +219,9 @@ function handleSearchInputForSuggestions(type) {
   }
 }
 
-// --- Search Suggestions ---
+/* -------------------------
+   Suggestion UI
+   ------------------------- */
 function showSuggestions(type, query) {
   const suggestionsContainer = document.getElementById(type === 'series' ? 'seriesSuggestions' : 'movieSuggestions');
   suggestionsContainer.innerHTML = '';
@@ -213,10 +260,12 @@ function selectSuggestion(type, title) {
 
 function hideSuggestions(type) {
   const suggestionsContainer = document.getElementById(type === 'series' ? 'seriesSuggestions' : 'movieSuggestions');
-  suggestionsContainer.classList.remove('active');
+  if (suggestionsContainer) suggestionsContainer.classList.remove('active');
 }
 
-// --- Genre Filtering ---
+/* -------------------------
+   Genre Filtering
+   ------------------------- */
 function getUniqueGenres(type) {
   const allGenres = content[type].flatMap(item => item.genres || []);
   return ['All', ...new Set(allGenres)].sort();
@@ -277,13 +326,19 @@ function filterContentByGenre(type, genre) {
 
   localStorage.setItem(`activeGenre_${type}`, genre);
   console.log(`activeGenre_${type} saved as: ${genre}`);
+
+  // When switching genre we likely want to start at the top of that section.
   window.scrollTo(0, 0);
+  saveScrollPosition(type);
 }
 
-// --- Display List Functions ---
+/* -------------------------
+   Display lists
+   ------------------------- */
 function showSeriesList(list = null, query = '') {
   const currentList = list || content.series;
   const container = document.getElementById('seriesList');
+  if (!container) return;
   container.innerHTML = '';
 
   const activeGenre = localStorage.getItem('activeGenre_series');
@@ -317,11 +372,15 @@ function showSeriesList(list = null, query = '') {
         `;
     container.appendChild(div);
   });
+
+  // Save scroll state for series list render
+  saveScrollPosition('series');
 }
 
 function showMovieList(list = null, query = '') {
   const currentList = list || content.movies;
   const container = document.getElementById('movieList');
+  if (!container) return;
   container.innerHTML = '';
 
   const activeGenre = localStorage.getItem('activeGenre_movies');
@@ -355,9 +414,14 @@ function showMovieList(list = null, query = '') {
         `;
     container.appendChild(div);
   });
+
+  // Save scroll state for movie list render
+  saveScrollPosition('movies');
 }
 
-// --- Share Functionality ---
+/* -------------------------
+   Share / Clipboard helpers
+   ------------------------- */
 function generateShareLink(type, index) {
   const baseUrl = window.location.origin + window.location.pathname;
   return `${baseUrl}?type=${type}&id=${index}`;
@@ -410,8 +474,9 @@ function copyLinkToClipboard(type, index) {
     });
 }
 
-
-// --- Detail View Functions ---
+/* -------------------------
+   Detail View Functions
+   ------------------------- */
 function showSeriesDetails(i, originSection = null) {
   console.log(`showSeriesDetails called for index: ${i}, origin: ${originSection}`);
   const s = content.series[i];
@@ -422,15 +487,18 @@ function showSeriesDetails(i, originSection = null) {
     return;
   }
   const container = document.getElementById('seriesDetails');
+  if (!container) return;
 
+  // Set active section to series
   document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
   document.getElementById('series').classList.add('active');
 
+  // Clear the list to save memory (your original behavior)
   document.getElementById('seriesList').innerHTML = '';
   document.getElementById('seriesDetails').style.display = 'block';
 
   // Hide navigation bar, search, and genre buttons
-  document.querySelector('nav').style.display = 'none';
+  const nav = document.querySelector('nav'); if (nav) nav.style.display = 'none';
   document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
   document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 
@@ -444,13 +512,16 @@ function showSeriesDetails(i, originSection = null) {
   }).join('')}
         </div>
         <div class="detail-bottom-actions">
-<button onclick="shareContent('series', ${i})" class="btn share-btn">Share</button>
- <button onclick="goBackToList('series')" class="back">Back</button>
-             <button onclick="copyLinkToClipboard('series', ${i})" class="btn copy-link-btn">Copy Link</button> </div>
+          <button onclick="shareContent('series', ${i})" class="btn share-btn">Share</button>
+          <button onclick="goBackToList('series')" class="back">Back</button>
+          <button onclick="copyLinkToClipboard('series', ${i})" class="btn copy-link-btn">Copy Link</button>
+        </div>
       `;
 
+  // Save state (this saves scroll for 'series' via saveScrollPosition(sectionId))
   saveState('series', 'series', i, originSection);
-  window.scrollTo(0, 0);
+
+  // NOTE: removed window.scrollTo(0, 0) so opening details does not force scroll to top
 }
 
 function showMovieDetails(i, originSection = null) {
@@ -463,7 +534,9 @@ function showMovieDetails(i, originSection = null) {
     return;
   }
   const container = document.getElementById('movieDetails');
+  if (!container) return;
 
+  // Set active section to movies
   document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
   document.getElementById('movies').classList.add('active');
 
@@ -471,7 +544,7 @@ function showMovieDetails(i, originSection = null) {
   document.getElementById('movieDetails').style.display = 'block';
 
   // Hide navigation bar, search, and genre buttons
-  document.querySelector('nav').style.display = 'none';
+  const nav = document.querySelector('nav'); if (nav) nav.style.display = 'none';
   document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
   document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 
@@ -483,37 +556,65 @@ function showMovieDetails(i, originSection = null) {
           <button onclick="playEpisode('${m.link}', '${m.title.replace(/'/g, "\\'")}')">Watch Now</button>
         </div>
         <div class="detail-bottom-actions"> 
-<button onclick="shareContent('movie', ${i})" class="btn share-btn">Share</button>
- <button onclick="goBackToList('movies')" class="back">Back</button>
-             <button onclick="copyLinkToClipboard('movie', ${i})" class="btn copy-link-btn">Copy Link</button> </div>
+          <button onclick="shareContent('movie', ${i})" class="btn share-btn">Share</button>
+          <button onclick="goBackToList('movies')" class="back">Back</button>
+          <button onclick="copyLinkToClipboard('movie', ${i})" class="btn copy-link-btn">Copy Link</button>
+        </div>
       `;
+  // Save state (and scroll for movies)
   saveState('movies', 'movie', i, originSection);
-  window.scrollTo(0, 0);
+
+  // NOTE: removed window.scrollTo(0, 0) so opening details does not force scroll to top
 }
 
-function formatTime(seconds) {
-  if (!seconds) return "0:00";
-  const minutes = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+/* -------------------------
+   Video player helpers
+   ------------------------- */
+function playEpisode(link, episodeTitle = null) {
+  const player = document.getElementById('videoFullScreen');
+  if (!player) return;
+  const iframe = player.querySelector('iframe');
+
+  // Video tracking removed: video always starts from the beginning.
+  iframe.src = link;
+  player.style.display = 'flex';
 }
 
+function closeFullScreen() {
+  const player = document.getElementById('videoFullScreen');
+  if (!player) return;
+  const iframe = player.querySelector('iframe');
+
+  iframe.src = '';
+  player.style.display = 'none';
+
+  // Restore scroll for the last active section
+  restoreScrollPosition();
+}
+
+/* -------------------------
+   goBack and Watch Later
+   ------------------------- */
 function goBackToList(type) {
   console.log(`goBackToList called for: ${type}`);
 
   const originSection = localStorage.getItem('originSection');
 
   if (type === 'series') {
-    document.getElementById('seriesDetails').style.display = 'none';
+    const sd = document.getElementById('seriesDetails'); if (sd) sd.style.display = 'none';
   } else {
-    document.getElementById('movieDetails').style.display = 'none';
+    const md = document.getElementById('movieDetails'); if (md) md.style.display = 'none';
   }
 
   let targetSectionId = originSection === 'watchLater' ? 'watchLater' : type;
+
+  // Force restoreScroll = true so it returns exactly where you were
   showSection(targetSectionId, true);
 }
 
-// --- Watch Later Functionality ---
+/* -------------------------
+   Watch Later
+   ------------------------- */
 function getWatchLaterList() {
   const watchLaterJson = localStorage.getItem('watchLater');
   return watchLaterJson ? JSON.parse(watchLaterJson) : [];
@@ -561,14 +662,15 @@ function showWatchLater(restoreScroll = false) {
   document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
   document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
   // Ensure the navigation bar is visible when in watch later section
-  document.querySelector('nav').style.display = 'flex';
-  document.getElementById('seriesDetails').style.display = 'none';
-  document.getElementById('movieDetails').style.display = 'none';
+  const nav = document.querySelector('nav'); if (nav) nav.style.display = 'flex';
+  const sd = document.getElementById('seriesDetails'); if (sd) sd.style.display = 'none';
+  const md = document.getElementById('movieDetails'); if (md) md.style.display = 'none';
 
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById('watchLater').classList.add('active');
 
   const container = document.getElementById('watchLaterList');
+  if (!container) return;
   container.innerHTML = '';
 
   const watchLaterItems = getWatchLaterList();
@@ -594,16 +696,20 @@ function showWatchLater(restoreScroll = false) {
       container.appendChild(div);
     });
   }
+
+  // Save the watchLater as the active section
   saveState('watchLater');
 
   if (restoreScroll) {
-    restoreScrollPosition();
+    restoreScrollPosition('watchLater');
   } else {
     window.scrollTo(0, 0);
   }
 }
 
-// --- Initialize on DOM Content Loaded ---
+/* -------------------------
+   Initialization
+   ------------------------- */
 document.addEventListener('DOMContentLoaded', function() {
   console.log('DOM Content Loaded. Initializing...');
 
@@ -615,7 +721,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const id = parseInt(paramId, 10);
     if (!isNaN(id)) {
       console.log(`Direct link detected: type=${paramType}, id=${id}`);
-      // Clear any previous state to ensure clean load
+      // Clear any previous detail state to ensure clean load for direct links
       localStorage.removeItem('lastActiveSection');
       localStorage.removeItem('lastDetailType');
       localStorage.removeItem('lastDetailIndex');
@@ -644,16 +750,18 @@ document.addEventListener('DOMContentLoaded', function() {
       if (lastDetailType && lastDetailIndex !== null) {
         console.log(`Restoring detail view: ${lastDetailType} at index ${lastDetailIndex}`);
         // Ensure nav, search, and genre buttons are hidden if restoring to detail view
-        document.querySelector('nav').style.display = 'none';
+        const nav = document.querySelector('nav'); if (nav) nav.style.display = 'none';
         document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
         document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 
+        // restore the detail view (these functions will call saveState internally)
         if (lastDetailType === 'series') {
           showSeriesDetails(parseInt(lastDetailIndex, 10), originSection);
         } else if (lastDetailType === 'movie') {
           showMovieDetails(parseInt(lastDetailIndex, 10), originSection);
         }
       } else {
+        // restore to the last active section and restore its scroll
         showSection(lastActiveSection, true);
       }
     } else {
@@ -701,13 +809,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // Save scroll position on scroll events (debounced)
   let scrollTimer;
   window.addEventListener('scroll', function() {
     clearTimeout(scrollTimer);
     scrollTimer = setTimeout(() => {
-      saveScrollPosition();
+      // Save for the current active section
+      const active = localStorage.getItem('lastActiveSection') || 'home';
+      saveScrollPosition(active);
     }, 200);
   });
 
-  window.addEventListener('beforeunload', saveScrollPosition);
+  // Persist scroll on unload
+  window.addEventListener('beforeunload', () => {
+    const active = localStorage.getItem('lastActiveSection') || 'home';
+    saveScrollPosition(active);
+  });
 });
