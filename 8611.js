@@ -240,7 +240,7 @@ function showSuggestions(type, query) {
     matchingSuggestions.forEach(item => {
       const suggestionItem = document.createElement('div');
       suggestionItem.className = 'suggestion-item';
-      const highlightedText = item.title.replace(new RegExp(query, 'gi'), match => `<span style="background-color: #5a9bd8; color: #121212; border-radius: 3px; padding: 0 2px;">${match}</span>`);
+      const highlightedText = item.title.replace(new RegExp(query, 'gi'), match => `<span style="background-color: #5a9bd5; color: #121212; border-radius: 3px; padding: 0 2px;">${match}</span>`);
       suggestionItem.innerHTML = highlightedText;
       suggestionItem.onclick = () => selectSuggestion(type, item.title);
       suggestionsContainer.appendChild(suggestionItem);
@@ -362,7 +362,7 @@ function showSeriesList(list = null, query = '') {
     const originalIndex = content.series.indexOf(s);
     if (originalIndex === -1) return;
 
-    const highlightedTitle = query ? s.title.replace(new RegExp(query, 'gi'), match => `<span style="background-color: #5a9bd8; color: #121212; border-radius: 3px; padding: 0 2px;">${match}</span>`) : s.title;
+    const highlightedTitle = query ? s.title.replace(new RegExp(query, 'gi'), match => `<span style="background-color: #5a9bd5; color: #121212; border-radius: 3px; padding: 0 2px;">${match}</span>`) : s.title;
 
     div.innerHTML = `
           <img src="${s.image}" alt="${s.title}" />
@@ -404,7 +404,7 @@ function showMovieList(list = null, query = '') {
     const originalIndex = content.movies.indexOf(m);
     if (originalIndex === -1) return;
 
-    const highlightedTitle = query ? m.title.replace(new RegExp(query, 'gi'), match => `<span style="background-color: #5a9bd8; color: #121212; border-radius: 3px; padding: 0 2px;">${match}</span>`) : m.title;
+    const highlightedTitle = query ? m.title.replace(new RegExp(query, 'gi'), match => `<span style="background-color: #5a9bd5; color: #121212; border-radius: 3px; padding: 0 2px;">${match}</span>`) : m.title;
 
     div.innerHTML = `
           <img src="${m.image}" alt="${m.title}" />
@@ -486,15 +486,19 @@ function showSeriesDetails(i, originSection = null) {
     showSection(originSection === 'watchLater' ? 'watchLater' : 'series');
     return;
   }
+  
+  // Save scroll position BEFORE navigating away
+  saveScrollPosition('series');
+  
   const container = document.getElementById('seriesDetails');
   if (!container) return;
 
-  // Set active section to series
+  // Set active section to series but don't clear the list
   document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
   document.getElementById('series').classList.add('active');
 
-  // Clear the list to save memory (your original behavior)
-  document.getElementById('seriesList').innerHTML = '';
+  // DON'T clear the series list - just hide it visually if needed
+  document.getElementById('seriesList').style.display = 'none';
   document.getElementById('seriesDetails').style.display = 'block';
 
   // Hide navigation bar, search, and genre buttons
@@ -533,14 +537,19 @@ function showMovieDetails(i, originSection = null) {
     showSection(originSection === 'watchLater' ? 'watchLater' : 'movies');
     return;
   }
+  
+  // Save scroll position BEFORE navigating away
+  saveScrollPosition('movies');
+  
   const container = document.getElementById('movieDetails');
   if (!container) return;
 
-  // Set active section to movies
+  // Set active section to movies but don't clear the list
   document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
   document.getElementById('movies').classList.add('active');
 
-  document.getElementById('movieList').innerHTML = '';
+  // DON'T clear the movie list - just hide it visually if needed
+  document.getElementById('movieList').style.display = 'none';
   document.getElementById('movieDetails').style.display = 'block';
 
   // Hide navigation bar, search, and genre buttons
@@ -602,14 +611,44 @@ function goBackToList(type) {
 
   if (type === 'series') {
     const sd = document.getElementById('seriesDetails'); if (sd) sd.style.display = 'none';
+    // Show the series list again
+    document.getElementById('seriesList').style.display = 'grid';
   } else {
     const md = document.getElementById('movieDetails'); if (md) md.style.display = 'none';
+    // Show the movie list again
+    document.getElementById('movieList').style.display = 'grid';
   }
 
   let targetSectionId = originSection === 'watchLater' ? 'watchLater' : type;
 
-  // Force restoreScroll = true so it returns exactly where you were
-  showSection(targetSectionId, true);
+  // Show the target section but DON'T restore scroll immediately
+  showSection(targetSectionId, false);
+  
+  // Re-render the content for the target section
+  if (targetSectionId === 'series') {
+    const lastQuerySeries = localStorage.getItem('lastSearchQuery_series') || '';
+    if (lastQuerySeries.trim() !== '') {
+      performSearch('series');
+    } else {
+      const activeGenreSeries = localStorage.getItem('activeGenre_series') || 'All';
+      renderGenreButtons('series');
+      filterContentByGenre('series', activeGenreSeries);
+    }
+  } else if (targetSectionId === 'movies') {
+    const lastQueryMovies = localStorage.getItem('lastSearchQuery_movies') || '';
+    if (lastQueryMovies.trim() !== '') {
+      performSearch('movies');
+    } else {
+      const activeGenreMovies = localStorage.getItem('activeGenre_movies') || 'All';
+      renderGenreButtons('movies');
+      filterContentByGenre('movies', activeGenreMovies);
+    }
+  }
+  
+  // Use a small delay to ensure content is rendered before restoring scroll
+  setTimeout(() => {
+    restoreScrollPosition(targetSectionId);
+  }, 100);
 }
 
 /* -------------------------
