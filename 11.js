@@ -14,6 +14,17 @@ const seriesData = [
   },
 
 
+{
+    title:"Solo leveling (s2)",
+    image:"Images/sl.jpeg",
+    description:"Solo Leveling: Season 2 – Arise from the Shadow continues Sung Jin-woo’s ascent as the Shadow Monarch. With his new powers hidden from the world, he faces even deadlier foes—including escaped S-Rank demons—and races to prevent a looming catastrophe brought by a mysterious hunter’s warning. ",
+    genres: ["Fantasy", "Action","Anime","Adventure","Shonen" ],
+    episodes: [
+                      { title: "Episode 1",link:"https://drive.google.com/file/d/1lFQb-JsOexeb7bxImzDu_c6ph0sxKc02/preview " },   
+                
+
+    ]
+  },
 
 
 {
@@ -37,7 +48,7 @@ const seriesData = [
     title: "Wrong way of using healing magic",
     image: "Images/magic.jpeg",
     description: "Wrong Way to Use Healing Magic follows Kevin, a skilled healer who discovers that his magic works far differently than expected—healing others often comes with unpredictable and comedic consequences. As he navigates adventures, battles, and misunderstandings, Kevin learns to control his powers while facing both enemies and hilarious mishaps along the way. ",
-    genres: ["Adventure","Isekai","Comedy",  "Anime", "Fantasy"],
+    genres: ["Adventure","Isekai","Comedy", "Anime", "Fantasy"],
     episodes: [
       { title: "Episode 1", link: "https://drive.google.com/file/d/1bGS7uEp-48wpOBOqD0SmOWHGmdJ4sRBO/preview " },
       { title: "Episode 2", link: "https://drive.google.com/file/d/1bhyk4q8kRkJZtMATBEJzUL02ELYG6MKk/preview " },
@@ -97,7 +108,7 @@ const seriesData = [
     title: "Bleach:TYBW P2",
     image: "Images/cour2.jpeg",
     description: "A battle for the soul of the universe continues.",
-    genres: ["Action", "Fantasy", "Anime"],
+    genres: ["Action", "Fantasy", "Anime","Shonen"],
     episodes: [
       { title: "Episode 1", link: "https://drive.google.com/file/d/10D0xtKf_CPz5ODJAiX2A5wfyCg57NcIg/preview" },
       { title: "Episode 2", link: "https://drive.google.com/file/d/1-K6_2qaz1ZCz7u54FSnNX-hPq3qbqmZf/preview" },
@@ -117,7 +128,7 @@ const seriesData = [
     title: "Konosuba (s1)",
     image: "Images/Cover4.jpg",
     description: "Konosuba: Season 1 follows Kazuma Satou, a shut-in gamer who dies in a freak accident and is reincarnated in a fantasy world. Tasked with defeating the Demon King, he forms a dysfunctional party with the goddess Aqua, the mage Megumin, and the crusader Darkness. Together, their misadventures and comical failures highlight the humorous side of fantasy quests.",
-    genres: ["Comedy", "Fantasy", "Isekai", "Anime","Gooning","Adventure"],
+    genres: ["Comedy", "Fantasy", "Isekai", "Anime","Adventure"],
     episodes: [
       { title: "Episode 1", link: "https://drive.google.com/file/d/110UyhRjYnSOomo3-9Wh30BZonjVHr7Nu/preview" },
       { title: "Episode 2", link: "https://drive.google.com/file/d/1128cXGsLQ_wUcjls8hcZbfy-YbeRwChc/preview" },
@@ -146,7 +157,7 @@ const seriesData = [
     title: "Wind Breaker (s1)",
     image: "Images/wb.jpeg",
     description: "Wind Breaker follows Haruka Sakura, a loner with a fiery temper and a love for fighting, as he transfers to Furin High School—a school notorious for its delinquent students. Contrary to his expectations, he discovers that the school's toughest students, known as Bofurin, are the town's protectors. As Haruka becomes entangled with Bofurin, he learns about their complex dynamics and faces challenges that test his strength and resolve.",
-    genres: ["Anime", "Action","Shonen" ],
+    genres: ["Anime","Action","Shonen","Drama","Comedy" ],
     episodes: [
                       { title: "Episode 1", link: "https://drive.google.com/file/d/1az4hVHLA1vH_xrROD8VjiUPGEQESDm8Q/preview " },
                   { title: "Episode 2", link: "https://drive.google.com/file/d/1b1RR4bk-IHYHCF-7DsinO-5HSdqpcgOv/preview " },   
