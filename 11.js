@@ -21,7 +21,12 @@ const seriesData = [
     description:"Solo Leveling: Season 2 – Arise from the Shadow continues Sung Jin-woo’s ascent as the Shadow Monarch. With his new powers hidden from the world, he faces even deadlier foes—including escaped S-Rank demons—and races to prevent a looming catastrophe brought by a mysterious hunter’s warning. ",
     genres: ["Fantasy", "Action","Anime","Adventure","Shonen" ],
     episodes: [
-                      { title: "Episode 1",link:"https://drive.google.com/file/d/1lFQb-JsOexeb7bxImzDu_c6ph0sxKc02/preview " },   
+                      { title: "Episode 1",link:"https://drive.google.com/file/d/1lFQb-JsOexeb7bxImzDu_c6ph0sxKc02/preview " }, 
+                      { title: "Episode 2", link: "https://drive.google.com/file/d/1lo9Hcl4aQccxR1vX-wES76uYEsSoSbeW/preview " },
+{ title: "Episode 3", link: " https://drive.google.com/file/d/1m8hXrXPZiK2YnHbKmgRXrnC83zCCNXyJ/preview" },
+{ title: "Episode 4", link: " https://drive.google.com/file/d/1mCsRmaqfZn268wrJ2CiFVXzUJD8lSTIO/preview" },
+{ title: "Episode 5", link: " https://drive.google.com/file/d/1mNm_N_BxCnDQjbhPZqK-enVH__ANEJim/preview" },
+{ title: "Episode 6", link: " https://drive.google.com/file/d/1mb166q9gHj-I1du82m6QYFbtPbT5lccW/preview" },  
                 
 
     ]
@@ -46,7 +51,7 @@ const seriesData = [
 
 
  {
-    title: "Wrong way of using healing magic",
+    title: "Wrong way to use healing magic",
     image: "Images/magic.jpeg",
     description: "Wrong Way to Use Healing Magic follows Kevin, a skilled healer who discovers that his magic works far differently than expected—healing others often comes with unpredictable and comedic consequences. As he navigates adventures, battles, and misunderstandings, Kevin learns to control his powers while facing both enemies and hilarious mishaps along the way. ",
     genres: ["Adventure","Isekai","Comedy", "Anime", "Fantasy"],
@@ -69,7 +74,10 @@ const seriesData = [
     genres: ["Anime", "Action","Horror","Ecchi" ,"Adventure"],
     episodes: [
                       { title: "Episode 1", link: "https://drive.google.com/file/d/1du5EZvUQ7UDoG_GKNb6DO1P8VpQZ7N7l/preview  " },
-                       { title: "Episode 2", link: "https://drive.google.com/file/d/1dv8qvFClTYJQB6oEBts0pveP7l1h5y1I/preview " },   
+                       { title: "Episode 2", link: "https://drive.google.com/file/d/1dv8qvFClTYJQB6oEBts0pveP7l1h5y1I/preview " },  
+                       { title: "Episode 3", link: "https://drive.google.com/file/d/1mcrT9drcz4m23tB5WMXbT_0uLV3Lhza8/preview " },
+{ title: "Episode 4", link: "https://drive.google.com/file/d/1mdo77A1fogb8AZs45Y4kEKBei4MMlbSo/preview " },
+{ title: "Episode 5", link: "https://drive.google.com/file/d/1mfe3GorN0aD08-IWFTtbk6icRdLB3JVK/preview " }, 
 
     ]
   },
@@ -106,7 +114,7 @@ const seriesData = [
 
 
   {
-    title: "Bleach:TYBW P2",
+    title: "Bleach:TYBW (S2)",
     image: "Images/cour2.jpeg",
     description: "A battle for the soul of the universe continues.",
     genres: ["Action", "Fantasy", "Anime","Shonen"],
