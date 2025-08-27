@@ -44,6 +44,15 @@ const movieData = [
     link: "https://drive.google.com/file/d/12tRqoJ9sXycE7RODnlxu11HVR7wcZbtL/preview"
   },
 
+{
+    title: "Konosuba",
+    image: "Images/k.jpeg",
+    description: "Kazuma and his friends set out to help the village of the Crimson demons when they're attacked by the frightening demon king's army. ",
+    genres: ["Adventure", "Comedy","Fantasy","Isekai"],
+    link: "https://drive.google.com/file/d/1lgfFpM0JpatalyaOSyyHflhzUD0JwbgI/preview "
+  },
+
+
   {
     title: "Power Rangers",
     image: "Images/Cover2.jpeg",
