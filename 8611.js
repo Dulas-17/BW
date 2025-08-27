@@ -23,16 +23,16 @@ function closeFullScreen() {
 
   iframe.src = '';
   player.style.display = 'none';
-  restoreScrollPosition();
+  restoreScrollPosition(localStorage.getItem('lastActiveSection'));
 }
 
 // --- Local Storage Utilities ---
-function saveScrollPosition() {
-  localStorage.setItem('scrollPosition', window.scrollY);
+function saveScrollPosition(sectionId) {
+  localStorage.setItem(`scrollPosition_${sectionId}`, window.scrollY);
 }
 
-function restoreScrollPosition() {
-  const storedScrollY = localStorage.getItem('scrollPosition');
+function restoreScrollPosition(sectionId) {
+  const storedScrollY = localStorage.getItem(`scrollPosition_${sectionId}`);
   if (storedScrollY) {
     window.scrollTo(0, parseInt(storedScrollY, 10));
   }
@@ -57,7 +57,7 @@ function saveState(sectionId, detailType = null, detailIndex = null, originSecti
   } else {
     localStorage.removeItem('originSection');
   }
-  saveScrollPosition();
+  saveScrollPosition(sectionId);
 }
 
 // --- Section Management ---
@@ -76,33 +76,36 @@ function showSection(id) {
   document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
   document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 
-  if (document.getElementById('seriesSearch')) {
-    document.getElementById('seriesSearch').value = '';
-    hideSuggestions('series');
-  }
-  if (document.getElementById('movieSearch')) {
-    document.getElementById('movieSearch').value = '';
-    hideSuggestions('movies');
-  }
-
   if (id === 'series') {
     document.querySelector('#series .search-container').style.display = 'block';
     document.getElementById('seriesGenreButtons').style.display = 'flex';
-    const activeGenreSeries = localStorage.getItem('activeGenre_series') || 'All';
-    console.log(`Series section active. Stored genre: ${activeGenreSeries}`);
+    const savedQuery = localStorage.getItem('searchQuery_series') || '';
+    document.getElementById('seriesSearch').value = savedQuery;
     renderGenreButtons('series');
-    filterContentByGenre('series', activeGenreSeries);
+    if (savedQuery) {
+      performSearch('series');
+    } else {
+      const activeGenreSeries = localStorage.getItem('activeGenre_series') || 'All';
+      console.log(`Series section active. Stored genre: ${activeGenreSeries}`);
+      filterContentByGenre('series', activeGenreSeries);
+    }
   } else if (id === 'movies') {
     document.querySelector('#movies .search-container').style.display = 'block';
     document.getElementById('movieGenreButtons').style.display = 'flex';
-    const activeGenreMovies = localStorage.getItem('activeGenre_movies') || 'All';
-    console.log(`Movies section active. Stored genre: ${activeGenreMovies}`);
+    const savedQuery = localStorage.getItem('searchQuery_movies') || '';
+    document.getElementById('movieSearch').value = savedQuery;
     renderGenreButtons('movies');
-    filterContentByGenre('movies', activeGenreMovies);
+    if (savedQuery) {
+      performSearch('movies');
+    } else {
+      const activeGenreMovies = localStorage.getItem('activeGenre_movies') || 'All';
+      console.log(`Movies section active. Stored genre: ${activeGenreMovies}`);
+      filterContentByGenre('movies', activeGenreMovies);
+    }
   } else if (id === 'watchLater') {
     showWatchLater();
   }
-  window.scrollTo(0, 0);
+  restoreScrollPosition(id);
 }
 
 // --- Search Functionality ---
@@ -112,6 +115,12 @@ function performSearch(type) {
   console.log(`Performing search for ${type} with query: "${query}"`);
 
   hideSuggestions(type);
+
+  if (query) {
+    localStorage.setItem(`searchQuery_${type}`, query);
+  } else {
+    localStorage.removeItem(`searchQuery_${type}`);
+  }
 
   const filtered = content[type].filter(item => {
     if (item.title.toLowerCase().includes(query)) return true;
@@ -134,7 +143,7 @@ function performSearch(type) {
       showMovieList(filtered, query);
     }
   }
-  saveScrollPosition();
+  saveScrollPosition(type === 'series' ? 'series' : 'movies');
 }
 
 function searchContent(type) {
@@ -245,9 +254,11 @@ function filterContentByGenre(type, genre) {
   if (type === 'series') {
     document.getElementById('seriesSearch').value = '';
     hideSuggestions('series');
+    localStorage.removeItem('searchQuery_series');
   } else if (type === 'movies') {
     document.getElementById('movieSearch').value = '';
     hideSuggestions('movies');
+    localStorage.removeItem('searchQuery_movies');
   }
 
   if (type === 'series') {
@@ -258,7 +269,6 @@ function filterContentByGenre(type, genre) {
 
   localStorage.setItem(`activeGenre_${type}`, genre);
   console.log(`activeGenre_${type} saved as: ${genre}`);
-  window.scrollTo(0, 0);
 }
 
 // --- Display List Functions ---
@@ -298,10 +308,6 @@ function showSeriesList(list = null, query = '') {
         `;
     container.appendChild(div);
   });
-
-  if (list === null && localStorage.getItem('lastActiveSection') === 'series' && !localStorage.getItem('lastDetailType')) {
-    restoreScrollPosition();
-  }
 }
 
 function showMovieList(list = null, query = '') {
@@ -340,10 +346,6 @@ function showMovieList(list = null, query = '') {
         `;
     container.appendChild(div);
   });
-
-  if (list === null && localStorage.getItem('lastActiveSection') === 'movies' && !localStorage.getItem('lastDetailType')) {
-    restoreScrollPosition();
-  }
 }
 
 // --- Share Functionality ---
@@ -489,13 +491,6 @@ function formatTime(seconds) {
 
 function goBackToList(type) {
   console.log(`goBackToList called for: ${type}`);
-  if (type === 'series') {
-    document.getElementById('seriesSearch').value = '';
-  } else if (type === 'movies') {
-    document.getElementById('movieSearch').value = '';
-  }
-
-  const originSection = localStorage.getItem('originSection');
 
   if (type === 'series') {
     document.getElementById('seriesDetails').style.display = 'none';
@@ -503,9 +498,10 @@ function goBackToList(type) {
     document.getElementById('movieDetails').style.display = 'none';
   }
 
+  const originSection = localStorage.getItem('originSection');
+
   let targetSectionId = originSection === 'watchLater' ? 'watchLater' : type;
   showSection(targetSectionId);
-  window.scrollTo(0, 0);
 }
 
 // --- Watch Later Functionality ---
@@ -590,7 +586,7 @@ function showWatchLater() {
     });
   }
   saveState('watchLater');
-  window.scrollTo(0, 0);
+  restoreScrollPosition('watchLater');
 }
 
 // --- Initialize on DOM Content Loaded ---
@@ -646,7 +642,6 @@ document.addEventListener('DOMContentLoaded', function() {
       } else {
         showSection(lastActiveSection);
       }
-      restoreScrollPosition();
     } else {
       console.log('No last active section found. Defaulting to "home".');
       showSection('home');
@@ -696,9 +691,17 @@ document.addEventListener('DOMContentLoaded', function() {
   window.addEventListener('scroll', function() {
     clearTimeout(scrollTimer);
     scrollTimer = setTimeout(() => {
-      saveScrollPosition();
+      const currentSection = localStorage.getItem('lastActiveSection');
+      if (currentSection) {
+        saveScrollPosition(currentSection);
+      }
     }, 200);
   });
 
-  window.addEventListener('beforeunload', saveScrollPosition);
+  window.addEventListener('beforeunload', () => {
+    const currentSection = localStorage.getItem('lastActiveSection');
+    if (currentSection) {
+      saveScrollPosition(currentSection);
+    }
+  });
 });
