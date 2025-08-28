@@ -13,7 +13,7 @@
 .genre-buttons::-webkit-scrollbar {
   height: 6px;
 
-  min-width:700%;
+  max-width:100%;
 }
 
 .genre-buttons::-webkit-scrollbar-thumb {
