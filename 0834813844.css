@@ -7,7 +7,7 @@
   overflow-x: auto;         /* allow horizontal scrolling */
   padding: 0.5rem;
   scrollbar-width: thin;    /* Firefox scrollbar */
- min-width:150%;
+ min-width:200%;
 }
 
 .genre-buttons::-webkit-scrollbar {
