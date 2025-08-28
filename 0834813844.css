@@ -219,7 +219,7 @@ height:100hv;
   margin: 1.5rem 0;
   text-align: center;
   display: flex;
-  flex-wrap: row;
+  flex-wrap: nowrap;
   justify-content: center;
   gap: 0.7rem;
 }
