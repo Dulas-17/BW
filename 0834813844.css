@@ -6,7 +6,7 @@
   gap: 0.5rem;
   overflow-x: auto;         /* allow horizontal scrolling */
   padding: 0.5rem;
-  scrollbar-width: thin;    /* Firefox scrollbar */
+  scrollbar-width: 50%;    /* Firefox scrollbar */
  min-width:100%;
 }
 
