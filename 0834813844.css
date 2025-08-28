@@ -1,29 +1,26 @@
 .genre-buttons {
+  margin: 1.5rem 0;
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  white-space: nowrap;
-  gap: 10px;
-  padding: 10px 15px;
-  scroll-behavior: smooth;
-  width: 100%;
-  box-sizing: border-box;
-  scrollbar-width:5px;
-  -ms-overflow-style: none;
+  flex-wrap: nowrap;        /* ensure one row only */
+  justify-content: flex-start; /* align items to start */
+  gap: 0.7rem;
+  overflow-x: auto;         /* allow horizontal scrolling */
+  padding: 0.5rem;
+  scrollbar-width: thin;    /* Firefox scrollbar */
 }
 
 .genre-buttons::-webkit-scrollbar {
-  display: flex;
+  height: 6px;
+}
+
+.genre-buttons::-webkit-scrollbar-thumb {
+  background: var(--primary-blue);
+  border-radius: 4px;
 }
 
 .genre-buttons button {
   flex: 0 0 auto;
-  white-space: nowrap;
-  padding: 8px 16px;
-  min-width: fit-content;
 }
-
 
 
 
