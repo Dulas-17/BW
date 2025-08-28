@@ -1,28 +1,42 @@
-/* Style for the genre buttons container */
 .genre-buttons {
   display: flex;
-  flex-direction: row; /* Align buttons horizontally */
-  overflow-x: auto; /* Enable horizontal scrolling */
-  white-space: nowrap; /* Prevent buttons from wrapping */
-  gap: 10px; /* Space between buttons */
-  padding: 10px 0; /* Optional: Padding for better spacing */
-  scroll-behavior: smooth; /* Smooth scrolling */
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
-  -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+  flex-wrap: nowrap;          /* Prevent wrapping */
+  overflow-x: auto;           /* Enable horizontal scroll */
+  overflow-y: hidden;         /* Hide vertical scroll */
+  gap: 10px;                  /* Spacing between buttons */
+  padding: 8px 0;
+  scrollbar-width: thin;      /* For Firefox */
+  scrollbar-color: #888 transparent;
 }
 
-/* Hide scrollbar for Chrome, Safari, and other WebKit browsers */
 .genre-buttons::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for clean look */
+  height: 6px;                /* Small horizontal scrollbar */
 }
 
-/* Ensure buttons don't stretch and fit their content */
+.genre-buttons::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.genre-buttons::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
 .genre-buttons button {
-  flex: 0 0 auto; /* Buttons take natural width */
-  white-space: nowrap; /* Prevent text wrapping inside buttons */
+  flex: 0 0 auto;             /* Keep buttons fixed size */
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  background: #eee;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;        /* Prevent text wrapping inside button */
 }
 
-
+.genre-buttons button.active-genre {
+  background: #007bff;
+  color: white;
+}
 
 
 /* -- Friendly Blue & White Version -- */
