@@ -1,16 +1,16 @@
 .genre-buttons {
   display: flex;
-  flex-wrap: nowrap;          /* Prevent wrapping */
+  flex-wrap: row;          /* Prevent wrapping */
   overflow-x: auto;           /* Enable horizontal scroll */
   overflow-y: hidden;         /* Hide vertical scroll */
-  gap: 10px;                  /* Spacing between buttons */
+  gap: 3px;                  /* Spacing between buttons */
   padding: 8px 0;
   scrollbar-width: thin;      /* For Firefox */
   scrollbar-color: #888 transparent;
 }
 
 .genre-buttons::-webkit-scrollbar {
-  height: 6px;                /* Small horizontal scrollbar */
+  height: 5px;                /* Small horizontal scrollbar */
 }
 
 .genre-buttons::-webkit-scrollbar-track {
