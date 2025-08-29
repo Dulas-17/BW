@@ -1,35 +1,7 @@
-.genre-buttons {
-  margin: 1.5rem 0;
-  display: flex;
-  flex-wrap: nowrap;        /* ensure one row only */
-  justify-content: flex-start; /* align items to start */
-  gap: 0.5rem;
-  overflow-x: auto;         /* allow horizontal scrolling */
-  padding: 0.5rem;
-  scrollbar-width: 50%;    /* Firefox scrollbar */
- min-width:100%;
-}
+/* ==================================
+   VARIABLES & BASE STYLES
+   ================================== */
 
-.genre-buttons::-webkit-scrollbar {
-  height: 6px;
-
-  max-width:100%;
-}
-
-.genre-buttons::-webkit-scrollbar-thumb {
-  background: var(--primary-blue);
-  border-radius: 5px;
-}
-
-.genre-buttons button {
-  flex: 0 0 auto;
-}
-
-
-
-/* -- Friendly Blue & White Version -- */
-
-/* Custom Properties (Variables) for a Unified Look */
 :root {
   --primary-blue: #1877f2;
   --primary-blue-dark: #166fe5;
@@ -74,7 +46,7 @@ a:hover {
 }
 
 /* ==================================
-   NAV & GENERAL STYLES
+   NAVIGATION
    ================================== */
 
 nav {
@@ -83,11 +55,9 @@ nav {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   flex-wrap: wrap;
   width: 100vw;
- 
-
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 nav button {
@@ -99,8 +69,8 @@ nav button {
   font-weight: bold;
   cursor: pointer;
   font-size: 1rem;
+  justify-content: center;
   transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-justify-content:center;
 }
 
 nav button:hover {
@@ -108,6 +78,10 @@ nav button:hover {
   transform: scale(1.05);
   box-shadow: 0 0 8px rgba(24, 119, 242, 0.5);
 }
+
+/* ==================================
+   SECTIONS
+   ================================== */
 
 .section {
   display: none;
@@ -117,16 +91,20 @@ nav button:hover {
   background: var(--surface-light);
   border-radius: 0;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
- overflow-y:scroll;
-height:100hv;
+  overflow-y: scroll;
+  height: 100vh;
 }
 
 .active {
   display: block;
 }
 
+/* ==================================
+   SEARCH
+   ================================== */
+
 .search-container {
-  margin: 2rem auto 0.5rem auto;
+  margin: 2rem auto 0.5rem;
   width: 90%;
   max-width: 500px;
   position: relative;
@@ -147,7 +125,7 @@ height:100hv;
   background: var(--background-light);
   color: var(--text-dark);
   transition: all 0.3s ease;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2365676b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2365676b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
   background-repeat: no-repeat;
   background-position: 15px center;
   background-size: 20px;
@@ -218,16 +196,34 @@ height:100hv;
   color: var(--text-dark);
 }
 
+/* ==================================
+   GENRE BUTTONS
+   ================================== */
+
 .genre-buttons {
   margin: 1.5rem 0;
-  text-align: center;
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
   gap: 0.7rem;
+  padding: 0.5rem;
+  overflow-x: auto;
+  min-width: 100%;
+  text-align: center;
+  scrollbar-width: thin;
+}
+
+.genre-buttons::-webkit-scrollbar {
+  height: 6px;
+}
+
+.genre-buttons::-webkit-scrollbar-thumb {
+  background: var(--primary-blue);
+  border-radius: 5px;
 }
 
 .genre-buttons button {
+  flex: 0 0 auto;
   padding: 0.6rem 1.2rem;
   background: var(--background-light);
   color: var(--text-dark);
@@ -236,7 +232,7 @@ height:100hv;
   font-size: 0.9rem;
   cursor: pointer;
   transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .genre-buttons button:hover {
@@ -288,8 +284,6 @@ height:100hv;
   padding: 1rem;
 }
 
-
-
 .series-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -314,7 +308,6 @@ height:100hv;
 
 .series-item img {
   width: 100%;
-  height: auto;
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 8px;
@@ -354,7 +347,6 @@ height:100hv;
 
 .episode-buttons button:hover {
   background: var(--primary-blue-dark);
-  color: #fff;
   transform: scale(1.05);
   box-shadow: 0 0 10px rgba(24, 119, 242, 0.5);
 }
@@ -408,6 +400,84 @@ height:100hv;
   border-radius: 4px;
   font-size: 0.8rem;
   z-index: 1;
+}
+
+/* ==================================
+   BUTTON STYLES
+   ================================== */
+
+.btn {
+  padding: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 10px;
+  background: var(--primary-blue);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: var(--primary-blue-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 0 8px rgba(24, 119, 242, 0.5);
+}
+
+.back {
+  padding: 1rem 1.8rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 10px;
+  background: #dc3545;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back:hover {
+  background: #c82333;
+  transform: translateY(-3px);
+  box-shadow: 0 0 8px #dc3545;
+}
+
+.watch-later-btn {
+  padding: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 10px;
+  background: #ffc107;
+  color: var(--text-dark);
+  border: none;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.watch-later-btn:hover {
+  background: #e0a800;
+  transform: translateY(-2px);
+  box-shadow: 0 0 8px #ffc107;
+}
+
+.remove-watch-later-btn {
+  padding: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 10px;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.remove-watch-later-btn:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 0 8px #e74c3c;
 }
 
 /* ==================================
@@ -473,87 +543,8 @@ height:100hv;
   }
 }
 
-.btn {
-  padding: 0.4rem;
-  font-size: 0.8rem;
-  font-weight: bold;
-  border-radius: 10px;
-  background: var(--primary-blue);
-  color: #fff;
-  border: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.btn:hover {
-  background: var(--primary-blue-dark);
-  color: #fff;
-  transform: translateY(-2px);
-  box-shadow: 0 0 8px rgba(24, 119, 242, 0.5);
-}
-
-.back {
-  padding: 1rem 1.8rem;
-  font-size: 1rem;
-  font-weight: bold;
-  border-radius: 10px;
-  background: #dc3545;
-  color: #fff;
-  border: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.back:hover {
-  background: #c82333;
-  color: #fff;
-  transform: translateY(-3px);
-  box-shadow: 0 0 8px #dc3545;
-}
-
-.watch-later-btn {
-  padding: 0.4rem;
-  font-size: 0.8rem;
-  font-weight: bold;
-  border-radius: 10px;
-  background: #ffc107;
-  color: var(--text-dark);
-  border: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  margin-top: 0.5rem;
-}
-
-.watch-later-btn:hover {
-  background: #e0a800;
-  transform: translateY(-2px);
-  box-shadow: 0 0 8px #ffc107;
-}
-
-.remove-watch-later-btn {
-  padding: 0.4rem;
-  font-size: 0.8rem;
-  font-weight: bold;
-  border-radius: 10px;
-  background: #e74c3c;
-  color: #fff;
-  border: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  margin-top: 0.5rem;
-}
-
-.remove-watch-later-btn:hover {
-  background: #c0392b;
-  transform: translateY(-2px);
-  box-shadow: 0 0 8px #e74c3c;
-}
-
 @media (max-width: 768px) {
-  .featured-container {
-    grid-template-columns: 1fr;
-  }
-
+  .featured-container,
   .news-grid {
     grid-template-columns: 1fr;
   }
