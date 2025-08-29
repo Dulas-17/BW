@@ -2,6 +2,14 @@
 const movieData = [
 
 {
+    title: "Maze Runner 2",
+    image: "Images/st.jpeg",
+    description: "Maze Runner: The Scorch Trials continues Thomas and the Gladers’ journey after escaping the Maze. They face a harsh, desolate landscape known as the Scorch, full of dangerous terrain, hostile humans, and mysterious creatures. As they uncover the truth about the organization WCKD, Thomas must lead his friends through betrayal, survival, and impossible choices to protect those he cares about. ",
+    genres: ["Adventure", "Action","Thriller","Sci-Fi"],
+    link: " "
+  },
+
+{
     title: "Weathering with you",
     image: "Images/wwy.jpeg",
     description: "Weathering With You follows Hodaka, a runaway teen in Tokyo, who meets Hina, a girl with the mysterious ability to control the weather. As they grow close, Hina’s gift becomes both a blessing and a curse, forcing them to make difficult choices about love, sacrifice, and the balance between human desires and nature’s power. ",
