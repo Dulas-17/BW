@@ -6,7 +6,7 @@ const movieData = [
     image: "Images/st.jpeg",
     description: "Maze Runner: The Scorch Trials continues Thomas and the Gladers’ journey after escaping the Maze. They face a harsh, desolate landscape known as the Scorch, full of dangerous terrain, hostile humans, and mysterious creatures. As they uncover the truth about the organization WCKD, Thomas must lead his friends through betrayal, survival, and impossible choices to protect those he cares about. ",
     genres: ["Adventure", "Action","Thriller","Sci-Fi"],
-    link: " "
+    link: "https://drive.google.com/file/d/1oM--0OMZxRbUOKGLoWvYTTycKsgKrnP0/preview "
   },
 
 {
