@@ -1,7 +1,7 @@
-// Ensure seriesData and movieData are loaded before this script runs.
+
 const content = {
-  series: seriesData, // Assumes seriesData is loaded from 11.js
-  movies: movieData,  // Assumes movieData is loaded from 12.js
+  series: seriesData, 
+  movies: movieData,
 };
 
 // Global variables for debouncing
@@ -12,7 +12,7 @@ function playEpisode(link, episodeTitle = null) {
   const player = document.getElementById('videoFullScreen');
   const iframe = player.querySelector('iframe');
 
-  // Video tracking removed: video always starts from the beginning.
+ 
   iframe.src = link;
   player.style.display = 'flex';
 }
