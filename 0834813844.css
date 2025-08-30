@@ -435,6 +435,7 @@ nav button:hover {
   cursor: pointer;
   transition: all 0.3s ease;
   align-items:center;
+  flex-direction:row;
 }
 
 .back:hover {
