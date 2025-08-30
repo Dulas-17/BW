@@ -596,17 +596,12 @@ function showWatchLater() {
 document.addEventListener('DOMContentLoaded', function() {
   console.log('DOM Content Loaded. Initializing...');
   
-  // =========================================================================
-  // ⭐ ADDED CODE FOR ALPHABETICAL SORTING ⭐
-  // The .sort() method is used to arrange the movie and series data
-  // alphabetically by their 'title' property. This is done here
-  // before the content is displayed on the page.
-  // =========================================================================
+  
   content.series.sort((a, b) => a.title.localeCompare(b.title));
   content.movies.sort((a, b) => a.title.localeCompare(b.title));
   
   console.log("Content has been sorted alphabetically.");
-  // =========================================================================
+  
   
   const urlParams = new URLSearchParams(window.location.search);
   const paramType = urlParams.get('type');
