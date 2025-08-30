@@ -1,5 +1,5 @@
 const content = {
-  series: seriesData, 
+  series: seriesData,
   movies: movieData,
 };
 
@@ -294,7 +294,9 @@ function showSeriesList(list = null, query = '') {
   displayList.forEach((s) => {
     const div = document.createElement('div');
     div.className = 'series-item';
-    const originalIndex = content.series.indexOf(s);
+    // Since the array is now sorted, we need to find the original index
+    // if a detail page needs to be shown based on the sorted list.
+    const originalIndex = content.series.findIndex(item => item.title === s.title);
     if (originalIndex === -1) return;
 
     const highlightedTitle = query ? s.title.replace(new RegExp(query, 'gi'), match => `<span style="background-color: #5a9bd8; color: #121212; border-radius: 3px; padding: 0 2px;">${match}</span>`) : s.title;
@@ -332,7 +334,9 @@ function showMovieList(list = null, query = '') {
   displayList.forEach((m) => {
     const div = document.createElement('div');
     div.className = 'series-item';
-    const originalIndex = content.movies.indexOf(m);
+    // Since the array is now sorted, we need to find the original index
+    // if a detail page needs to be shown based on the sorted list.
+    const originalIndex = content.movies.findIndex(item => item.title === m.title);
     if (originalIndex === -1) return;
 
     const highlightedTitle = query ? m.title.replace(new RegExp(query, 'gi'), match => `<span style="background-color: #5a9bd8; color: #121212; border-radius: 3px; padding: 0 2px;">${match}</span>`) : m.title;
@@ -472,7 +476,7 @@ function showMovieDetails(i, originSection = null) {
         <div class="episode-buttons">
           <button onclick="playEpisode('${m.link}', '${m.title.replace(/'/g, "\\'")}')">Watch Now</button>
         </div>
-        <div class="detail-bottom-actions"> 
+        <div class="detail-bottom-actions">
 <button onclick="shareContent('movie', ${i})" class="btn share-btn">Share</button>
  <button onclick="goBackToList('movies')" class="back">Back</button>
              <button onclick="copyLinkToClipboard('movie', ${i})" class="btn copy-link-btn">Copy Link</button> </div>
@@ -591,7 +595,19 @@ function showWatchLater() {
 // --- Initialize on DOM Content Loaded ---
 document.addEventListener('DOMContentLoaded', function() {
   console.log('DOM Content Loaded. Initializing...');
-
+  
+  // =========================================================================
+  // ⭐ ADDED CODE FOR ALPHABETICAL SORTING ⭐
+  // The .sort() method is used to arrange the movie and series data
+  // alphabetically by their 'title' property. This is done here
+  // before the content is displayed on the page.
+  // =========================================================================
+  content.series.sort((a, b) => a.title.localeCompare(b.title));
+  content.movies.sort((a, b) => a.title.localeCompare(b.title));
+  
+  console.log("Content has been sorted alphabetically.");
+  // =========================================================================
+  
   const urlParams = new URLSearchParams(window.location.search);
   const paramType = urlParams.get('type');
   const paramId = urlParams.get('id');
