@@ -1,4 +1,4 @@
-Const content = {
+const content = {
   series: seriesData, 
   movies: movieData,
 };
