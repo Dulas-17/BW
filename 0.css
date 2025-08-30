@@ -75,7 +75,7 @@ nav button {
 
 nav button:hover {
   background: var(--primary-blue-dark);
-  transform: scale(1.05);
+  transform: scale(1.03);
   box-shadow: 0 0 8px rgba(24, 119, 242, 0.5);
 }
 
