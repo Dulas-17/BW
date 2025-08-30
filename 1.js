@@ -438,9 +438,9 @@ function showSeriesDetails(i, originSection = null) {
   }).join('')}
         </div>
         <div class="detail-bottom-actions">
-<button onclick="shareContent('series', ${i})" class="btn share-btn">Share</button>
+<button onclick="shareContent('series', ${i})" class="back">Share</button>
  <button onclick="goBackToList('series')" class="back">Back</button>
-             <button onclick="copyLinkToClipboard('series', ${i})" class="btn copy-link-btn">Copy Link</button> </div>
+             <button onclick="copyLinkToClipboard('series', ${i})" class="back">Copy Link</button> </div>
       `;
 
   saveState('series', 'series', i, originSection);
