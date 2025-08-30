@@ -450,9 +450,9 @@ function showSeriesDetails(i, originSection = null) {
   }).join('')}
         </div>
         <div class="detail-bottom-actions">
-<button onclick="shareContent('series', ${i})" class="back">Share</button>
+
  <button onclick="goBackToList('series')" class="back">Back</button>
-             <button onclick="copyLinkToClipboard('series', ${i})" class="back">Copy Link</button> </div>
+             <button onclick="copyLinkToClipboard('series', ${i})" class="back">Link</button> </div>
       `;
 
   saveState('series', 'series', i, originSection);
@@ -492,9 +492,9 @@ function showMovieDetails(i, originSection = null) {
           <button onclick="playEpisode('${m.link}', '${m.title.replace(/'/g, "\\'")}')">Watch Now</button>
         </div>
         <div class="detail-bottom-actions">
-<button onclick="shareContent('movie', ${i})" class="back">Share</button>
+
  <button onclick="goBackToList('movies')" class="back">Back</button>
-             <button onclick="copyLinkToClipboard('movie', ${i})" class="back">Copy Link</button> </div>
+             <button onclick="copyLinkToClipboard('movie', ${i})" class="back">Link</button> </div>
       `;
   saveState('movies', 'movie', i, originSection);
   window.scrollTo(0, 0);
