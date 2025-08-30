@@ -81,7 +81,7 @@ const movieData = [
     title: "The Swimmers",
     image: "Images/ts.jpeg",
     description: "Two Syrian sisters flee their war-torn home in Damascus, swim for hours in choppy Mediterranean seas to reach Greece as asylum seekers before going on to compete at the Rio Olympic Games.",
-    genres: ["Adventure", "Documentary", "Drama"],
+    genres: ["Adventure", "Bibliography", "Drama"],
     link: "https://drive.google.com/file/d/1JkUj0q7_zGIiHegH40aDmYQW8wxmW5mR/preview"
   },
 
