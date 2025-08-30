@@ -1,5 +1,5 @@
-const content = {
-  series: seriesData,
+Const content = {
+  series: seriesData, 
   movies: movieData,
 };
 
@@ -400,22 +400,6 @@ function copyLinkToClipboard(type, index) {
     });
 }
 
-// --- NEW FUNCTION TO CONTROL BUTTON VISIBILITY ---
-function updateDetailButtons(isDirectLink) {
-  const backButton = document.querySelector('.detail-bottom-actions .back');
-  const shareButton = document.querySelector('.detail-bottom-actions .share-btn');
-  const copyLinkButton = document.querySelector('.detail-bottom-actions .copy-link-btn');
-
-  if (backButton) {
-    backButton.style.display = isDirectLink ? 'none' : 'block';
-  }
-  if (shareButton) {
-    shareButton.style.display = isDirectLink ? 'none' : 'block';
-  }
-  if (copyLinkButton) {
-    copyLinkButton.style.display = isDirectLink ? 'none' : 'block';
-  }
-}
 
 // --- Detail View Functions ---
 function showSeriesDetails(i, originSection = null) {
@@ -450,16 +434,13 @@ function showSeriesDetails(i, originSection = null) {
   }).join('')}
         </div>
         <div class="detail-bottom-actions">
-
+<button onclick="shareContent('series', ${i})" class="btn share-btn">Share</button>
  <button onclick="goBackToList('series')" class="back">Back</button>
-             <button onclick="copyLinkToClipboard('series', ${i})" class="back">Link</button> </div>
+             <button onclick="copyLinkToClipboard('series', ${i})" class="btn copy-link-btn">Copy Link</button> </div>
       `;
 
   saveState('series', 'series', i, originSection);
   window.scrollTo(0, 0);
-
-  // Default to showing buttons for internal navigation
-  updateDetailButtons(false);
 }
 
 function showMovieDetails(i, originSection = null) {
@@ -491,16 +472,13 @@ function showMovieDetails(i, originSection = null) {
         <div class="episode-buttons">
           <button onclick="playEpisode('${m.link}', '${m.title.replace(/'/g, "\\'")}')">Watch Now</button>
         </div>
-        <div class="detail-bottom-actions">
-
+        <div class="detail-bottom-actions"> 
+<button onclick="shareContent('movie', ${i})" class="btn share-btn">Share</button>
  <button onclick="goBackToList('movies')" class="back">Back</button>
-             <button onclick="copyLinkToClipboard('movie', ${i})" class="back">Link</button> </div>
+             <button onclick="copyLinkToClipboard('movie', ${i})" class="btn copy-link-btn">Copy Link</button> </div>
       `;
   saveState('movies', 'movie', i, originSection);
   window.scrollTo(0, 0);
-
-  // Default to showing buttons for internal navigation
-  updateDetailButtons(false);
 }
 
 function formatTime(seconds) {
@@ -618,9 +596,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const paramType = urlParams.get('type');
   const paramId = urlParams.get('id');
 
-  const isDirectLink = !!(paramType && paramId !== null);
-
-  if (isDirectLink) {
+  if (paramType && paramId !== null) {
     const id = parseInt(paramId, 10);
     if (!isNaN(id)) {
       console.log(`Direct link detected: type=${paramType}, id=${id}`);
@@ -632,10 +608,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
       if (paramType === 'series' && content.series[id]) {
         showSeriesDetails(id);
-        updateDetailButtons(true);
       } else if (paramType === 'movie' && content.movies[id]) {
         showMovieDetails(id);
-        updateDetailButtons(true);
       } else {
         console.warn('Direct link item not found or invalid type. Loading home.');
         showSection('home');
@@ -654,16 +628,15 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log(`Restoring last active section: ${lastActiveSection}`);
       if (lastDetailType && lastDetailIndex !== null) {
         console.log(`Restoring detail view: ${lastDetailType} at index ${lastDetailIndex}`);
+        // Ensure nav, search, and genre buttons are hidden if restoring to detail view
         document.querySelector('nav').style.display = 'none';
         document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
         document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 
         if (lastDetailType === 'series') {
           showSeriesDetails(parseInt(lastDetailIndex, 10), originSection);
-          updateDetailButtons(false);
         } else if (lastDetailType === 'movie') {
           showMovieDetails(parseInt(lastDetailIndex, 10), originSection);
-          updateDetailButtons(false);
         }
       } else {
         showSection(lastActiveSection);
