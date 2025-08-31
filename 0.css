@@ -87,7 +87,7 @@ nav button:hover {
   display: none;
   padding: 1rem;
   width: 100vw;
-max-width:1024px;
+max-width:80%;
   margin: auto;
   background: var(--surface-light);
   border-radius: 0;
