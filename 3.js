@@ -2,6 +2,15 @@
 const movieData = [
 
 {
+    title: "Maze Runner:The death cure",
+    image: "Images/dc.jpeg",
+    description: "Maze Runner: The Death Cure follows Thomas and the surviving Gladers as they embark on their final mission—to break into the legendary Last City, a stronghold controlled by WCKD. Inside, they face the deadliest maze of all in a desperate attempt to rescue their friends and find a cure for the deadly Flare virus. Loyalties are tested, sacrifices are made, and the fate of humanity hangs in the balance.",
+    genres: ["Adventure", "Action","Sci-Fi","Thriller"],
+    link: "  "
+  },
+
+
+{
     title: "Maze Runner:The scorch trials",
     image: "Images/st.jpeg",
     description: "Maze Runner: The Scorch Trials continues Thomas and the Gladers’ journey after escaping the Maze. They face a harsh, desolate landscape known as the Scorch, full of dangerous terrain, hostile humans, and mysterious creatures. As they uncover the truth about the organization WCKD, Thomas must lead his friends through betrayal, survival, and impossible choices to protect those he cares about. ",
