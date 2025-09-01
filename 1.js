@@ -37,8 +37,6 @@ function restoreScrollPosition(sectionId) {
   }
 }
 
-// --- MODIFIED FUNCTION ---
-// The call to saveScrollPosition() has been moved inside the 'if' block.
 function saveState(sectionId, detailType = null, detailIndex = null, originSection = null) {
   console.log(`saveState called: sectionId=${sectionId}, detailType=${detailType}, detailIndex=${detailIndex}, originSection=${originSection}`);
   localStorage.setItem('lastActiveSection', sectionId);
@@ -46,7 +44,7 @@ function saveState(sectionId, detailType = null, detailIndex = null, originSecti
   if (detailType !== null && detailIndex !== null) {
     // This block runs when going TO a detail page.
     // This is the correct time to save the list's scroll position.
-    saveScrollPosition(sectionId); // <-- MOVED HERE
+    saveScrollPosition(sectionId);
 
     localStorage.setItem('lastDetailType', detailType);
     localStorage.setItem('lastDetailIndex', detailIndex);
@@ -64,9 +62,7 @@ function saveState(sectionId, detailType = null, detailIndex = null, originSecti
   } else {
     localStorage.removeItem('originSection');
   }
-  // The problematic call to saveScrollPosition() has been removed from the end.
 }
-
 
 // --- Section Management ---
 function showSection(id) {
@@ -78,7 +74,6 @@ function showSection(id) {
 
   document.getElementById('seriesDetails').style.display = 'none';
   document.getElementById('movieDetails').style.display = 'none';
-  // Ensure the navigation bar is visible when showing a main section
   document.querySelector('nav').style.display = 'flex';
 
   document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
@@ -113,7 +108,13 @@ function showSection(id) {
   } else if (id === 'watchLater') {
     showWatchLater();
   }
-  restoreScrollPosition(id);
+
+  // --- FINAL FIX ---
+  // Delay the scroll restoration slightly to allow the DOM to finish rendering.
+  // This prevents a race condition.
+  setTimeout(() => {
+    restoreScrollPosition(id);
+  }, 0);
 }
 
 // --- Search Functionality ---
@@ -428,7 +429,6 @@ function showSeriesDetails(i, originSection = null) {
   document.getElementById('seriesList').innerHTML = '';
   document.getElementById('seriesDetails').style.display = 'block';
 
-  // Hide navigation bar, search, and genre buttons
   document.querySelector('nav').style.display = 'none';
   document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
   document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
@@ -469,7 +469,6 @@ function showMovieDetails(i, originSection = null) {
   document.getElementById('movieList').innerHTML = '';
   document.getElementById('movieDetails').style.display = 'block';
 
-  // Hide navigation bar, search, and genre buttons
   document.querySelector('nav').style.display = 'none';
   document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
   document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
@@ -559,7 +558,6 @@ function showWatchLater() {
   console.log('showWatchLater called');
   document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
   document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
-  // Ensure the navigation bar is visible when in watch later section
   document.querySelector('nav').style.display = 'flex';
   document.getElementById('seriesDetails').style.display = 'none';
   document.getElementById('movieDetails').style.display = 'none';
@@ -616,7 +614,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const id = parseInt(paramId, 10);
     if (!isNaN(id)) {
       console.log(`Direct link detected: type=${paramType}, id=${id}`);
-      // Clear any previous state to ensure clean load
       localStorage.removeItem('lastActiveSection');
       localStorage.removeItem('lastDetailType');
       localStorage.removeItem('lastDetailIndex');
@@ -644,7 +641,6 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log(`Restoring last active section: ${lastActiveSection}`);
       if (lastDetailType && lastDetailIndex !== null) {
         console.log(`Restoring detail view: ${lastDetailType} at index ${lastDetailIndex}`);
-        // Ensure nav, search, and genre buttons are hidden if restoring to detail view
         document.querySelector('nav').style.display = 'none';
         document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
         document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
@@ -702,29 +698,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // --- MODIFIED EVENT LISTENER ---
-  // Added a check to ensure we are not on a detail page.
   let scrollTimer;
   window.addEventListener('scroll', function() {
     clearTimeout(scrollTimer);
     scrollTimer = setTimeout(() => {
       const currentSection = localStorage.getItem('lastActiveSection');
-      const onDetailPage = localStorage.getItem('lastDetailType'); // Check if on a detail page
+      const onDetailPage = localStorage.getItem('lastDetailType');
 
-      // Only save if on a list view (not a detail page)
       if (currentSection && !onDetailPage) {
         saveScrollPosition(currentSection);
       }
     }, 200);
   });
 
-  // --- MODIFIED EVENT LISTENER ---
-  // Added a check to ensure we are not on a detail page.
   window.addEventListener('beforeunload', () => {
     const currentSection = localStorage.getItem('lastActiveSection');
-    const onDetailPage = localStorage.getItem('lastDetailType'); // Check if on a detail page
+    const onDetailPage = localStorage.getItem('lastDetailType');
 
-    // Only save if on a list view (not a detail page)
     if (currentSection && !onDetailPage) {
       saveScrollPosition(currentSection);
     }
