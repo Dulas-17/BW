@@ -37,14 +37,22 @@ function restoreScrollPosition(sectionId) {
   }
 }
 
+// --- MODIFIED FUNCTION ---
+// The call to saveScrollPosition() has been moved inside the 'if' block.
 function saveState(sectionId, detailType = null, detailIndex = null, originSection = null) {
   console.log(`saveState called: sectionId=${sectionId}, detailType=${detailType}, detailIndex=${detailIndex}, originSection=${originSection}`);
   localStorage.setItem('lastActiveSection', sectionId);
 
   if (detailType !== null && detailIndex !== null) {
+    // This block runs when going TO a detail page.
+    // This is the correct time to save the list's scroll position.
+    saveScrollPosition(sectionId); // <-- MOVED HERE
+
     localStorage.setItem('lastDetailType', detailType);
     localStorage.setItem('lastDetailIndex', detailIndex);
   } else {
+    // This block runs when returning TO a list view.
+    // We do NOT want to save the scroll position here.
     localStorage.removeItem('lastDetailType');
     localStorage.removeItem('lastDetailIndex');
   }
@@ -56,8 +64,9 @@ function saveState(sectionId, detailType = null, detailIndex = null, originSecti
   } else {
     localStorage.removeItem('originSection');
   }
-  saveScrollPosition(sectionId);
+  // The problematic call to saveScrollPosition() has been removed from the end.
 }
+
 
 // --- Section Management ---
 function showSection(id) {
@@ -279,9 +288,9 @@ function showSeriesList(list = null, query = '') {
   const activeGenre = localStorage.getItem('activeGenre_series');
   console.log(`showSeriesList called. Active series genre: ${activeGenre}. Query: "${query}"`);
 
-  const displayList = (list === null && activeGenre && activeGenre !== 'All')
-    ? currentList.filter(s => s.genres && s.genres.includes(activeGenre))
-    : currentList;
+  const displayList = (list === null && activeGenre && activeGenre !== 'All') ?
+    currentList.filter(s => s.genres && s.genres.includes(activeGenre)) :
+    currentList;
 
   if (displayList.length === 0 && query !== '') {
     container.innerHTML = `<p style="text-align: center; color: #aaa; margin-top: 2rem;">No results found for "${query}".</p>`;
@@ -294,8 +303,6 @@ function showSeriesList(list = null, query = '') {
   displayList.forEach((s) => {
     const div = document.createElement('div');
     div.className = 'series-item';
-    // Since the array is now sorted, we need to find the original index
-    // if a detail page needs to be shown based on the sorted list.
     const originalIndex = content.series.findIndex(item => item.title === s.title);
     if (originalIndex === -1) return;
 
@@ -319,9 +326,9 @@ function showMovieList(list = null, query = '') {
   const activeGenre = localStorage.getItem('activeGenre_movies');
   console.log(`showMovieList called. Active movie genre: ${activeGenre}. Query: "${query}"`);
 
-  const displayList = (list === null && activeGenre && activeGenre !== 'All')
-    ? currentList.filter(m => m.genres && m.genres.includes(activeGenre))
-    : currentList;
+  const displayList = (list === null && activeGenre && activeGenre !== 'All') ?
+    currentList.filter(m => m.genres && m.genres.includes(activeGenre)) :
+    currentList;
 
   if (displayList.length === 0 && query !== '') {
     container.innerHTML = `<p style="text-align: center; color: #aaa; margin-top: 2rem; justify-content:center; font-size:1.5rem;">No results found for "${query}".</p>`;
@@ -334,8 +341,6 @@ function showMovieList(list = null, query = '') {
   displayList.forEach((m) => {
     const div = document.createElement('div');
     div.className = 'series-item';
-    // Since the array is now sorted, we need to find the original index
-    // if a detail page needs to be shown based on the sorted list.
     const originalIndex = content.movies.findIndex(item => item.title === m.title);
     if (originalIndex === -1) return;
 
@@ -575,9 +580,9 @@ function showWatchLater() {
       const div = document.createElement('div');
       div.className = 'series-item';
 
-      const detailFunctionCall = wlItem.type === 'series'
-        ? `showSeriesDetails(${wlItem.originalIndex}, 'watchLater')`
-        : `showMovieDetails(${wlItem.originalIndex}, 'watchLater')`;
+      const detailFunctionCall = wlItem.type === 'series' ?
+        `showSeriesDetails(${wlItem.originalIndex}, 'watchLater')` :
+        `showMovieDetails(${wlItem.originalIndex}, 'watchLater')`;
 
       div.innerHTML = `
                 <img src="${item.image}" alt="${item.title}" />
@@ -595,14 +600,14 @@ function showWatchLater() {
 // --- Initialize on DOM Content Loaded ---
 document.addEventListener('DOMContentLoaded', function() {
   console.log('DOM Content Loaded. Initializing...');
-  
-  
+
+
   content.series.sort((a, b) => a.title.localeCompare(b.title));
   content.movies.sort((a, b) => a.title.localeCompare(b.title));
-  
+
   console.log("Content has been sorted alphabetically.");
-  
-  
+
+
   const urlParams = new URLSearchParams(window.location.search);
   const paramType = urlParams.get('type');
   const paramId = urlParams.get('id');
@@ -697,20 +702,30 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // --- MODIFIED EVENT LISTENER ---
+  // Added a check to ensure we are not on a detail page.
   let scrollTimer;
   window.addEventListener('scroll', function() {
     clearTimeout(scrollTimer);
     scrollTimer = setTimeout(() => {
       const currentSection = localStorage.getItem('lastActiveSection');
-      if (currentSection) {
+      const onDetailPage = localStorage.getItem('lastDetailType'); // Check if on a detail page
+
+      // Only save if on a list view (not a detail page)
+      if (currentSection && !onDetailPage) {
         saveScrollPosition(currentSection);
       }
     }, 200);
   });
 
+  // --- MODIFIED EVENT LISTENER ---
+  // Added a check to ensure we are not on a detail page.
   window.addEventListener('beforeunload', () => {
     const currentSection = localStorage.getItem('lastActiveSection');
-    if (currentSection) {
+    const onDetailPage = localStorage.getItem('lastDetailType'); // Check if on a detail page
+
+    // Only save if on a list view (not a detail page)
+    if (currentSection && !onDetailPage) {
       saveScrollPosition(currentSection);
     }
   });
