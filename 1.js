@@ -3,14 +3,21 @@ const content = {
   movies: movieData,
 };
 
-// Global variables for debouncing
+// Global variables for debouncing and video tracking
 let searchDebounceTimeout;
 let suggestionDebounceTimeout;
+let currentPlayingType = null;
+let currentPlayingIndex = null;
 
-function playEpisode(link, episodeTitle = null) {
+// --- Video Playback & Tracking ---
+
+function playEpisode(link, episodeTitle = null, type, index) {
   const player = document.getElementById('videoFullScreen');
   const iframe = player.querySelector('iframe');
-
+  
+  // Save the current video's details to global variables
+  currentPlayingType = type;
+  currentPlayingIndex = index;
 
   iframe.src = link;
   player.style.display = 'flex';
@@ -19,10 +26,19 @@ function playEpisode(link, episodeTitle = null) {
 function closeFullScreen() {
   const player = document.getElementById('videoFullScreen');
   const iframe = player.querySelector('iframe');
+  
+  // When the video is closed, mark it as "watched" in local storage
+  if (currentPlayingType !== null && currentPlayingIndex !== null) {
+      saveAsWatched(currentPlayingType, currentPlayingIndex);
+  }
 
   iframe.src = '';
   player.style.display = 'none';
   restoreScrollPosition(localStorage.getItem('lastActiveSection'));
+
+  // Reset global variables
+  currentPlayingType = null;
+  currentPlayingIndex = null;
 }
 
 // --- Local Storage Utilities ---
@@ -42,26 +58,33 @@ function saveState(sectionId, detailType = null, detailIndex = null, originSecti
   localStorage.setItem('lastActiveSection', sectionId);
 
   if (detailType !== null && detailIndex !== null) {
-    // This block runs when going TO a detail page.
-    // This is the correct time to save the list's scroll position.
     saveScrollPosition(sectionId);
-
     localStorage.setItem('lastDetailType', detailType);
     localStorage.setItem('lastDetailIndex', detailIndex);
   } else {
-    // This block runs when returning TO a list view.
-    // We do NOT want to save the scroll position here.
     localStorage.removeItem('lastDetailType');
     localStorage.removeItem('lastDetailIndex');
   }
 
-  localStorage.removeItem('activeGenre'); // Clean up old generic key if it exists
+  localStorage.removeItem('activeGenre');
 
   if (originSection !== null) {
     localStorage.setItem('originSection', originSection);
   } else {
     localStorage.removeItem('originSection');
   }
+}
+
+// Function to save an item as "watched"
+function saveAsWatched(type, index) {
+  const key = `watched_${type}_${index}`;
+  localStorage.setItem(key, 'true');
+}
+
+// Function to check if an item has been watched
+function isWatched(type, index) {
+  const key = `watched_${type}_${index}`;
+  return localStorage.getItem(key) === 'true';
 }
 
 // --- Section Management ---
@@ -109,9 +132,6 @@ function showSection(id) {
     showWatchLater();
   }
 
-  // --- FINAL FIX ---
-  // Delay the scroll restoration slightly to allow the DOM to finish rendering.
-  // This prevents a race condition.
   setTimeout(() => {
     restoreScrollPosition(id);
   }, 0);
@@ -438,8 +458,10 @@ function showSeriesDetails(i, originSection = null) {
         <h2>${s.title}</h2>
         <p>${s.description}</p>
         <div class="episode-buttons">
-          ${s.episodes.map(ep => {
-    return `<button onclick="playEpisode('${ep.link}', '${ep.title.replace(/'/g, "\\'")}')">${ep.title}</button>`;
+          ${s.episodes.map((ep, epIndex) => {
+    const isEpisodeWatched = isWatched('series', `${i}_${epIndex}`);
+    const buttonClass = isEpisodeWatched ? 'watched-episode-btn' : '';
+    return `<button onclick="playEpisode('${ep.link}', '${ep.title.replace(/'/g, "\\'")}', 'series', '${i}_${epIndex}')" class="${buttonClass}">${ep.title}</button>`;
   }).join('')}
         </div>
         <div class="detail-bottom-actions">
@@ -473,12 +495,15 @@ function showMovieDetails(i, originSection = null) {
   document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
   document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 
+  const isMovieWatched = isWatched('movie', i);
+  const buttonClass = isMovieWatched ? 'watched-episode-btn' : '';
+
   container.innerHTML = `
         <img src="${m.image}" alt="${m.title}" />
         <h2>${m.title}</h2>
         <p>${m.description}</p>
         <div class="episode-buttons">
-          <button onclick="playEpisode('${m.link}', '${m.title.replace(/'/g, "\\'")}')">Watch Now</button>
+          <button onclick="playEpisode('${m.link}', '${m.title.replace(/'/g, "\\'")}', 'movie', ${i})" class="${buttonClass}">Watch Now</button>
         </div>
         <div class="detail-bottom-actions">
 <button onclick="shareContent('movie', ${i})" class="back">Share</button>
