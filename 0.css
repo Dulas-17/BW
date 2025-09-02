@@ -316,12 +316,7 @@ nav button:hover {
 
 /* MODIFICATION TO FIX THE UNEVEN GRID LAYOUT */
 .series-item h4 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin: 0.5rem 0; /* Optional: adds a little space around the title */
-  padding: 0 0.2rem;
-  font-size: 0.9rem;
+  font-size:1rem;
 }
 
 .series-details {
