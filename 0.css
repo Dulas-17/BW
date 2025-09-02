@@ -87,13 +87,12 @@ nav button:hover {
   display: none;
   padding: 1rem;
   width: 100vw;
-max-width:1100px;
+  max-width: 1100px;
   margin: auto;
   background: var(--surface-light);
   border-radius: 0;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
   overflow-y: scroll;
-  
 }
 
 .active {
@@ -315,6 +314,16 @@ max-width:1100px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* MODIFICATION TO FIX THE UNEVEN GRID LAYOUT */
+.series-item h4 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0.5rem 0; /* Optional: adds a little space around the title */
+  padding: 0 0.2rem;
+  font-size: 0.9rem;
+}
+
 .series-details {
   text-align: center;
   margin-top: 1rem;
@@ -435,8 +444,8 @@ max-width:1100px;
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  align-items:center;
-  flex-direction:row;
+  align-items: center;
+  flex-direction: row;
 }
 
 .back:hover {
