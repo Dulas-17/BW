@@ -2,18 +2,6 @@
 const seriesData = [
 
 
-{
-  title: "Meritulous Ladybug (S1)",
-  image: "Images/ml.jpeg",
-  description: "
-Marinette Dupain-Cheng, a Parisian teenager, is chosen to become Ladybug, a superhero tasked with protecting the city from villains created by Hawk Moth. Alongside Adrien Agreste, who becomes Cat Noir, she balances her normal school life with her secret identity. As they battle akumatized villains and uncover mysteries about their powers, they must work together while keeping their identities hidden—even from each other.",
-  genres: ["Action", "Adventure", "Comedy", "Fantasy"],
-  episodes: [
-    { title: "Episode 1", link:"https://drive.google.com/file/d/1qKUoEQjxxHreSnvhL17mPlacN5tHvpH5/preview" },
-    { title: "Episode 2", link:"https://drive.google.com/file/d/1qJiQOwE94sFPA1Nj9TVFvy4sBNI6rTdS/preview" },
-  
-  ]
-},
 
 
 
@@ -21,7 +9,7 @@ Marinette Dupain-Cheng, a Parisian teenager, is chosen to become Ladybug, a supe
 
 
 {
-    title: "Arcane",
+    title: "Arcane(s1)",
     image: "Images/A.jpg",
     description: ".",
     genres: ["Drama", "Action","Sci-Fi","Steampunk","Adventure"],
@@ -59,7 +47,7 @@ Marinette Dupain-Cheng, a Parisian teenager, is chosen to become Ladybug, a supe
 
 
 {
-    title: "Attack On Titan(1)",
+    title: "Attack On Titan(s1)",
     image: "Images/aot.jpeg",
     description: "Attack on Titan: Season 1 follows Eren Yeager, his adopted sister Mikasa, and their friend Armin as humanity fights for survival against giant humanoid creatures known as Titans. After their hometown is destroyed, Eren vows to eradicate every Titan. Joining the military, they uncover dark secrets about the Titans, face brutal battles, and confront the limits of human courage and resilience. ",
     genres: ["Adventure","Shonen","Mystery","Action", "Thriller", "Anime"],
@@ -212,7 +200,19 @@ Marinette Dupain-Cheng, a Parisian teenager, is chosen to become Ladybug, a supe
 
 
 
+  {
+  title: " Miraculous Ladybug(S1)",
+  image: "Images/ml.jpeg",
+  description: "
+Marinette Dupain-Cheng, a Parisian teenager, is chosen to become Ladybug, a superhero tasked with protecting the city from villains created by Hawk Moth. Alongside Adrien Agreste, who becomes Cat Noir, she balances her normal school life with her secret identity. As they battle akumatized villains and uncover mysteries about their powers, they must work together while keeping their identities hidden—even from each other.",
+  genres: ["Action", "Adventure", "Comedy", "Fantasy"],
+  episodes: [
+    { title: "Episode 1", link:"https://drive.google.com/file/d/1qKUoEQjxxHreSnvhL17mPlacN5tHvpH5/preview" },
+    { title: "Episode 2", link:"https://drive.google.com/file/d/1qJiQOwE94sFPA1Nj9TVFvy4sBNI6rTdS/preview" },
   
+  ]
+},
+
 
 
 
