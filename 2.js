@@ -1,6 +1,25 @@
 // series.js
 const seriesData = [
 
+
+{
+  title: "Meritulous Ladybug (S1)",
+  image: "Images/ml.jpeg",
+  description: "
+Marinette Dupain-Cheng, a Parisian teenager, is chosen to become Ladybug, a superhero tasked with protecting the city from villains created by Hawk Moth. Alongside Adrien Agreste, who becomes Cat Noir, she balances her normal school life with her secret identity. As they battle akumatized villains and uncover mysteries about their powers, they must work together while keeping their identities hidden—even from each other.",
+  genres: ["Action", "Adventure", "Comedy", "Fantasy"],
+  episodes: [
+    { title: "Episode 1", link:"https://drive.google.com/file/d/1qKUoEQjxxHreSnvhL17mPlacN5tHvpH5/preview" },
+    { title: "Episode 2", link:"https://drive.google.com/file/d/1qJiQOwE94sFPA1Nj9TVFvy4sBNI6rTdS/preview" },
+  
+  ]
+},
+
+
+
+
+
+
 {
     title: "Arcane",
     image: "Images/A.jpg",
