@@ -316,7 +316,7 @@ nav button:hover {
 
 /* MODIFICATION TO FIX THE UNEVEN GRID LAYOUT */
 .series-item h4 {
-  font-size:1rem;
+  font-size:0.5rem;
 }
 
 .series-details {
