@@ -1,17 +1,7 @@
 // series.js
 const seriesData = [
 
-{
-  title: " Miraculous Ladybug(S1)",
-  image: "Images/ml.jpeg",
-  description: " .",
-  genres: ["Action", "Adventure", "Comedy", "Fantasy"],
-  episodes: [
-    { title: "Episode 1", link:"https://drive.google.com/file/d/1qKUoEQjxxHreSnvhL17mPlacN5tHvpH5/preview" },
-    { title: "Episode 2", link:"https://drive.google.com/file/d/1qJiQOwE94sFPA1Nj9TVFvy4sBNI6rTdS/preview" },
-  
-  ]
-},
+
 
 
 {
@@ -170,6 +160,23 @@ const seriesData = [
       { title: "Episode 10", link: "https://drive.google.com/file/d/11uRZmLQxY52jeIsQKiw6vf2d1jTiCBlr/preview" },
     ]
   },
+
+
+
+{
+  title: " Miraculous Ladybug(S1)",
+  image: "Images/ml.jpeg",
+  description: " Miraculous Ladybug season 1 introduces Parisian teenagers Marinette Dupain-Cheng and Adrien Agreste, who are chosen to become the superheroes Ladybug and Cat Noir. They must work together to protect Paris from the villainous Hawk Moth, who uses his power to turn ordinary people with strong negative emotions into supervillains.",
+  genres: ["Action", "Adventure", "Comedy", "Fantasy"],
+  episodes: [
+    { title: "Episode 1", link:"https://drive.google.com/file/d/1qKUoEQjxxHreSnvhL17mPlacN5tHvpH5/preview" },
+    { title: "Episode 2", link:"https://drive.google.com/file/d/1qJiQOwE94sFPA1Nj9TVFvy4sBNI6rTdS/preview" },
+  
+  ]
+},
+
+
+
   {
     title: "Demon Slayer (s3)",
     image: "Images/DM.jpg",
