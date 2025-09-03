@@ -6,7 +6,7 @@ const movieData = [
     image: "Images/dc.jpeg",
     description: "Maze Runner: The Death Cure follows Thomas and the surviving Gladers as they embark on their final mission—to break into the legendary Last City, a stronghold controlled by WCKD. Inside, they face the deadliest maze of all in a desperate attempt to rescue their friends and find a cure for the deadly Flare virus. Loyalties are tested, sacrifices are made, and the fate of humanity hangs in the balance.",
     genres: ["Adventure", "Action","Sci-Fi","Thriller"],
-    link: "  "
+    link: "https://drive.google.com/file/d/1s3Nfb0f20kyS39nPoyvxMDgLPzYmE_Ya/preview"
   },
 
 
