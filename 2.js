@@ -196,7 +196,7 @@ const seriesData = [
     episodes: [
                       { title: "Episode 1", link: "https://drive.google.com/file/d/1az4hVHLA1vH_xrROD8VjiUPGEQESDm8Q/preview " },
                   { title: "Episode 2", link: "https://drive.google.com/file/d/1b1RR4bk-IHYHCF-7DsinO-5HSdqpcgOv/preview " },   
-                     { title: "Episode 3", link: "https:drive.google.com/file/d/1cgQ2EGa8GZQNLQFHmH-NUlRkLztL8Rqj/preview " },
+                     { title: "Episode 3", link: "https://drive.google.com/file/d/1cgQ2EGa8GZQNLQFHmH-NUlRkLztL8Rqj/preview"},
 { title: "Episode 4", link: "https://drive.google.com/file/d/1cngB9Nx1TysiG9W1_mpSRDSNbr3DivUX/preview " },
 { title: "Episode 5", link: "https://drive.google.com/file/d/1cszf6WptniPQQgm-imt6Y7nkSGJRDVvE/preview " },
 { title: "Episode 6", link: "https://drive.google.com/file/d/1cwwVcMVjL0VM_llB0R-ToTFAF0LtR4Qn/preview " },
