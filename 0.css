@@ -203,22 +203,23 @@ nav button:hover {
 .genre-buttons {
   margin: 1.5rem 0;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-wrap: nowrap;        /* stay in one row */
+  justify-content: flex-start;
   gap: 0.7rem;
-  padding: 0.5rem;
-  overflow-x: auto;
-  text-align: center;
-  scrollbar-width: thin;
+  overflow-x: auto;         /* horizontal scroll if too many */
+  overflow-y: hidden;       /* prevent vertical stacking */
+  white-space: nowrap;      /* ensure no line breaks */
+  padding-bottom: 0.5rem;   /* space for scrollbar if needed */
 }
-
 .genre-buttons::-webkit-scrollbar {
-  height: 6px;
+  height: 6px;              /* small scrollbar */
 }
-
 .genre-buttons::-webkit-scrollbar-thumb {
-  background: var(--primary-blue);
-  border-radius: 5px;
+  background: #666;
+  border-radius: 3px;
+}
+.genre-buttons::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .genre-buttons button {
