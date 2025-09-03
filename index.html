@@ -4,14 +4,21 @@
   <meta charset="UTF-8" />
   <title>BayWatch</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="0.css">
-<link rel="apple-touch-icon" sizes="180x180" href="Images/BW.png">
-<link rel="icon" type="image/png" sizes="48x48" href="Images/BW.png">
-<link rel="icon" type="image/x-icon" href="Images/BW.png">
+  
+  <!-- Futuristic CSS -->
+  <link rel="stylesheet" href="0.css">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="Images/BW.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="Images/BW.png">
+  <link rel="icon" type="image/x-icon" href="Images/BW.png">
+
+  <!-- Google Fonts for Futuristic Look -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-
+  <!-- Navigation -->
   <nav>
     <button onclick="showSection('home')">Home</button>
     <button onclick="showSection('movies')">Movies</button>
@@ -19,21 +26,27 @@
     <button onclick="showWatchLater()">Watch Later</button>
   </nav>
 
-   
-<div id="home" class="section">
-    <h1>Baywatch</h1>
-    <p>NB:The page is still under development</p>
-    <p>We highly advice you to dawnload Google drive which will make you watching experience better and watch movies or shows in their highest quality and it will provide additional features and you have to do is have Google drive then when you watch a movie or show press the black box on the top right to have all that, thank you!</p>
+  <!-- Home Section -->
+  <div id="home" class="section active">
+    <h1>BayWatch</h1>
+    <p class="tagline">⚡ Futuristic Media Experience ⚡</p>
+    <p class="info-text">
+      NB: The page is still under development.<br><br>
+      For the best experience, we recommend using Google Drive. 
+      When watching a movie or show, tap the box in the top-right corner 
+      for maximum quality and features.  
+    </p>
   </div>
 
-
+  <!-- Series Section -->
   <div id="series" class="section">
     <h2>Shows</h2>
-    <div class="search-container"> <div class="search-box">
-            <input type="text" id="seriesSearch" placeholder="Search for a series...">
-            <button class="search-button" onclick="searchContent('series')">Search</button>
-        </div>
-        <div id="seriesSuggestions" class="suggestions-container"></div>
+    <div class="search-container">
+      <div class="search-box">
+        <input type="text" id="seriesSearch" placeholder="Search for a series...">
+        <button class="search-button" onclick="searchContent('series')">Search</button>
+      </div>
+      <div id="seriesSuggestions" class="suggestions-container"></div>
     </div>
 
     <div class="genre-buttons" id="seriesGenreButtons"></div>
@@ -41,31 +54,37 @@
     <div id="seriesDetails" class="series-details" style="display: none;"></div>
   </div>
 
+  <!-- Movies Section -->
   <div id="movies" class="section">
     <h2>Movies</h2>
-    <div class="search-container"> <div class="search-box">
-            <input type="text" id="movieSearch" placeholder="Search for a movie...">
-            <button class="search-button" onclick="searchContent('movies')">Search</button>
-        </div>
-        <div id="movieSuggestions" class="suggestions-container"></div>
+    <div class="search-container">
+      <div class="search-box">
+        <input type="text" id="movieSearch" placeholder="Search for a movie...">
+        <button class="search-button" onclick="searchContent('movies')">Search</button>
+      </div>
+      <div id="movieSuggestions" class="suggestions-container"></div>
     </div>
+
     <div class="genre-buttons" id="movieGenreButtons"></div>
     <div id="movieList" class="series-grid"></div>
     <div id="movieDetails" class="series-details" style="display: none;"></div>
   </div>
 
+  <!-- Watch Later Section -->
   <div id="watchLater" class="section">
     <h2>Your Watch Later List</h2>
     <div id="watchLaterList" class="series-grid"></div>
   </div>
 
+  <!-- Fullscreen Video -->
   <div id="videoFullScreen">
-    <button onclick="closeFullScreen()">Back</button>
+    <button onclick="closeFullScreen()">✖</button>
     <iframe src="" allowfullscreen></iframe>
   </div>
 
-<script src="2.js"></script>
-<script src="3.js"></script>
-<script src="1.js"></script>
+  <!-- Scripts -->
+  <script src="2.js"></script>
+  <script src="3.js"></script>
+  <script src="1.js"></script>
 </body>
 </html>
