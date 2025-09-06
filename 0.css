@@ -416,7 +416,7 @@ nav button:hover {
 
 .btn {
   padding: 0.4rem;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: bold;
   border-radius: 10px;
   background: var(--primary-blue);
