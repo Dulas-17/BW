@@ -434,7 +434,7 @@ nav button:hover {
 
 .back {
   padding: 1rem 1.8rem;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: bold;
   border-radius: 10px;
   background: #dc3545;
@@ -454,7 +454,7 @@ nav button:hover {
 
 .watch-later-btn {
   padding: 0.4rem;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: bold;
   border-radius: 10px;
   background: #ffc107;
@@ -473,7 +473,7 @@ nav button:hover {
 
 .remove-watch-later-btn {
   padding: 0.4rem;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   font-weight: bold;
   border-radius: 10px;
   background: #e74c3c;
