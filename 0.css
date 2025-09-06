@@ -324,6 +324,7 @@ nav button:hover {
 .series-details {
   text-align: center;
   margin-top: 1rem;
+max-width:768px;
 }
 
 .series-details img {
