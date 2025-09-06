@@ -1,3 +1,7 @@
+// Data for series and movies. (Assumes these are defined in 2.js and 3.js)
+// const seriesData = [...]
+// const movieData = [...]
+
 const content = {
   series: seriesData,
   movies: movieData,
@@ -14,7 +18,7 @@ let currentPlayingIndex = null;
 function playEpisode(link, episodeTitle = null, type, index) {
   const player = document.getElementById('videoFullScreen');
   const iframe = player.querySelector('iframe');
-  
+
   // Save the current video's details to global variables
   currentPlayingType = type;
   currentPlayingIndex = index;
@@ -26,7 +30,7 @@ function playEpisode(link, episodeTitle = null, type, index) {
 function closeFullScreen() {
   const player = document.getElementById('videoFullScreen');
   const iframe = player.querySelector('iframe');
-  
+
   // When the video is closed, mark it as "watched" in local storage
   if (currentPlayingType !== null && currentPlayingIndex !== null) {
       saveAsWatched(currentPlayingType, currentPlayingIndex);
@@ -132,9 +136,8 @@ function showSection(id) {
     showWatchLater();
   }
 
-  setTimeout(() => {
-    restoreScrollPosition(id);
-  }, 0);
+  // NOTE: We no longer restore the scroll position here.
+  // It's now handled explicitly in goBackToList and on DOMContentLoaded
 }
 
 // --- Search Functionality ---
@@ -534,6 +537,13 @@ function goBackToList(type) {
 
   let targetSectionId = originSection === 'watchLater' ? 'watchLater' : type;
   showSection(targetSectionId);
+
+  // NOTE: This is the fix. We add a short delay to ensure the content is
+  // rendered before we try to restore the scroll position.
+  setTimeout(() => {
+    restoreScrollPosition(targetSectionId);
+    console.log(`Scroll position restored for ${targetSectionId}.`);
+  }, 100);
 }
 
 // --- Watch Later Functionality ---
