@@ -323,9 +323,8 @@ nav button:hover {
 
 .series-details {
   text-align: center;
-justify-content:center;
   margin-top: 1rem;
-max-width:768px;
+
 }
 
 .series-details img {
@@ -334,7 +333,6 @@ max-width:768px;
   object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  justify-content:center;
 }
 
 .episode-buttons {
