@@ -543,7 +543,7 @@ function goBackToList(type) {
   setTimeout(() => {
     restoreScrollPosition(targetSectionId);
     console.log(`Scroll position restored for ${targetSectionId}.`);
-  }, 100);
+  }, 50);
 }
 
 // --- Watch Later Functionality ---
