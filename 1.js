@@ -12,6 +12,7 @@ let searchDebounceTimeout;
 let suggestionDebounceTimeout;
 let currentPlayingType = null;
 let currentPlayingIndex = null;
+let scrollPosition = {}; // New global object to store scroll positions
 
 // --- Video Playback & Tracking ---
 
@@ -19,7 +20,6 @@ function playEpisode(link, episodeTitle = null, type, index) {
   const player = document.getElementById('videoFullScreen');
   const iframe = player.querySelector('iframe');
 
-  // Save the current video's details to global variables
   currentPlayingType = type;
   currentPlayingIndex = index;
 
@@ -31,7 +31,6 @@ function closeFullScreen() {
   const player = document.getElementById('videoFullScreen');
   const iframe = player.querySelector('iframe');
 
-  // When the video is closed, mark it as "watched" in local storage
   if (currentPlayingType !== null && currentPlayingIndex !== null) {
       saveAsWatched(currentPlayingType, currentPlayingIndex);
   }
@@ -40,20 +39,22 @@ function closeFullScreen() {
   player.style.display = 'none';
   restoreScrollPosition(localStorage.getItem('lastActiveSection'));
 
-  // Reset global variables
   currentPlayingType = null;
   currentPlayingIndex = null;
 }
 
 // --- Local Storage Utilities ---
 function saveScrollPosition(sectionId) {
+  scrollPosition[sectionId] = window.scrollY;
   localStorage.setItem(`scrollPosition_${sectionId}`, window.scrollY);
+  console.log(`Saved scroll for ${sectionId}: ${window.scrollY}`);
 }
 
 function restoreScrollPosition(sectionId) {
   const storedScrollY = localStorage.getItem(`scrollPosition_${sectionId}`);
   if (storedScrollY) {
     window.scrollTo(0, parseInt(storedScrollY, 10));
+    console.log(`Restored scroll for ${sectionId}: ${storedScrollY}`);
   }
 }
 
@@ -62,7 +63,6 @@ function saveState(sectionId, detailType = null, detailIndex = null, originSecti
   localStorage.setItem('lastActiveSection', sectionId);
 
   if (detailType !== null && detailIndex !== null) {
-    saveScrollPosition(sectionId);
     localStorage.setItem('lastDetailType', detailType);
     localStorage.setItem('lastDetailIndex', detailIndex);
   } else {
@@ -79,13 +79,11 @@ function saveState(sectionId, detailType = null, detailIndex = null, originSecti
   }
 }
 
-// Function to save an item as "watched"
 function saveAsWatched(type, index) {
   const key = `watched_${type}_${index}`;
   localStorage.setItem(key, 'true');
 }
 
-// Function to check if an item has been watched
 function isWatched(type, index) {
   const key = `watched_${type}_${index}`;
   return localStorage.getItem(key) === 'true';
@@ -135,9 +133,6 @@ function showSection(id) {
   } else if (id === 'watchLater') {
     showWatchLater();
   }
-
-  // NOTE: We no longer restore the scroll position here.
-  // It's now handled explicitly in goBackToList and on DOMContentLoaded
 }
 
 // --- Search Functionality ---
@@ -175,7 +170,6 @@ function performSearch(type) {
       showMovieList(filtered, query);
     }
   }
-  saveScrollPosition(type === 'series' ? 'series' : 'movies');
 }
 
 function searchContent(type) {
@@ -335,7 +329,7 @@ function showSeriesList(list = null, query = '') {
     div.innerHTML = `
           <img src="${s.image}" alt="${s.title}" />
           <h4>${highlightedTitle}</h4>
-          <button onclick="showSeriesDetails(${originalIndex})" class="btn">Open</button>
+          <button onclick="saveScrollAndShowDetails('series', ${originalIndex})" class="btn">Open</button>
           <button onclick="addToWatchLater('series', ${originalIndex})" class="watch-later-btn">Watch Later</button>
         `;
     container.appendChild(div);
@@ -373,7 +367,7 @@ function showMovieList(list = null, query = '') {
     div.innerHTML = `
           <img src="${m.image}" alt="${m.title}" />
           <h4>${highlightedTitle}</h4>
-          <button onclick="showMovieDetails(${originalIndex})" class="btn">Open</button>
+          <button onclick="saveScrollAndShowDetails('movie', ${originalIndex})" class="btn">Open</button>
           <button onclick="addToWatchLater('movie', ${originalIndex})" class="watch-later-btn">Watch Later</button>
         `;
     container.appendChild(div);
@@ -435,6 +429,19 @@ function copyLinkToClipboard(type, index) {
 
 
 // --- Detail View Functions ---
+
+// NEW: Helper function to save scroll position before showing details
+function saveScrollAndShowDetails(type, index) {
+  const sectionId = type === 'series' ? 'series' : 'movies';
+  saveScrollPosition(sectionId);
+
+  if (type === 'series') {
+    showSeriesDetails(index);
+  } else {
+    showMovieDetails(index);
+  }
+}
+
 function showSeriesDetails(i, originSection = null) {
   console.log(`showSeriesDetails called for index: ${i}, origin: ${originSection}`);
   const s = content.series[i];
@@ -538,12 +545,10 @@ function goBackToList(type) {
   let targetSectionId = originSection === 'watchLater' ? 'watchLater' : type;
   showSection(targetSectionId);
 
-  // NOTE: This is the fix. We add a short delay to ensure the content is
-  // rendered before we try to restore the scroll position.
-  setTimeout(() => {
+  // Use requestAnimationFrame for a smoother, more reliable scroll
+  requestAnimationFrame(() => {
     restoreScrollPosition(targetSectionId);
-    console.log(`Scroll position restored for ${targetSectionId}.`);
-  }, 50);
+  });
 }
 
 // --- Watch Later Functionality ---
@@ -732,26 +737,4 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-
-  let scrollTimer;
-  window.addEventListener('scroll', function() {
-    clearTimeout(scrollTimer);
-    scrollTimer = setTimeout(() => {
-      const currentSection = localStorage.getItem('lastActiveSection');
-      const onDetailPage = localStorage.getItem('lastDetailType');
-
-      if (currentSection && !onDetailPage) {
-        saveScrollPosition(currentSection);
-      }
-    }, 200);
-  });
-
-  window.addEventListener('beforeunload', () => {
-    const currentSection = localStorage.getItem('lastActiveSection');
-    const onDetailPage = localStorage.getItem('lastDetailType');
-
-    if (currentSection && !onDetailPage) {
-      saveScrollPosition(currentSection);
-    }
-  });
 });
