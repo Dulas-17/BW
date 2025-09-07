@@ -108,7 +108,7 @@ const movieData = [
     image: "Images/after.jpeg",
     description: "After follows Tessa Young, a dedicated student and loyal girlfriend, whose life changes when she enters university. There, she meets Hardin Scott, a mysterious and rebellious young man who challenges her beliefs and emotions. As their worlds collide, Tessa finds herself torn between who she was and who she is becoming.",
     genres: ["Romance", "Drama"],
-    link: "  "
+    link: "https://drive.google.com/file/d/11vS3r_-J0AbrJ7ZiHxomcUbffT42JZIr/preview "
   },
   {
     title: "Five Feet Apart",
@@ -122,7 +122,7 @@ const movieData = [
     image: "Images/girlsrules.jpeg",
     description: "In American Pie: Girls' Rules, a new generation of girls at East Great Falls High decide to take control of their senior year. With friendships, love, and teenage chaos at the center, they flip the script on classic high school traditions, bringing humor and heart to the iconic comedy franchise.",
     genres: ["Comedy", "Teen"],
-    link: "  "
+    link: "https://drive.google.com/file/d/124RCrNC-ezCjsQMmvziLK9yqM1qfNtr3/preview  "
   },
 
 
