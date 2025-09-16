@@ -10,14 +10,14 @@ const movieData = [
     image: "Images/moana2.jpeg",
     description: "Three years after her adventure with Maui and restoring Te Fiti, Moana, now Motunui’s tautai (master wayfinder), discovers that the island which once connected all lands has sunk. When a curse threatens her people’s survival, she assembles a crew to journey across the seas to raise the lost island and restore connection among her people—facing storms, loss, and sacrifice along the way.",
     genres: ["Animation", "Adventure", "Fantasy", "Family"],
-    link: "  "
+    link: "https://drive.google.com/file/d/1mPfGxkiAdrPeBIddcZzhKk8LEr5dzx-0/preview"
 },
 {
     title: "Sinners",
     image: "Images/sinners.jpeg",
     description: "Set in 1932 Mississippi, Sinners follows twin brothers Smoke and Stack (both played by Michael B. Jordan), who return from working in Chicago to open a Black-owned juke joint in their hometown. Their plans collide with supernatural horror, Jim Crow oppression, music, and the weight of history in a Southern Gothic telling of identity, return, and evil unseen.",
     genres: ["Horror", "Supernatural", "Drama", "Musical"],
-    link: "  "
+    link: "https://drive.google.com/file/d/1cJSi1Y8HiEy4EmSn2cYV5McVMd9GcTZK/preview"
 },
 
 {
@@ -41,7 +41,7 @@ const movieData = [
     title: "Weathering with you",
     image: "Images/wwy.jpeg",
     description: "Weathering With You follows Hodaka, a runaway teen in Tokyo, who meets Hina, a girl with the mysterious ability to control the weather. As they grow close, Hina’s gift becomes both a blessing and a curse, forcing them to make difficult choices about love, sacrifice, and the balance between human desires and nature’s power. ",
-    genres: ["Adventure", "Romance","Fantasy","Slice of Life"],
+    genres: ["Adventure","Animation" "Romance","Fantasy","Slice of Life"],
     link: "https://drive.google.com/file/d/1l_Rts-j3QIKjtPkv-I1AftrVheqJmRyk/preview "
   },
 
@@ -50,7 +50,7 @@ const movieData = [
     title: "Free Guy",
     image: "Images/fg.webp",
     description: "Free Guy follows Guy, a cheerful bank teller who discovers he is actually a background character in an open-world video game. As he becomes self-aware, Guy takes control of his destiny, teaming up with a real-world player to save the game from being shut down. Along the way, he learns what it means to be a true hero in both the digital and real worlds. ",
-    genres: ["Animation","Adventure", "Comedy","Action","Fantasy"],
+    genres: ["Adventure", "Comedy","Action","Fantasy"],
     link: "https://drive.google.com/file/d/1cRVyAhKAWqFxwnUW21mJrjIWkqWeh0hk/preview"
   },
 
@@ -84,7 +84,7 @@ const movieData = [
     title: "Konosuba",
     image: "Images/k.jpeg",
     description: "Kazuma and his friends set out to help the village of the Crimson demons when they're attacked by the frightening demon king's army. ",
-    genres: ["Adventure", "Comedy","Fantasy","Isekai"],
+    genres: ["Adventure","Animation", "Comedy","Fantasy","Isekai"],
     link: "https://drive.google.com/file/d/1lgfFpM0JpatalyaOSyyHflhzUD0JwbgI/preview "
   },
 
