@@ -1,6 +1,25 @@
 // movies.js
 const movieData = [
 
+
+
+
+
+{
+    title: "Moana 2",
+    image: "Images/moana2.jpeg",
+    description: "Three years after her adventure with Maui and restoring Te Fiti, Moana, now Motunui’s tautai (master wayfinder), discovers that the island which once connected all lands has sunk. When a curse threatens her people’s survival, she assembles a crew to journey across the seas to raise the lost island and restore connection among her people—facing storms, loss, and sacrifice along the way.",
+    genres: ["Animation", "Adventure", "Fantasy", "Family"],
+    link: "  "
+},
+{
+    title: "Sinners",
+    image: "Images/sinners.jpeg",
+    description: "Set in 1932 Mississippi, Sinners follows twin brothers Smoke and Stack (both played by Michael B. Jordan), who return from working in Chicago to open a Black-owned juke joint in their hometown. Their plans collide with supernatural horror, Jim Crow oppression, music, and the weight of history in a Southern Gothic telling of identity, return, and evil unseen.",
+    genres: ["Horror", "Supernatural", "Drama", "Musical"],
+    link: "  "
+},
+
 {
     title: "Maze Runner:The death cure",
     image: "Images/dc.jpeg",
