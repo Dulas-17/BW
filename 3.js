@@ -41,7 +41,7 @@ const movieData = [
     title: "Weathering with you",
     image: "Images/wwy.jpeg",
     description: "Weathering With You follows Hodaka, a runaway teen in Tokyo, who meets Hina, a girl with the mysterious ability to control the weather. As they grow close, Hina’s gift becomes both a blessing and a curse, forcing them to make difficult choices about love, sacrifice, and the balance between human desires and nature’s power. ",
-    genres: ["Adventure","Animation" "Romance","Fantasy","Slice of Life"],
+    genres: ["Adventure","Animation",  "Romance","Fantasy","Slice of Life"],
     link: "https://drive.google.com/file/d/1l_Rts-j3QIKjtPkv-I1AftrVheqJmRyk/preview "
   },
 
