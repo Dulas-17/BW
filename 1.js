@@ -9,20 +9,6 @@ const content = {
 
 
 
-// Place this at the bottom of your JS, after DOMContentLoaded or at the end of the file
-const buttonSound = new Audio('click.mp3'); // Replace 'click.mp3' with your sound file path
-
-document.addEventListener('click', (e) => {
-  if (e.target.tagName === 'BUTTON') {
-    try {
-      buttonSound.currentTime = 0; // reset if sound is still playing
-      buttonSound.play();
-    } catch (err) {
-      console.error('Failed to play button sound:', err);
-    }
-  }
-});
-
 
 
 // Global variables for debouncing and video tracking
