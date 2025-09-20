@@ -2,7 +2,13 @@
 const movieData = [
 
 
-
+{
+    title: "I Want to Eat Your Pancreas",
+    image: "Images/pancreas.jpeg",
+    description: "An introverted high school boy discovers the diary of his popular classmate, Sakura Yamauchi, and learns she is secretly suffering from a terminal pancreatic illness. Despite their differences, the two form an unexpected friendship that changes both their lives forever. As they share bittersweet moments together, he learns the value of living fully, even in the face of loss.",
+    genres: ["Animation", "Drama", "Romance", "Slice of Life"],
+    link: "https://drive.google.com/file/d/1N4GNzR3572bpCNiNmSBV2FK7R1_M4BPy/preview  "
+},
 
 
 {
