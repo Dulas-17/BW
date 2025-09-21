@@ -8,15 +8,42 @@ const content = {
 };
 
 
-function showNav() {
-  document.querySelector("nav").style.display = "flex"; // or block
-  document.body.classList.remove("no-nav");
+function openSeriesItem(id) {
+  // Hide the nav
+  const nav = document.querySelector("nav");
+  if (nav) nav.style.display = "none";
+
+  // Adjust body padding (header only)
+  document.body.classList.add("no-nav");
+
+  // Show the series details (your existing logic)
+  const section = document.getElementById(id);
+  if (section) {
+    section.classList.add("active");
+  }
 }
 
-function hideNav() {
-  document.querySelector("nav").style.display = "none";
-  document.body.classList.add("no-nav");
+function closeSeriesItem(id) {
+  // Show the nav again
+  const nav = document.querySelector("nav");
+  if (nav) nav.style.display = "flex"; // or block, depending on your layout
+
+  // Reset body padding (header + nav)
+  document.body.classList.remove("no-nav");
+
+  // Hide the series details (your existing logic)
+  const section = document.getElementById(id);
+  if (section) {
+    section.classList.remove("active");
+  }
 }
+
+
+
+
+
+
+
 
 function updateHeaderTitle(title) {
   const pageTitle = document.getElementById("pageTitle");
