@@ -1,25 +1,22 @@
 // movies.js
 const movieData = [
 
+
+
 {
     title: "A Silent Voice",
-    image: "Images/asilentvoice.jpeg",
+    image: "Images/asilentvoice .jpeg",
     description: "A Silent Voice follows Shōya Ishida, a former bully burdened by guilt, who tries to reconnect with Shōko Nishimiya, a deaf girl he tormented in elementary school. Ostracized by classmates himself, he must confront his past behaviour and seek forgiveness, rebuilding relationships and finding meaning in the process.",
     genres: ["Animation", "Drama", "Romance", "Slice of Life"],
-    link: "  "
+    link: "https://drive.google.com/file/d/1xbDRbsTIir88DJsKmk0wZZKkp3IWl3Ku/preview"
 },
 {
     title: "The Tunnel to Summer",
     image: "Images/tunnel.jpeg",
     description: "Kaoru Tono stumbles upon a mysterious tunnel rumored to grant any wish, though at a cost: time passes differently inside. When he meets Anzu Hanashiro, a new transfer student, the two team up to explore the tunnel’s secrets. As they wrestle with their desires and regrets, they must decide what they are willing to sacrifice for a chance at happiness.",
     genres: ["Animation", "Drama", "Romance", "Fantasy", "Slice of Life"],
-    link: "  "
+    link: "https://drive.google.com/file/d/1E0v3XxdchD79PuXtiUCdx0F4vaj50TwK/preview "
 },
-
-
-
-
-
 {
     title: "I Want to Eat Your Pancreas",
     image: "Images/pancreas.jpeg",
@@ -27,8 +24,6 @@ const movieData = [
     genres: ["Animation", "Drama", "Romance", "Slice of Life"],
     link: "https://drive.google.com/file/d/1N4GNzR3572bpCNiNmSBV2FK7R1_M4BPy/preview  "
 },
-
-
 {
     title: "Moana 2",
     image: "Images/moana2.jpeg",
@@ -43,7 +38,6 @@ const movieData = [
     genres: ["Horror", "Supernatural", "Drama", "Musical"],
     link: "https://drive.google.com/file/d/1cJSi1Y8HiEy4EmSn2cYV5McVMd9GcTZK/preview"
 },
-
 {
     title: "Maze Runner:The death cure",
     image: "Images/dc.jpeg",
@@ -51,8 +45,6 @@ const movieData = [
     genres: ["Adventure", "Action","Sci-Fi","Thriller"],
     link: "https://drive.google.com/file/d/1s3Nfb0f20kyS39nPoyvxMDgLPzYmE_Ya/preview"
   },
-
-
 {
     title: "Maze Runner:The scorch trials",
     image: "Images/st.jpeg",
@@ -60,7 +52,6 @@ const movieData = [
     genres: ["Adventure", "Action","Thriller","Sci-Fi"],
     link: "https://drive.google.com/file/d/1oM--0OMZxRbUOKGLoWvYTTycKsgKrnP0/preview "
   },
-
 {
     title: "Weathering with you",
     image: "Images/wwy.jpeg",
@@ -68,8 +59,6 @@ const movieData = [
     genres: ["Adventure","Animation",  "Romance","Fantasy","Slice of Life"],
     link: "https://drive.google.com/file/d/1l_Rts-j3QIKjtPkv-I1AftrVheqJmRyk/preview "
   },
-
-
 {
     title: "Free Guy",
     image: "Images/fg.webp",
@@ -77,17 +66,13 @@ const movieData = [
     genres: ["Adventure", "Comedy","Action","Fantasy"],
     link: "https://drive.google.com/file/d/1cRVyAhKAWqFxwnUW21mJrjIWkqWeh0hk/preview"
   },
-
-
-
   {
     title: "The Maze Runner",
     image: "Images/cover7 .jpeg",
     description: "Thomas loses his memory and finds himself trapped in a massive maze called the Glade. He and his friends try to escape from the maze and eventually learn that they are subjects of an experiment. ",
     genres: ["Adventure", "Action", "Thriller", "Mystery", "Sci-Fi"],
     link: "https://drive.google.com/file/d/1EDZUjrtc-fCUeaLyEx-Bes_wchTs-JAV/preview"
-  }, // <-- Comma added here
-
+  }, 
   {
     title: "Your Name",
     image: "Images/Cover3.jpeg",
@@ -95,7 +80,6 @@ const movieData = [
     genres: ["Animation", "Slice of Life","Romance", "Fantasy", "Drama"],
     link: "https://drive.google.com/file/d/1apFvCPgIKV4t3y27dlzwCUqqMRI8UjJz/preview"
   },
-
   {
     title: "The Life List",
     image: "Images/Cover1.jpeg",
@@ -103,7 +87,6 @@ const movieData = [
     genres: ["Drama", "Family", "Adventure"],
     link: "https://drive.google.com/file/d/12tRqoJ9sXycE7RODnlxu11HVR7wcZbtL/preview"
   },
-
 {
     title: "Konosuba",
     image: "Images/k.jpeg",
@@ -111,8 +94,6 @@ const movieData = [
     genres: ["Adventure","Animation", "Comedy","Fantasy","Isekai"],
     link: "https://drive.google.com/file/d/1lgfFpM0JpatalyaOSyyHflhzUD0JwbgI/preview "
   },
-
-
   {
     title: "Power Rangers",
     image: "Images/Cover2.jpeg",
@@ -120,7 +101,6 @@ const movieData = [
     genres: ["Action", "Sci-Fi", "Adventure"],
     link: "https://drive.google.com/file/d/17looZTle9cX9De1f6gN5QUcBhopDoKvx/preview"
   },
-
   {
     title: "Fight or Flight",
     image: "Images/fof.jpeg",
@@ -128,7 +108,6 @@ const movieData = [
     genres: ["Action", "Thriller"],
     link: "https://drive.google.com/file/d/1NOmVKcv5iDy3cEDIvgTb9j9801lQTQc1/preview"
   },
-
   {
     title: "The Swimmers",
     image: "Images/ts.jpeg",
@@ -136,7 +115,6 @@ const movieData = [
     genres: ["Adventure", "Bibliography", "Drama"],
     link: "https://drive.google.com/file/d/1JkUj0q7_zGIiHegH40aDmYQW8wxmW5mR/preview"
   },
-
   {
     title: "The Kissing Booth",
     image: "Images/tkb.jpeg",
@@ -144,8 +122,6 @@ const movieData = [
     genres: ["Romance", "Comedy"],
     link: "https://drive.google.com/file/d/1KeGGJbvLWWEXeZH_CAOotK75Wdi-yR7C/preview"
   },
-
-
 {
     title: "After",
     image: "Images/after.jpeg",
