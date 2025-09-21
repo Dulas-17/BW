@@ -1,6 +1,24 @@
 // movies.js
 const movieData = [
 
+{
+    title: "A Silent Voice",
+    image: "Images/asilentvoice.jpeg",
+    description: "A Silent Voice follows Shōya Ishida, a former bully burdened by guilt, who tries to reconnect with Shōko Nishimiya, a deaf girl he tormented in elementary school. Ostracized by classmates himself, he must confront his past behaviour and seek forgiveness, rebuilding relationships and finding meaning in the process.",
+    genres: ["Animation", "Drama", "Romance", "Slice of Life"],
+    link: "  "
+},
+{
+    title: "The Tunnel to Summer",
+    image: "Images/tunnel.jpeg",
+    description: "Kaoru Tono stumbles upon a mysterious tunnel rumored to grant any wish, though at a cost: time passes differently inside. When he meets Anzu Hanashiro, a new transfer student, the two team up to explore the tunnel’s secrets. As they wrestle with their desires and regrets, they must decide what they are willing to sacrifice for a chance at happiness.",
+    genres: ["Animation", "Drama", "Romance", "Fantasy", "Slice of Life"],
+    link: "  "
+},
+
+
+
+
 
 {
     title: "I Want to Eat Your Pancreas",
