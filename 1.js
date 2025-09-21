@@ -7,6 +7,17 @@ const content = {
   movies: movieData,
 };
 
+
+function showNav() {
+  document.querySelector("nav").style.display = "flex"; // or block
+  document.body.classList.remove("no-nav");
+}
+
+function hideNav() {
+  document.querySelector("nav").style.display = "none";
+  document.body.classList.add("no-nav");
+}
+
 function updateHeaderTitle(title) {
   const pageTitle = document.getElementById("pageTitle");
   if (pageTitle) {
