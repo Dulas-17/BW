@@ -1,8 +1,13 @@
 // movies.js
 const movieData = [
 
-
-
+{
+    title: "Creed III",
+    image: "Images/creed3.jpeg",
+    description: "In Creed III, Adonis Creed has been thriving in both his career and family life, but his world is shaken when a childhood friend and former boxing prodigy, Damian Anderson, resurfaces after serving time in prison. What begins as a reunion quickly turns into a rivalry, as Damian is eager to prove himself and take everything Adonis has built. To settle their differences, Adonis must face Damian in the ring, confronting his past and fighting for his future.",
+    genres: ["Drama", "Sports", "Action"],
+    link: "  "
+},
 {
     title: "A Silent Voice",
     image: "Images/asilentvoice .jpeg",
