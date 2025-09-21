@@ -7,6 +7,13 @@ const content = {
   movies: movieData,
 };
 
+function updateHeaderTitle(title) {
+  const pageTitle = document.getElementById("pageTitle");
+  if (pageTitle) {
+    pageTitle.textContent = title;
+  }
+}
+
 // Place this at the bottom of your JS, after DOMContentLoaded or at the end of the file
 const buttonSound = new Audio('click2.mp3'); // Replace 'click.mp3' with your sound file path
 
