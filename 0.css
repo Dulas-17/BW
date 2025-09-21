@@ -11,7 +11,7 @@ header {
   background-color:skyblue; /* dark background, change if needed */
   color: #fff;
   display: flex;
-  align-items: center;
+  align-items: left;
   justify-content: center;
   z-index: 1000;
   box-shadow: 0 2px 5px rgba(0,0,0,0.3);
