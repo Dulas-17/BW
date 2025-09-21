@@ -2,6 +2,11 @@
    VARIABLES & BASE STYLES
    ================================== */
 
+body.no-nav {
+  padding-top: 40px; /* only header height */
+}
+
+
 header {
   position: fixed;
   top: 0;
@@ -26,7 +31,7 @@ header h1 {
 /* Push page content down so it doesn't hide under header */
 body {
   margin: 0;
-  padding-top: 90px auto; /* same as header height */
+  padding-top: 100px ; /* same as header height */
 }
 
 
@@ -79,7 +84,7 @@ a:hover {
 
 nav {
   position:fixed;
-  top:50px;
+  top:40px;
   z-index:1000;
   background: var(--surface-light);
   padding: 1rem;
