@@ -16,7 +16,7 @@
 </header>
 
   <nav>
-  <button onclick="showSection('home'); updateHeaderTitle('Home')">Home</button>
+  <button onclick="showSection('home'); updateHeaderTitle('BayWatch')">Home</button>
   <button onclick="showSection('movies'); updateHeaderTitle('Movies')">Movies</button>
   <button onclick="showSection('series'); updateHeaderTitle('Series')">Series</button>
   <button onclick="showWatchLater(); updateHeaderTitle('Watch Later')">Watch Later</button>
@@ -31,7 +31,7 @@
 
 
   <div id="series" class="section">
-    <h2>Shows</h2>
+   
     <div class="search-container"> <div class="search-box">
             <input type="text" id="seriesSearch" placeholder="Search for a series...">
             <button class="search-button" onclick="searchContent('series')">Search</button>
@@ -45,7 +45,7 @@
   </div>
 
   <div id="movies" class="section">
-    <h2>Movies</h2>
+    
     <div class="search-container"> <div class="search-box">
             <input type="text" id="movieSearch" placeholder="Search for a movie...">
             <button class="search-button" onclick="searchContent('movies')">Search</button>
@@ -58,7 +58,7 @@
   </div>
 
   <div id="watchLater" class="section">
-    <h2>Your Watch Later List</h2>
+   
     <div id="watchLaterList" class="series-grid"></div>
   </div>
 
