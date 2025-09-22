@@ -11,15 +11,12 @@
 <meta name="color-scheme" content="dark"/>
 </head>
 <body>
-<header>
-  <h1 id="pageTitle">Baywatch</h1>
-</header>
 
-  <nav>
-  <button onclick="showSection('home'); updateHeaderTitle('BayWatch')">Home</button>
-  <button onclick="showSection('movies'); updateHeaderTitle('Movies')">Movies</button>
-  <button onclick="showSection('series'); updateHeaderTitle('Series')">Series</button>
-  <button onclick="showWatchLater(); updateHeaderTitle('Watch Later')">Watch Later</button>
+<nav>
+  <button onclick="showSection('home')">Home</button>
+  <button onclick="showSection('movies')">Movies</button>
+  <button onclick="showSection('series')">Series</button>
+  <button onclick="showWatchLater()">Watch Later</button>
 </nav>
 
    
@@ -31,7 +28,7 @@
 
 
   <div id="series" class="section">
-   
+   <h1>Series</h1>
     <div class="search-container"> <div class="search-box">
             <input type="text" id="seriesSearch" placeholder="Search for a series...">
             <button class="search-button" onclick="searchContent('series')">Search</button>
@@ -45,7 +42,7 @@
   </div>
 
   <div id="movies" class="section">
-    
+    <h1>Movies</h1>
     <div class="search-container"> <div class="search-box">
             <input type="text" id="movieSearch" placeholder="Search for a movie...">
             <button class="search-button" onclick="searchContent('movies')">Search</button>
@@ -58,7 +55,7 @@
   </div>
 
   <div id="watchLater" class="section">
-   
+   <h3>watch later</h3>
     <div id="watchLaterList" class="series-grid"></div>
   </div>
 
