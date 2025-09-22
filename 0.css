@@ -2,7 +2,7 @@
 /* Push page content down so it doesn't hide under header */
 body {
   margin: 0;
-  padding-top: 50px ; /* same as header height */
+  padding-bottom: 50px ; /* same as header height */
 }
 
 
@@ -55,7 +55,7 @@ a:hover {
 
 nav {
   position:fixed;
-  top:0px;
+  bottom:0px;
   z-index:1000;
   background: var(--surface-light);
   padding: 1rem;
