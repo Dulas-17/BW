@@ -2,6 +2,25 @@
 const seriesData = [
 
 
+{
+  title: "The Flash (S3)",
+  image: "Images/flash3.jpeg",
+  description: "In Season 3 of The Flash, Barry Allen faces the consequences of creating Flashpoint, a new reality where familiar faces have changed lives. As Central City’s scarlet speedster, Barry must undo the ripple effects of his actions while battling new threats, including powerful metahumans and the mysterious speed god, Savitar.",
+  genres: ["Action", "Drama", "Sci-Fi", "Superhero"],
+  episodes: [
+    { title: "1 - Flashpoint", link:"https://drive.google.com/file/d/1uu0ROXAg3b1UBzVA8du7YGLAog142KBR/preview " },
+    { title: "2 - Paradox", link:"https://drive.google.com/file/d/1Fdt8tucRdmtTD3I-DSsExP4yZlAJhYOC/preview " },
+    { title: "3 - Magenta", link:" https://drive.google.com/file/d/1PpMwnqzZPtf81pN9LdbGTdtYFKqrpyn_/preview" },
+    { title: "4 - The New Rogues", link:"https://drive.google.com/file/d/1Z4cUGz2FjrUoqjGIPoFTo7mV2aKA4sa6/preview " },
+    { title: "5 - Monster", link:"https://drive.google.com/file/d/1mIdlJachnqPioU7N5MPNkkcZO7A2X7zh/preview " },
+    { title: "6 - Shade", link:"https://drive.google.com/file/d/1p-qtkc0tzo0pXW7SrwTwtQ18Iz9DXbuI/preview" },
+    { title: "7 - Killer Frost", link:"https://drive.google.com/file/d/1G450Uwg5xD8tFrdco9hfIIFxVOy8ku0i/preview " },
+    { title: "8 - Invasion!", link:"https://drive.google.com/file/d/1Ffk-fvSsIZAN14glqY2Sb8T9SvYPh-iG/preview " },
+    { title: "9 - The Present", link:"https://drive.google.com/file/d/11axqiuPtyS-TR6_mcl5SPlxt2HaQGaJV/preview " },
+    { title: "10 - Borrowing Problems from the Future", link:" https://drive.google.com/file/d/1q1IqvbWL8sPTbFgmOqg1B9Ej5huHJcRV/preview" },
+  ]
+},
+
 
 
 {
