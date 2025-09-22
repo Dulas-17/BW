@@ -31,9 +31,9 @@ const seriesData = [
     { title: "1 - Welcome to the Playground", link:"https://drive.google.com/file/d/1kjRAix1nSwnqaaLhTUo-Kq1dus6CwNbI/preview" },
     { title: "2 - Some Mysteries Are Better Left Unsolved", link:"https://drive.google.com/file/d/1kdjJlwn-0tDoNOsXjd2NIFqRR0dTE8nP/preview" },
     { title: "3 - The Base Violence Necessary for Change", link:"https://drive.google.com/file/d/1mnDSLVXGjmS-s1fgty_OWogtDflkVD4o/preview" },
-    { title: "4 - Happy Progress Day!", link:"https://drive.google.com/file/d/1qMaJWviy7k5wWew-tTxzOsuKh3LFzMpv/preview" }
+    { title: "4 - Happy Progress Day!", link:"https://drive.google.com/file/d/1qMaJWviy7k5wWew-tTxzOsuKh3LFzMpv/preview" },
   ]
-}
+},
 
 {
   title: "Attack On Titan (S1)",
@@ -45,9 +45,9 @@ const seriesData = [
     { title: "2 - That Day", link:"https://drive.google.com/file/d/1dXMt9HRbYFBqXj9lEUDq4GI7BQDiEtn9/preview" },
     { title: "3 - A Dim Light Amid Despair", link:"https://drive.google.com/file/d/1daZxMAOLS4yJQ9oTUGeqIEPzb9eirqzU/preview" },
     { title: "4 - The Night of the Closing Ceremony", link:"https://drive.google.com/file/d/1dbE2oinR8rKyz5U4K-dJ-0GybJnCVs_H/preview" },
-    { title: "5 - First Battle", link:"https://drive.google.com/file/d/1dl9thmq8A3yaZ04PVXjyyjo4FZqLhWQ8/preview"}
+    { title: "5 - First Battle", link:"https://drive.google.com/file/d/1dl9thmq8A3yaZ04PVXjyyjo4FZqLhWQ8/preview"},
   ]
-}
+},
 
 
 
@@ -70,9 +70,9 @@ const seriesData = [
     { title: "8 - Strategic Maneuvers", link:"https://drive.google.com/file/d/1pwj-L3DU4VBq38-t0yja7aq1xXIDzsSt/preview" },
     { title: "9 - Clash of Powers", link:"https://drive.google.com/file/d/1qBSowB6sAlY7ikQvaSfn4A1g8zVu6uc2/preview" },
     { title: "10 - The Ultimate Test", link:"https://drive.google.com/file/d/1q46E8f1dWL_bMOoqh1Lyz8P55zAEWHlU/preview" },
-    { title: "11 - Monarch's Ascension", link:"https://drive.google.com/file/d/1qCibXrikL9gfOwXwYEDUQ1ELZmiQkxLs/preview" }
+    { title: "11 - Monarch's Ascension", link:"https://drive.google.com/file/d/1qCibXrikL9gfOwXwYEDUQ1ELZmiQkxLs/preview" },
   ]
-}
+},
 
 
 
@@ -105,9 +105,9 @@ const seriesData = [
     { title: "2 - Healing Mishap", link: "https://drive.google.com/file/d/1bhyk4q8kRkJZtMATBEJzUL02ELYG6MKk/preview" },
     { title: "3 - Unexpected Consequences", link: "https://drive.google.com/file/d/1c0EDAR5iMhfSnz3iX_8-0hbEHa4tg-zu/preview" },
     { title: "4 - Kevin’s Dilemma", link: "https://drive.google.com/file/d/1dzxT0RDut56FnysMA1HX-tm9catC6lQ9/preview" },
-    { title: "5 - Controlling the Magic", link: "https://drive.google.com/file/d/1e-cXrZSX_GMx-2mj1tuuGBX9vl-mgA_j/preview"}
+    { title: "5 - Controlling the Magic", link: "https://drive.google.com/file/d/1e-cXrZSX_GMx-2mj1tuuGBX9vl-mgA_j/preview"},
   ]
-}
+},
 
 {
     title:"Scorpion (s1)",
@@ -147,9 +147,9 @@ const seriesData = [
     { title: "2 - The Awakening", link: "https://drive.google.com/file/d/1-K6_2qaz1ZCz7u54FSnNX-hPq3qbqmZf/preview" },
     { title: "3 - Clash of Powers", link: "https://drive.google.com/file/d/1-TQNzstys6szmuu-5iPmnxmZ6-oznFc2/preview" },
     { title: "4 - Hidden Truths", link: "https://drive.google.com/file/d/19ln3Gofwt97mvsIod7x6X33UXXjYjxjb/preview" },
-    { title: "5 - Final Stand", link: "https://drive.google.com/file/d/1A4cR5foWbEwlpz9QfXhPMvnwdAHqLIfM/preview" }
+    { title: "5 - Final Stand", link: "https://drive.google.com/file/d/1A4cR5foWbEwlpz9QfXhPMvnwdAHqLIfM/preview" },
   ]
-}
+},
   
 
 
@@ -184,9 +184,9 @@ const seriesData = [
     { title: "7 - Stealing Trouble", link: "https://drive.google.com/file/d/11TiSpcFJr2N8r7GPyIGgmgy2tHfnQTtL/preview" },
     { title: "8 - Aqua's Mistake", link: "https://drive.google.com/file/d/11tAEoUZsUeQa4ja3-Nnt76nOKR2_w5wa/preview" },
     { title: "9 - Kazuma's Plan", link: "https://drive.google.com/file/d/11V8IleXjjcnlUAparkf44XBFEUwxK8Ou/preview" },
-    { title: "10 - Party Success", link: "https://drive.google.com/file/d/11uRZmLQxY52jeIsQKiw6vf2d1jTiCBlr/preview" }
+    { title: "10 - Party Success", link: "https://drive.google.com/file/d/11uRZmLQxY52jeIsQKiw6vf2d1jTiCBlr/preview" },
   ]
-}
+},
 
   {
     title: "Demon Slayer (s3)",
@@ -229,9 +229,9 @@ const seriesData = [
     { title: "10 - High Stakes", link: "https://drive.google.com/file/d/1dIqSmm6E55RfSKI8NoL6OHbZOM1bZN4F/preview" },
     { title: "11 - Secrets Revealed", link: "https://drive.google.com/file/d/1dGl4ZDsYWMcXH5NtSHN9EU9aHVZNMyTb/preview" },
     { title: "12 - Clash Intensifies", link: "https://drive.google.com/file/d/1d9BFwVuNt1RWSGDo8gmnO2_KiW3IH67z/preview" },
-    { title: "13 - Showdown Finale", link: "https://drive.google.com/file/d/1d9fMQO6Db4SKvhJCaljOhyIjdt8ogF9i/preview" }
+    { title: "13 - Showdown Finale", link: "https://drive.google.com/file/d/1d9fMQO6Db4SKvhJCaljOhyIjdt8ogF9i/preview" },
   ]
-}
+},
 
 
 
