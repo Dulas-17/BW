@@ -8,49 +8,6 @@ const content = {
 };
 
 
-function openSeriesItem(id) {
-  // Hide the nav
-  const nav = document.querySelector("nav");
-  if (nav) nav.style.display = "none";
-
-  // Adjust body padding (header only)
-  document.body.classList.add("no-nav");
-
-  // Show the series details (your existing logic)
-  const section = document.getElementById(id);
-  if (section) {
-    section.classList.add("active");
-  }
-}
-
-function closeSeriesItem(id) {
-  // Show the nav again
-  const nav = document.querySelector("nav");
-  if (nav) nav.style.display = "flex"; // or block, depending on your layout
-
-  // Reset body padding (header + nav)
-  document.body.classList.remove("no-nav");
-
-  // Hide the series details (your existing logic)
-  const section = document.getElementById(id);
-  if (section) {
-    section.classList.remove("active");
-  }
-}
-
-
-
-
-
-
-
-
-function updateHeaderTitle(title) {
-  const pageTitle = document.getElementById("pageTitle");
-  if (pageTitle) {
-    pageTitle.textContent = title;
-  }
-}
 
 // Place this at the bottom of your JS, after DOMContentLoaded or at the end of the file
 const buttonSound = new Audio('click2.mp3'); // Replace 'click.mp3' with your sound file path
