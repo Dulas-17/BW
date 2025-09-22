@@ -185,6 +185,15 @@ const seriesData = [
     episodes: [
                       { title: "Episode 1", link: "https://drive.google.com/file/d/1XLQqntnaNZcYTaXIu_McK1m2mo_LZv56/preview " },
                       { title: "Episode 2", link: " https://drive.google.com/file/d/1XmN5vFRFNesn-gMaEKP7J12UCmJLXd0s/preview" },
+{ title: "3 - A Sword from Over 300 Years Ago", link:"https://drive.google.com/file/d/1fLyBICgOlBLuW8otbs-fzeVBKGQnc3Bc/preview" },
+{ title: "4 - Thank You, Tokito", link:"https://drive.google.com/file/d/1r64EtF5KA-GiB_EBuXeVOV00R73Vf5Gu/preview" },
+{ title: "5 - Bright Red Blade", link:"https://drive.google.com/file/d/1m-C8yr_fVQmC1xvxg5QQYeVvxCJXbrAj/preview" },
+{ title: "6 - Aren’t You Going to Become a Hashira?", link:"https://drive.google.com/file/d/1Hr9MyNGKlglO914FoAj0kLTsABRiznPu/preview" },
+{ title: "7 - Awful Villain", link:"https://drive.google.com/file/d/1yeXCWDPO-z-H7mWYJDO6mW8sTWQB9aN6/preview" },
+{ title: "8 - The Mu in Muichiro", link:"https://drive.google.com/file/d/1Y6Zd2V9s3NBSoeuNgDGbWiRi7KOPn8By/preview" },
+{ title: "9 - Mist Hashira Muichiro Tokito", link:"https://drive.google.com/file/d/1Jhz49e0CkQ431JE4y527Omg4NSG0x5Oe/preview" },
+{ title: "10 - Love Hashira Mitsuri Kanroji", link:"https://drive.google.com/file/d/1KLgEs3KvqPvnITYJ9HxvBlEyb38mFLMv/preview" },
+{ title: "11 - A Connected Bond: Daybreak and First Light", link:"https://drive.google.com/file/d/1VnD-ABxwX5QjpLf56qLBn4WqWgIrgeCv/preview" },
                       
     ]
   },
