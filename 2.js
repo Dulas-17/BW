@@ -32,6 +32,8 @@ const seriesData = [
     { title: "2 - Some Mysteries Are Better Left Unsolved", link:"https://drive.google.com/file/d/1kdjJlwn-0tDoNOsXjd2NIFqRR0dTE8nP/preview" },
     { title: "3 - The Base Violence Necessary for Change", link:"https://drive.google.com/file/d/1mnDSLVXGjmS-s1fgty_OWogtDflkVD4o/preview" },
     { title: "4 - Happy Progress Day!", link:"https://drive.google.com/file/d/1qMaJWviy7k5wWew-tTxzOsuKh3LFzMpv/preview" },
+{ title: "5 - Everybody Wants to Be My Enemy", link: "https://drive.google.com/file/d/17F0_iI9corcp7Em_CacDlZVz-sMkBp68/preview" },
+{ title: "6 - When These Walls Come Tumbling Down", link: "https://drive.google.com/file/d/1nc7DmfEXhzy9T8cjIgqpQzAjoLgbrgpa/preview" },
   ]
 },
 
