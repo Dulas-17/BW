@@ -73,6 +73,8 @@ const seriesData = [
     { title: "9 - Clash of Powers", link:"https://drive.google.com/file/d/1qBSowB6sAlY7ikQvaSfn4A1g8zVu6uc2/preview" },
     { title: "10 - The Ultimate Test", link:"https://drive.google.com/file/d/1q46E8f1dWL_bMOoqh1Lyz8P55zAEWHlU/preview" },
     { title: "11 - Monarch's Ascension", link:"https://drive.google.com/file/d/1qCibXrikL9gfOwXwYEDUQ1ELZmiQkxLs/preview" },
+{ title: "12 - Shadows Unite", link: "https://drive.google.com/file/d/13uHlMpHRIm3uArIt45TqHC05TQMPd5vt/preview" },
+{ title: "13 - Rise of the Monarch", link: "https://drive.google.com/file/d/13xBNXuulv94zEFRguxn2zNYUobeiBCSD/preview" },
   ]
 },
 
