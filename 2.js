@@ -1,6 +1,21 @@
 // series.js
 const seriesData = [
-
+{
+  title: "Demon Slayer (S4)",
+  image: "Images/demonslayer_s4.jpeg",
+  description: "Demon Slayer: Season 4 – Hashira Training Arc follows Tanjiro and his allies as they undergo special training with the Hashira in preparation for the final battles. While the Demon Slayer Corps strengthens their skills under each Hashira, the threat of Muzan Kibutsuji looms ever closer.",  
+  genres: ["Action", "Fantasy", "Anime", "Adventure", "Shonen"],
+  episodes: [
+    { title: "1 - To Defeat Muzan Kibutsuji", link: "https://drive.google.com/file/d/1IxEM-hbNadZT59zXpKk4Sw-ToJBMD_2N/preview" },
+    { title: "2 - Water Hashira Giyu Tomioka's Pain", link: "https://drive.google.com/file/d/1wqAF41pqqJURiEB-IrrtLsnFaXdKuViE/preview" },
+    { title: "3 - Fully Recovered Tanjiro Joins the Hashira Training!!", link: "https://drive.google.com/file/d/1H3E4WugiJbwrsD2wG-FPy4vFd3tSMBAS/preview" },
+    { title: "4 - To Bring a Smile to One's Face", link: "https://drive.google.com/file/d/1f83WyuWGyQ8AM7icAiKq6bq9Q7MnHmLN/preview" },
+    { title: "5 - I Even Ate Demons...", link: "https://drive.google.com/file/d/1Sm1lDwTJOyWHGNhQ_0n7-HxlQE42nVu_/preview" },
+    { title: "6 - The Strongest of the Demon Slayer Corps", link: "https://drive.google.com/file/d/18tTIB8KTDoZBrMo-bwGRiQpPC9v7Ewl3/preview" },
+    { title: "7 - Stone Hashira Gyomei Himejima", link: "https://drive.google.com/file/d/1RVh6fTqQHhUIu1rW1aHy-NP2v6IojL3u/preview" },
+    { title: "8 - The Hashira Unite", link: "https://drive.google.com/file/d/1mu8k6czz7K753AZyZFn5VlNUrlZDNFxQ/preview" }, 
+  ]
+},
 
 {
   title: "The Flash (S3)",
