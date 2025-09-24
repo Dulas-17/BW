@@ -230,7 +230,6 @@ nav button:hover {
    ================================== */
 
 .genre-buttons {
-  margin: 1.5rem 0;
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;
@@ -240,12 +239,12 @@ nav button:hover {
   white-space: nowrap;
   padding-bottom: 0.5rem;
   
-  position: relative; /* default position */
-  top: 0; /* used when sticky */
-  z-index: 999;
-  transition: top 0.3s ease;
+  /* NEW: sticky behavior */
+  position: sticky;
+  top: 40px; /* distance from the top (e.g., your header height) */
+  background: var(--surface-light); /* so content scrolls under it visually */
+  z-index: 900; /* higher than content, lower than fixed nav if needed */
 }
-
 
 
 
