@@ -49,6 +49,9 @@ const seriesData = [
     { title: "4 - Happy Progress Day!", link:"https://drive.google.com/file/d/1qMaJWviy7k5wWew-tTxzOsuKh3LFzMpv/preview" },
 { title: "5 - Everybody Wants to Be My Enemy", link: "https://drive.google.com/file/d/17F0_iI9corcp7Em_CacDlZVz-sMkBp68/preview" },
 { title: "6 - When These Walls Come Tumbling Down", link: "https://drive.google.com/file/d/1nc7DmfEXhzy9T8cjIgqpQzAjoLgbrgpa/preview" },
+    { title: "7 - The Boy Savior", link: "https://drive.google.com/file/d/1Cqr-eKoMFU-AFKFliAWMEB1SUtAFkbYN/preview" },
+{ title: "8 - Oil and Water", link: "https://drive.google.com/file/d/1eUXMIoEqC-TGb6eLwtSL7PVYETkv2zu9/preview" },
+{ title: "9 - The Monster You Created", link: "https://drive.google.com/file/d/1i9goJ_8v5mTicq2-evoJRuMWUW917m44/preview" },
   ]
 },
 
