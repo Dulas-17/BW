@@ -8,6 +8,29 @@ const content = {
 };
 
 
+let lastScroll = 0;
+const genreButtons = document.querySelector('.genre-buttons');
+
+window.addEventListener('scroll', () => {
+  const currentScroll = window.pageYOffset;
+
+  if (currentScroll < lastScroll) {
+    // Scrolling up → stick the buttons
+    genreButtons.style.position = 'fixed';
+    genreButtons.style.top = '40px'; // adjust if you have a fixed header
+    genreButtons.style.left = '0';
+    genreButtons.style.right = '0';
+  } else {
+    // Scrolling down → return to normal
+    genreButtons.style.position = 'relative';
+    genreButtons.style.top = '0';
+  }
+
+  lastScroll = currentScroll;
+});
+
+
+
 
 // Place this at the bottom of your JS, after DOMContentLoaded or at the end of the file
 const buttonSound = new Audio('click2.mp3'); // Replace 'click.mp3' with your sound file path
