@@ -8,28 +8,42 @@ const content = {
 };
 
 
-let lastScroll = 0;
 const genreButtons = document.querySelector('.genre-buttons');
+const header = document.querySelector('header'); // if you have a fixed header
+const originalOffset = genreButtons.offsetTop; // original vertical position
+let lastScroll = window.pageYOffset;
 
 window.addEventListener('scroll', () => {
   const currentScroll = window.pageYOffset;
 
-  if (currentScroll < lastScroll) {
-    // Scrolling up → stick the buttons
-    genreButtons.style.position = 'fixed';
-    genreButtons.style.top = '40px'; // adjust if you have a fixed header
-    genreButtons.style.left = '0';
-    genreButtons.style.right = '0';
+  if (currentScroll > originalOffset) {
+    if (currentScroll < lastScroll) {
+      // Scrolling up → stick the buttons
+      genreButtons.style.position = 'fixed';
+      genreButtons.style.top = header.offsetHeight + 'px'; // just below header
+      genreButtons.style.left = '0';
+      genreButtons.style.right = '0';
+      genreButtons.style.width = '100%';
+      genreButtons.style.zIndex = '999';
+    } else {
+      // Scrolling down → return to original place
+      genreButtons.style.position = 'relative';
+      genreButtons.style.top = '0';
+      genreButtons.style.left = '0';
+      genreButtons.style.right = '0';
+      genreButtons.style.width = 'auto';
+    }
   } else {
-    // Scrolling down → return to normal
+    // Before reaching the original position → reset
     genreButtons.style.position = 'relative';
     genreButtons.style.top = '0';
+    genreButtons.style.left = '0';
+    genreButtons.style.right = '0';
+    genreButtons.style.width = 'auto';
   }
 
   lastScroll = currentScroll;
 });
-
-
 
 
 // Place this at the bottom of your JS, after DOMContentLoaded or at the end of the file
@@ -45,10 +59,6 @@ document.addEventListener('click', (e) => {
     }
   }
 });
-
-
-
-
 
 // Global variables for debouncing and video tracking
 let searchDebounceTimeout;
