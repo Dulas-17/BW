@@ -1,8 +1,4 @@
-// Data for series and movies. (Assumes these are defined in 2.js and 3.js)
-// const seriesData = [...]
-// const movieData = [...]
-
-const content = {
+Const content = {
   series: seriesData,
   movies: movieData,
 };
@@ -64,17 +60,17 @@ document.addEventListener('click', (e) => {
 let searchDebounceTimeout;
 let suggestionDebounceTimeout;
 let currentPlayingType = null;
-let currentPlayingIndex = null;
+let currentPlayingId = null;
 let scrollPosition = {}; // New global object to store scroll positions
 
 // --- Video Playback & Tracking ---
 
-function playEpisode(link, episodeTitle = null, type, index) {
+function playEpisode(link, episodeTitle = null, type, id) {
   const player = document.getElementById('videoFullScreen');
   const iframe = player.querySelector('iframe');
 
   currentPlayingType = type;
-  currentPlayingIndex = index;
+  currentPlayingId = id;
 
   iframe.src = link;
   player.style.display = 'flex';
@@ -84,8 +80,8 @@ function closeFullScreen() {
   const player = document.getElementById('videoFullScreen');
   const iframe = player.querySelector('iframe');
 
-  if (currentPlayingType !== null && currentPlayingIndex !== null) {
-      saveAsWatched(currentPlayingType, currentPlayingIndex);
+  if (currentPlayingType !== null && currentPlayingId !== null) {
+      saveAsWatched(currentPlayingType, currentPlayingId);
   }
 
   iframe.src = '';
@@ -93,7 +89,7 @@ function closeFullScreen() {
   restoreScrollPosition(localStorage.getItem('lastActiveSection'));
 
   currentPlayingType = null;
-  currentPlayingIndex = null;
+  currentPlayingId = null;
 }
 
 // --- Local Storage Utilities ---
@@ -111,16 +107,16 @@ function restoreScrollPosition(sectionId) {
   }
 }
 
-function saveState(sectionId, detailType = null, detailIndex = null, originSection = null) {
-  console.log(`saveState called: sectionId=${sectionId}, detailType=${detailType}, detailIndex=${detailIndex}, originSection=${originSection}`);
+function saveState(sectionId, detailType = null, detailId = null, originSection = null) {
+  console.log(`saveState called: sectionId=${sectionId}, detailType=${detailType}, detailId=${detailId}, originSection=${originSection}`);
   localStorage.setItem('lastActiveSection', sectionId);
 
-  if (detailType !== null && detailIndex !== null) {
+  if (detailType !== null && detailId !== null) {
     localStorage.setItem('lastDetailType', detailType);
-    localStorage.setItem('lastDetailIndex', detailIndex);
+    localStorage.setItem('lastDetailId', detailId);
   } else {
     localStorage.removeItem('lastDetailType');
-    localStorage.removeItem('lastDetailIndex');
+    localStorage.removeItem('lastDetailId');
   }
 
   localStorage.removeItem('activeGenre');
@@ -132,13 +128,13 @@ function saveState(sectionId, detailType = null, detailIndex = null, originSecti
   }
 }
 
-function saveAsWatched(type, index) {
-  const key = `watched_${type}_${index}`;
+function saveAsWatched(type, id) {
+  const key = `watched_${type}_${id}`;
   localStorage.setItem(key, 'true');
 }
 
-function isWatched(type, index) {
-  const key = `watched_${type}_${index}`;
+function isWatched(type, id) {
+  const key = `watched_${type}_${id}`;
   return localStorage.getItem(key) === 'true';
 }
 
@@ -374,16 +370,13 @@ function showSeriesList(list = null, query = '') {
   displayList.forEach((s) => {
     const div = document.createElement('div');
     div.className = 'series-item';
-    const originalIndex = content.series.findIndex(item => item.title === s.title);
-    if (originalIndex === -1) return;
-
     const highlightedTitle = query ? s.title.replace(new RegExp(query, 'gi'), match => `<span style="background-color: #5a9bd8; color: #121212; border-radius: 3px; padding: 0 2px;">${match}</span>`) : s.title;
 
     div.innerHTML = `
           <img src="${s.image}" alt="${s.title}" />
           <h4>${highlightedTitle}</h4>
-          <button onclick="saveScrollAndShowDetails('series', ${originalIndex})" class="btn">Open</button>
-          <button onclick="addToWatchLater('series', ${originalIndex})" class="watch-later-btn">Watch Later</button>
+          <button onclick="saveScrollAndShowDetails('series', '${s.title.replace(/'/g, "\\'")}')" class="btn">Open</button>
+          <button onclick="addToWatchLater('series', '${s.title.replace(/'/g, "\\'")}')" class="watch-later-btn">Watch Later</button>
         `;
     container.appendChild(div);
   });
@@ -412,36 +405,42 @@ function showMovieList(list = null, query = '') {
   displayList.forEach((m) => {
     const div = document.createElement('div');
     div.className = 'series-item';
-    const originalIndex = content.movies.findIndex(item => item.title === m.title);
-    if (originalIndex === -1) return;
-
     const highlightedTitle = query ? m.title.replace(new RegExp(query, 'gi'), match => `<span style="background-color: #5a9bd8; color: #121212; border-radius: 3px; padding: 0 2px;">${match}</span>`) : m.title;
 
     div.innerHTML = `
           <img src="${m.image}" alt="${m.title}" />
           <h4>${highlightedTitle}</h4>
-          <button onclick="saveScrollAndShowDetails('movie', ${originalIndex})" class="btn">Open</button>
-          <button onclick="addToWatchLater('movie', ${originalIndex})" class="watch-later-btn">Watch Later</button>
+          <button onclick="saveScrollAndShowDetails('movie', '${m.title.replace(/'/g, "\\'")}')" class="btn">Open</button>
+          <button onclick="addToWatchLater('movie', '${m.title.replace(/'/g, "\\'")}')" class="watch-later-btn">Watch Later</button>
         `;
     container.appendChild(div);
   });
 }
 
-// --- Share Functionality ---
-function generateShareLink(type, index) {
-  const baseUrl = window.location.origin + window.location.pathname;
-  return `${baseUrl}?type=${type}&id=${index}`;
+// --- New Slug Helper Function ---
+function createSlug(title) {
+  return title
+    .toLowerCase()
+    .replace(/ /g, '-')
+    .replace(/[^\w-]+/g, '');
 }
 
-async function shareContent(type, index) {
-  const item = type === 'series' ? content.series[index] : content.movies[index];
+// --- Share Functionality ---
+function generateShareLink(type, itemTitle) {
+  const baseUrl = window.location.origin + window.location.pathname;
+  const slug = createSlug(itemTitle);
+  return `${baseUrl}?type=${type}&slug=${slug}`;
+}
+
+async function shareContent(type, itemTitle) {
+  const item = content[type].find(i => i.title === itemTitle);
   if (!item) {
-    console.error('Item not found for sharing:', type, index);
+    console.error('Item not found for sharing:', type, itemTitle);
     alert('Could not find item to share.');
     return;
   }
 
-  const shareUrl = generateShareLink(type, index);
+  const shareUrl = generateShareLink(type, itemTitle);
   const shareData = {
     title: `Stream ${item.title} on BayWatch!`,
     text: item.description ? `"${item.description}"` : '',
@@ -467,8 +466,8 @@ async function shareContent(type, index) {
   }
 }
 
-function copyLinkToClipboard(type, index) {
-  const shareUrl = generateShareLink(type, index);
+function copyLinkToClipboard(type, itemTitle) {
+  const shareUrl = generateShareLink(type, itemTitle);
   navigator.clipboard.writeText(shareUrl)
     .then(() => {
       alert('Link copied to clipboard!');
@@ -484,22 +483,22 @@ function copyLinkToClipboard(type, index) {
 // --- Detail View Functions ---
 
 // NEW: Helper function to save scroll position before showing details
-function saveScrollAndShowDetails(type, index) {
+function saveScrollAndShowDetails(type, title) {
   const sectionId = type === 'series' ? 'series' : 'movies';
   saveScrollPosition(sectionId);
 
   if (type === 'series') {
-    showSeriesDetails(index);
+    showSeriesDetails(title);
   } else {
-    showMovieDetails(index);
+    showMovieDetails(title);
   }
 }
 
-function showSeriesDetails(i, originSection = null) {
-  console.log(`showSeriesDetails called for index: ${i}, origin: ${originSection}`);
-  const s = content.series[i];
+function showSeriesDetails(title, originSection = null) {
+  console.log(`showSeriesDetails called for title: ${title}, origin: ${originSection}`);
+  const s = content.series.find(item => item.title === title);
   if (!s) {
-    console.error("Error: Series item not found at index:", i);
+    console.error("Error: Series item not found with title:", title);
     alert("Could not load series details. Data might be missing or corrupted.");
     showSection(originSection === 'watchLater' ? 'watchLater' : 'series');
     return;
@@ -522,26 +521,27 @@ function showSeriesDetails(i, originSection = null) {
         <p>${s.description}</p>
         <div class="episode-buttons">
           ${s.episodes.map((ep, epIndex) => {
-    const isEpisodeWatched = isWatched('series', `${i}_${epIndex}`);
+    const episodeId = `${s.title}_${epIndex}`;
+    const isEpisodeWatched = isWatched('series', episodeId);
     const buttonClass = isEpisodeWatched ? 'watched-episode-btn' : '';
-    return `<button onclick="playEpisode('${ep.link}', '${ep.title.replace(/'/g, "\\'")}', 'series', '${i}_${epIndex}')" class="${buttonClass}">${ep.title}</button>`;
+    return `<button onclick="playEpisode('${ep.link}', '${ep.title.replace(/'/g, "\\'")}', 'series', '${episodeId}')" class="${buttonClass}">${ep.title}</button>`;
   }).join('')}
         </div>
         <div class="detail-bottom-actions">
-<button onclick="shareContent('series', ${i})" class="back">Share</button>
+<button onclick="shareContent('series', '${s.title.replace(/'/g, "\\'")}')" class="back">Share</button>
  <button onclick="goBackToList('series')" class="back">Back</button>
-             <button onclick="copyLinkToClipboard('series', ${i})" class="back">Link</button> </div>
+             <button onclick="copyLinkToClipboard('series', '${s.title.replace(/'/g, "\\'")}')" class="back">Link</button> </div>
       `;
 
-  saveState('series', 'series', i, originSection);
+  saveState('series', 'series', s.title, originSection);
   window.scrollTo(0, 0);
 }
 
-function showMovieDetails(i, originSection = null) {
-  console.log(`showMovieDetails called for index: ${i}, origin: ${originSection}`);
-  const m = content.movies[i];
+function showMovieDetails(title, originSection = null) {
+  console.log(`showMovieDetails called for title: ${title}, origin: ${originSection}`);
+  const m = content.movies.find(item => item.title === title);
   if (!m) {
-    console.error("Error: Movie item not found at index:", i);
+    console.error("Error: Movie item not found with title:", title);
     alert("Could not load movie details. Data might be missing or corrupted.");
     showSection(originSection === 'watchLater' ? 'watchLater' : 'movies');
     return;
@@ -558,7 +558,7 @@ function showMovieDetails(i, originSection = null) {
   document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
   document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 
-  const isMovieWatched = isWatched('movie', i);
+  const isMovieWatched = isWatched('movie', m.title);
   const buttonClass = isMovieWatched ? 'watched-episode-btn' : '';
 
   container.innerHTML = `
@@ -566,14 +566,14 @@ function showMovieDetails(i, originSection = null) {
         <h2>${m.title}</h2>
         <p>${m.description}</p>
         <div class="episode-buttons">
-          <button onclick="playEpisode('${m.link}', '${m.title.replace(/'/g, "\\'")}', 'movie', ${i})" class="${buttonClass}">Watch Now</button>
+          <button onclick="playEpisode('${m.link}', '${m.title.replace(/'/g, "\\'")}', 'movie', '${m.title.replace(/'/g, "\\'")}')" class="${buttonClass}">Watch Now</button>
         </div>
         <div class="detail-bottom-actions">
-<button onclick="shareContent('movie', ${i})" class="back">Share</button>
+<button onclick="shareContent('movie', '${m.title.replace(/'/g, "\\'")}')" class="back">Share</button>
  <button onclick="goBackToList('movies')" class="back">Back</button>
-             <button onclick="copyLinkToClipboard('movie', ${i})" class="back">Link</button> </div>
+             <button onclick="copyLinkToClipboard('movie', '${m.title.replace(/'/g, "\\'")}')" class="back">Link</button> </div>
       `;
-  saveState('movies', 'movie', i, originSection);
+  saveState('movies', 'movie', m.title, originSection);
   window.scrollTo(0, 0);
 }
 
@@ -614,17 +614,21 @@ function saveWatchLaterList(list) {
   localStorage.setItem('watchLater', JSON.stringify(list));
 }
 
-function addToWatchLater(type, index) {
-  const item = type === 'series' ? content.series[index] : content.movies[index];
+function addToWatchLater(type, title) {
+  const item = content[type].find(i => i.title === title);
+  if (!item) {
+    console.error("Item not found to add to watch later:", type, title);
+    return;
+  }
   const watchLaterList = getWatchLaterList();
-  const itemId = `${type}-${index}`;
+  const itemId = `${type}-${title}`;
 
   const isAlreadyAdded = watchLaterList.some(
     (wlItem) => wlItem.uniqueId === itemId
   );
 
   if (!isAlreadyAdded) {
-    watchLaterList.push({ uniqueId: itemId, type: type, originalIndex: index, itemData: item });
+    watchLaterList.push({ uniqueId: itemId, type: type, itemTitle: title, itemData: item });
     saveWatchLaterList(watchLaterList);
     alert(`${item.title} added to Watch Later!`);
   } else {
@@ -632,10 +636,10 @@ function addToWatchLater(type, index) {
   }
 }
 
-function removeFromWatchLater(type, originalIndex) {
+function removeFromWatchLater(type, title) {
   let watchLaterList = getWatchLaterList();
   const initialLength = watchLaterList.length;
-  const itemIdToRemove = `${type}-${originalIndex}`;
+  const itemIdToRemove = `${type}-${title}`;
   watchLaterList = watchLaterList.filter(
     (wlItem) => wlItem.uniqueId !== itemIdToRemove
   );
@@ -672,14 +676,14 @@ function showWatchLater() {
       div.className = 'series-item';
 
       const detailFunctionCall = wlItem.type === 'series' ?
-        `showSeriesDetails(${wlItem.originalIndex}, 'watchLater')` :
-        `showMovieDetails(${wlItem.originalIndex}, 'watchLater')`;
+        `showSeriesDetails('${wlItem.itemTitle.replace(/'/g, "\\'")}', 'watchLater')` :
+        `showMovieDetails('${wlItem.itemTitle.replace(/'/g, "\\'")}', 'watchLater')`;
 
       div.innerHTML = `
                 <img src="${item.image}" alt="${item.title}" />
                 <h4>${item.title}</h4>
                 <button onclick="${detailFunctionCall}" class="btn">View Details</button>
-                <button onclick="removeFromWatchLater('${wlItem.type}', ${wlItem.originalIndex})" class="remove-watch-later-btn">Remove</button>
+                <button onclick="removeFromWatchLater('${wlItem.type}', '${wlItem.itemTitle.replace(/'/g, "\\'")}')" class="remove-watch-later-btn">Remove</button>
             `;
       container.appendChild(div);
     });
@@ -701,47 +705,50 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const urlParams = new URLSearchParams(window.location.search);
   const paramType = urlParams.get('type');
-  const paramId = urlParams.get('id');
+  const paramSlug = urlParams.get('slug');
 
-  if (paramType && paramId !== null) {
-    const id = parseInt(paramId, 10);
-    if (!isNaN(id)) {
-      console.log(`Direct link detected: type=${paramType}, id=${id}`);
-      localStorage.removeItem('lastActiveSection');
-      localStorage.removeItem('lastDetailType');
-      localStorage.removeItem('lastDetailIndex');
-      localStorage.removeItem('originSection');
+  if (paramType && paramSlug) {
+    console.log(`Direct link detected: type=${paramType}, slug=${paramSlug}`);
+    localStorage.removeItem('lastActiveSection');
+    localStorage.removeItem('lastDetailType');
+    localStorage.removeItem('lastDetailId');
+    localStorage.removeItem('originSection');
 
-      if (paramType === 'series' && content.series[id]) {
-        showSeriesDetails(id);
-      } else if (paramType === 'movie' && content.movies[id]) {
-        showMovieDetails(id);
+    let item;
+    if (paramType === 'series') {
+      item = content.series.find(s => createSlug(s.title) === paramSlug);
+    } else if (paramType === 'movie') {
+      item = content.movies.find(m => createSlug(m.title) === paramSlug);
+    }
+
+    if (item) {
+      if (paramType === 'series') {
+        showSeriesDetails(item.title);
       } else {
-        console.warn('Direct link item not found or invalid type. Loading home.');
-        showSection('home');
+        showMovieDetails(item.title);
       }
     } else {
-      console.warn('Invalid ID in direct link. Loading home.');
+      console.warn('Direct link item not found or invalid type. Loading home.');
       showSection('home');
     }
   } else {
     const lastActiveSection = localStorage.getItem('lastActiveSection');
     const lastDetailType = localStorage.getItem('lastDetailType');
-    const lastDetailIndex = localStorage.getItem('lastDetailIndex');
+    const lastDetailId = localStorage.getItem('lastDetailId');
     const originSection = localStorage.getItem('originSection');
 
     if (lastActiveSection) {
       console.log(`Restoring last active section: ${lastActiveSection}`);
-      if (lastDetailType && lastDetailIndex !== null) {
-        console.log(`Restoring detail view: ${lastDetailType} at index ${lastDetailIndex}`);
+      if (lastDetailType && lastDetailId !== null) {
+        console.log(`Restoring detail view: ${lastDetailType} with id ${lastDetailId}`);
         document.querySelector('nav').style.display = 'none';
         document.querySelectorAll('.search-container').forEach(sc => sc.style.display = 'none');
         document.querySelectorAll('.genre-buttons').forEach(gb => gb.style.display = 'none');
 
         if (lastDetailType === 'series') {
-          showSeriesDetails(parseInt(lastDetailIndex, 10), originSection);
+          showSeriesDetails(lastDetailId, originSection);
         } else if (lastDetailType === 'movie') {
-          showMovieDetails(parseInt(lastDetailIndex, 10), originSection);
+          showMovieDetails(lastDetailId, originSection);
         }
       } else {
         showSection(lastActiveSection);
