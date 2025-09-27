@@ -2,6 +2,16 @@
 const movieData = [
 
 {
+  title: "Suzume",
+  image: "Images/suzume.jpeg",
+  description: "Suzume follows a 17-year-old girl who discovers a mysterious door in a ruined area of Japan. When she opens it, a series of supernatural disasters begin to unfold across the country. With the help of Souta, a young man who guards the doors, Suzume embarks on a journey to close them and save Japan from catastrophe, while uncovering secrets about her own past.",
+  genres: ["Anime", "Fantasy", "Adventure", "Drama", "Slice of Life"],
+  link: "https://drive.google.com/file/d/1-albH7DfNbF3ClFFrlRkAuA0PzZWqEfH/preview"
+},
+
+
+
+{
     title: "Creed III",
     image: "Images/creed3 (1).jpeg",
     description: "In Creed III, Adonis Creed has been thriving in both his career and family life, but his world is shaken when a childhood friend and former boxing prodigy, Damian Anderson, resurfaces after serving time in prison. What begins as a reunion quickly turns into a rivalry, as Damian is eager to prove himself and take everything Adonis has built. To settle their differences, Adonis must face Damian in the ring, confronting his past and fighting for his future.",
