@@ -1,6 +1,12 @@
 // movies.js
 const movieData = [
-
+{
+  title: "Maquia: When the Promised Flower Blooms",
+  image: "Images/maquia.jpeg",
+  description: "Maquia, a girl from the long-lived Iorph people, is separated from her clan after an invasion and stumbles upon an orphaned baby boy. She decides to raise him as her own, experiencing the joys and sorrows of motherhood as he grows older while she remains unchanged. The film explores themes of love, family, and the passage of time in a beautifully emotional fantasy tale.",
+  genres: ["Anime", "Fantasy", "Drama", "Slice of Life"],
+  link: "https://drive.google.com/file/d/1fXeDF48MljJUqg2-vTBpRgdUQZ39q6WF/preview"
+},
 {
   title: "Suzume",
   image: "Images/suzume.jpeg",
@@ -8,9 +14,6 @@ const movieData = [
   genres: ["Anime", "Fantasy", "Adventure", "Drama", "Slice of Life"],
   link: "https://drive.google.com/file/d/1-albH7DfNbF3ClFFrlRkAuA0PzZWqEfH/preview"
 },
-
-
-
 {
     title: "Creed III",
     image: "Images/creed3 (1).jpeg",
