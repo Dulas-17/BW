@@ -1,5 +1,30 @@
 // series.js
 const seriesData = [
+
+{
+  title: "Lucifer (S1)",
+  image: "Images/lucifer1.jpeg",
+  description: "Lucifer Morningstar, the Devil, abandons Hell and moves to Los Angeles where he opens a nightclub called Lux. Bored and unhappy with his life, he soon becomes a consultant for the LAPD, using his powers to punish criminals while exploring his own desire for redemption.",
+  genres: ["Fantasy", "Drama", "Crime", "Mystery"],
+  episodes: [
+    { title: "1 - Pilot", link: "https://drive.google.com/file/d/1crB0KxvpTDCCUh38yMGAtQK_G2WDK6zC/preview" },
+    { title: "2 - Lucifer, Stay. Good Devil.", link: "https://drive.google.com/file/d/1hy7R_RO0VtT8MuZDsVjnN07QyfNccy3E/preview" },
+    { title: "3 - The Would-Be Prince of Darkness", link: "https://drive.google.com/file/d/1A-YORmZOtHX0hmn4gP4rlMOhX7z_eTWt/preview" },
+    { title: "4 - Manly Whatnots", link: "https://drive.google.com/file/d/1CG4sgF5jzXSlpFRZAKEL4MxjSITu0hzx/preview" },
+    { title: "5 - Sweet Kicks", link: "https://drive.google.com/file/d/1PhyfvP04rVFgEcOHiOpk2Y5r2rVJfNGW/preview" },
+    { title: "6 - Favorite Son", link: "https://drive.google.com/file/d/16X3vBxo-PQIOmU_7GlqZX_ArDCfHP_yv/preview" },
+    { title: "7 - Wingman", link: "https://drive.google.com/file/d/1qQ0GX1cXUrudVTUKRcCENbiA_SAE_MhC/preview" },
+    { title: "8 - Et Tu, Doctor?", link: "https://drive.google.com/file/d/11yKmsq6KPgS0UeJPiMTTJlR0CRl-tIJa/preview" },
+    { title: "9 - A Priest Walks into a Bar", link: "https://drive.google.com/file/d/1__ukfnygqElSl0sGzUgSr9KQqDEgSFWi/preview" },
+    { title: "10 - Pops", link: "https://drive.google.com/file/d/17Uz-BwUv8tL_abNGzEGdl8I6CnG-PRAt/preview" },
+    { title: "11 - St. Lucifer", link: "https://drive.google.com/file/d/1xFBvAbaKXIf1RJLA3JNm5Zhpq6Tt4i1Q/preview" },
+    { title: "12 - #TeamLucifer", link: "https://drive.google.com/file/d/10VpPdph6tT_ZB4sY9trIsHCwu4UaXN_D/preview" },
+    { title: "13 - Take Me Back to Hell", link: "https://drive.google.com/file/d/10yBvi3a9x8SjI9XX3u0pi6AaEQBUmEs-/preview" },
+  ]
+},
+
+
+
 {
   title: "Demon Slayer (S4)",
   image: "Images/demonslayer_s4.jpeg",
