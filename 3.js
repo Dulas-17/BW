@@ -1,6 +1,27 @@
 // movies.js
 const movieData = [
 {
+  title: "In Time",
+  image: "Images/intime.jpeg",
+  description: "In a future where time is literally currency and aging stops at 25, the wealthy can live forever while the poor must beg, borrow, or steal to survive. Will Salas, wrongly accused of murder, goes on the run with Sylvia Weis, a wealthy heiress, as they try to upend the corrupt system.",
+  genres: ["Sci-Fi", "Action", "Thriller", "Drama"],
+  link: ""
+},
+{
+  title: "Ready Player One",
+  image: "Images/readyplayerone.jpeg",
+  description: "In 2045, much of humanity escapes reality through the OASIS, a virtual reality universe created by James Halliday. When Halliday dies, he leaves behind a contest: whoever finds his hidden Easter Egg will inherit control of the OASIS and his fortune. Wade Watts joins the hunt, battling powerful corporations and rivals in a race for control.",
+  genres: ["Sci-Fi", "Adventure", "Action", "Fantasy"],
+  link: ""
+},
+{
+  title: "Ford v Ferrari",
+  image: "Images/fordvferrari.jpeg",
+  description: "Based on a true story, Ford v Ferrari follows visionary car designer Carroll Shelby and fearless driver Ken Miles as they join forces to build a revolutionary race car for Ford Motor Company. Their mission: defeat Ferrari at the 1966 24 Hours of Le Mans, in a battle of innovation, determination, and speed.",
+  genres: ["Drama", "Biography", "Sport", "Action"],
+  link: ""
+},
+{
   title: "Fountain of Youth",
   image: "Images/fountainofyouth.jpeg",
   description: "Fountain of Youth follows two estranged siblings, Luke and Charlotte Purdue, who reunite on a globe-spanning adventure to find the legendary Fountain of Youth. When clues hidden in historic paintings lead them into a dangerous conspiracy and a secret society guarding the Fountain’s power, they must decide what they are willing to sacrifice for the truth.",
