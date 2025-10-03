@@ -2,7 +2,7 @@
 const movieData = [
 {
   title: "In Time",
-  image: "Images/intime.jpeg",
+  image: "Images/intime.jpeg.webp",
   description: "In a future where time is literally currency and aging stops at 25, the wealthy can live forever while the poor must beg, borrow, or steal to survive. Will Salas, wrongly accused of murder, goes on the run with Sylvia Weis, a wealthy heiress, as they try to upend the corrupt system.",
   genres: ["Sci-Fi", "Action", "Thriller", "Drama"],
   link: ""
