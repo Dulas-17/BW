@@ -19,7 +19,7 @@ const movieData = [
   image: "Images/fordvferrari.jpeg",
   description: "Based on a true story, Ford v Ferrari follows visionary car designer Carroll Shelby and fearless driver Ken Miles as they join forces to build a revolutionary race car for Ford Motor Company. Their mission: defeat Ferrari at the 1966 24 Hours of Le Mans, in a battle of innovation, determination, and speed.",
   genres: ["Drama", "Biography", "Sport", "Action"],
-  link: ""
+  link: "https://drive.google.com/file/d/1GfZPJVjXh1sqiza5Lr68XeCAIkrePP4q/preview"
 },
 {
   title: "Fountain of Youth",
