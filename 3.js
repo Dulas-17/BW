@@ -5,14 +5,14 @@ const movieData = [
   image: "Images/intime.jpeg.webp",
   description: "In a future where time is literally currency and aging stops at 25, the wealthy can live forever while the poor must beg, borrow, or steal to survive. Will Salas, wrongly accused of murder, goes on the run with Sylvia Weis, a wealthy heiress, as they try to upend the corrupt system.",
   genres: ["Sci-Fi", "Action", "Thriller", "Drama"],
-  link: ""
+  link: "https://drive.google.com/file/d/1WPhggyz5hZbBSdEqQZepASs7ulnNON6N/preview"
 },
 {
   title: "Ready Player One",
   image: "Images/readyplayerone.jpeg",
   description: "In 2045, much of humanity escapes reality through the OASIS, a virtual reality universe created by James Halliday. When Halliday dies, he leaves behind a contest: whoever finds his hidden Easter Egg will inherit control of the OASIS and his fortune. Wade Watts joins the hunt, battling powerful corporations and rivals in a race for control.",
   genres: ["Sci-Fi", "Adventure", "Action", "Fantasy"],
-  link: ""
+  link: "https://drive.google.com/file/d/11Tufp84A9FfdhsVaDKzeAmYni_17asxk/preview"
 },
 {
   title: "Ford v Ferrari",
