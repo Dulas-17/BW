@@ -1,5 +1,18 @@
 // series.js
 const seriesData = [
+{
+  title: "Voltron: Legendary Defender (S1)",
+  image: "Images/voltron.jpeg",
+  description: "Voltron: Legendary Defender follows five young pilots who discover robotic lions that combine to form the legendary defender, Voltron. Together, they must learn to work as a team to protect the universe from the evil Galra Empire and its ruthless leader, Emperor Zarkon.",
+  genres: ["Action", "Adventure", "Mecha", "Sci-Fi", "Animation"],
+  episodes: [
+    { title: "1 - The Rise of Voltron", link: "https://drive.google.com/file/d/1Ekc1PqteVTCgKXcZK34xWMPgMazVJhPg/preview" },
+    { title: "2 - Some Assembly Required", link: "https://drive.google.com/file/d/1Gsyf5dyHQcvOdKKeJ6kE6FROBRO3VlCo/preview" },
+    { title: "3 - Return of the Gladiator", link: "https://drive.google.com/file/d/1UQQX5g1WXLtjOiSqL6sgJeEMhLRYQtg2/preview" },
+    { title: "4 - Fall of the Castle of Lions", link: "https://drive.google.com/file/d/1O4CgpKE_ntJ7FUk8tS7qlhT-DEFIaTHN/preview" },
+    { title: "5 - Tears of the Balmera", link: "https://drive.google.com/file/d/15kOo04LrE51EVMhmoZthwR9N1_3sAI2j/preview" },
+  ]
+},
 
 {
   title: "Lucifer (S1)",
