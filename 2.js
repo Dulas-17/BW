@@ -1,6 +1,25 @@
 // series.js
 const seriesData = [
 {
+  title: "86 Eighty-Six (S1)",
+  image: "Images/86.jpeg",
+  description: "In a dystopian war where the subjugated ‘Eighty-Six’ are forced to fight in unmanned drones while the privileged remain safe, a handler and her squad of Colorata must face betrayal, loss, and the truth behind the war.",
+  genres: ["Action", "Sci-Fi", "Drama", "Mecha", "Anime"],
+  episodes: [
+    { title: "1 - Undertaker", link:"https://drive.google.com/file/d/1VYpulVgWkSLdLK18Dw3aWo53Nn8JFVkv/preview" },
+    { title: "2 - Spearhead", link:"https://drive.google.com/file/d/1WxrFLJHNz_omBrm1xFm6JvISNH5nEfLP/preview" },
+    { title: "3 - I Don’t Want to Die", link:"https://drive.google.com/file/d/1L4_jDFRIE7np06TCCF8nx1ImVMJ7zayj/preview" },
+    { title: "4 - Real Name", link:"https://drive.google.com/file/d/1H2VHzvCs1dTtriMjc0UkUNFkkQ1atEF6/preview" },
+    { title: "5 - I’m With You", link:"https://drive.google.com/file/d/1g13iRzxQ6hU_5MBEyOd9fuejlWphrUmE/preview" },
+    { title: "6 - Through to the End", link:"https://drive.google.com/file/d/1Yk3ZQtDOguRFk8x5ibs6qwL8zZcpCE_Y/preview" },
+    { title: "7 - Will You Remember Me?", link:"https://drive.google.com/file/d/17TQCsGVn4_1DgMw3m1D-9xBcAtJfsWya/preview" },
+    { title: "8 - Let’s Go", link:"https://drive.google.com/file/d/1liqMPlxTsU3RqLMqM_uA6e9CNeOV4nmp/preview" },
+    { title: "9 - Goodbye", link:"https://drive.google.com/file/d/1LOlpRmI-0YrQBmGX5l0-bJmhPRfMZHvn/preview" },
+    { title: "10 - Thank You", link:"https://drive.google.com/file/d/1-_qB10tBwa1rdAN1FwcD-qhHzCbzjlou/preview" },
+    { title: "11 - Here We Go", link:"https://drive.google.com/file/d/1YhGB81Cu20YOaOfo0d9oQ9omG0ycNQhs/preview" },
+  ]
+},
+{
   title: "Voltron: Legendary Defender (S1)",
   image: "Images/voltron.jpeg",
   description: "Voltron: Legendary Defender follows five young pilots who discover robotic lions that combine to form the legendary defender, Voltron. Together, they must learn to work as a team to protect the universe from the evil Galra Empire and its ruthless leader, Emperor Zarkon.",
