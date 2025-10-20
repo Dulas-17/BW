@@ -1,6 +1,20 @@
 // movies.js
 const movieData = [
 {
+  title: "Transformers: Dark of the Moon",
+  image: "Images/transformers_darkmoon.jpeg",
+  description: "The Autobots learn of a hidden Cybertronian spacecraft on the Moon and race against the Decepticons to reach it and uncover its secrets. As war erupts on Earth, humanity’s fate hangs in the balance, and Sam Witwicky must once again rise to the challenge to help his robotic allies.",
+  genres: ["Action", "Sci-Fi", "Adventure"],
+  link: ""
+},
+{
+  title: "Gran Turismo",
+  image: "Images/granturismo.jpeg",
+  description: "Based on a true story, Gran Turismo follows a young gamer whose exceptional racing skills in the video game world earn him a chance to become a professional driver. Under the guidance of a tough coach, he must prove himself on real tracks where one mistake could cost everything.",
+  genres: ["Action", "Drama", "Sports", "Adventure"],
+  link: ""
+},
+{
   title: "In Time",
   image: "Images/intime.jpeg.webp",
   description: "In a future where time is literally currency and aging stops at 25, the wealthy can live forever while the poor must beg, borrow, or steal to survive. Will Salas, wrongly accused of murder, goes on the run with Sylvia Weis, a wealthy heiress, as they try to upend the corrupt system.",
@@ -18,7 +32,7 @@ const movieData = [
   title: "Ford v Ferrari",
   image: "Images/fordvferrari.jpeg",
   description: "Based on a true story, Ford v Ferrari follows visionary car designer Carroll Shelby and fearless driver Ken Miles as they join forces to build a revolutionary race car for Ford Motor Company. Their mission: defeat Ferrari at the 1966 24 Hours of Le Mans, in a battle of innovation, determination, and speed.",
-  genres: ["Drama", "Biography", "Sport", "Action"],
+  genres: ["Drama", "Biography", "Sports", "Action"],
   link: "https://drive.google.com/file/d/1GfZPJVjXh1sqiza5Lr68XeCAIkrePP4q/preview"
 },
 {
