@@ -127,6 +127,100 @@ SECTIONS
 }
 
 /* ==================================
+HOME SECTION STYLES
+================================== */
+
+.home-section {
+  padding: 1rem;
+}
+
+.home-category {
+  margin-bottom: 2.5rem;
+}
+
+.home-category h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+  border-bottom: 2px solid var(--primary-blue);
+  padding-bottom: 0.5rem;
+}
+
+.horizontal-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-blue) var(--background-light);
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-thumb {
+  background: var(--primary-blue);
+  border-radius: 3px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-track {
+  background: var(--background-light);
+}
+
+.home-item {
+  flex: 0 0 auto;
+  width: 150px;
+  background: var(--surface-light);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.home-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.home-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.home-item-content {
+  padding: 0.8rem;
+}
+
+.home-item h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-item p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.home-item .btn {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+}
+
+/* ==================================
 SEARCH
 ================================== */
 
@@ -326,6 +420,7 @@ CONTENT GRIDS
   border: 1px solid var(--border-subtle);
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  position: relative;
 }
 
 .series-item:hover {
