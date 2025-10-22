@@ -1,17 +1,21 @@
 // Home Section Data - YOU MANUALLY ADD ITEMS HERE
 const homeData = {
     // MANUALLY ADD LATEST MOVIES (use movie indices from your movies array)
-    latestMovies: [0, 1, 2], // Example: first 3 movies
+    latestMovies: [26, 20, 18,14,12,11], // Example: first 3 movies
 
     // MANUALLY ADD LATEST SERIES (use series indices from your series array)
-    latestSeries: [0, 1, 2], // Example: first 3 series
+    latestSeries: [1, 2,8,3,14,18], // Example: first 3 series
 
     // MANUALLY ADD FEATURED CONTENT (mix of movies and series)
     featured: [
-        { type: 'movie', index: 0 }, // First movie
-        { type: 'series', index: 0 }, // First series
-        { type: 'movie', index: 1 }, // Second movie
-        { type: 'series', index: 1 } // Second series
+        { type: 'movie', index: 10 }, // First movie
+        { type: 'series', index: 10 }, // First series
+        { type: 'movie', index: 0 }, // Second movie
+        { type: 'series', index: 1 }, // Second series
+        { type: 'movie', index: 10 }, // First movie
+        { type: 'series', index: 11 }, // First series
+        { type: 'movie', index: 28 }, // Second movie
+        { type: 'series', index: 2 }, // Second series
     ],
 
     // MANUALLY ADD UPCOMING CONTENT
@@ -23,10 +27,10 @@ const homeData = {
 
     // MANUALLY ADD RECOMMENDATIONS
     recommendations: [
-        { type: 'movie', index: 2, reason: "Fan Favorite" },
-        { type: 'series', index: 2, reason: "Trending Now" },
-        { type: 'movie', index: 5, reason: "Highly Rated" },
-        { type: 'series', index: 4, reason: "Editor's Pick" }
+        { type: 'movie', index: , reason: "Editor's" },
+        { type: 'series', index: 10, reason: "Editor's" },
+        { type: 'movie', index: 5, reason: "Editor's" },
+        { type: 'series', index: 3, reason: "Editor's Pick" }
     ]
 };
 
