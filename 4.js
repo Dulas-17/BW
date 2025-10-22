@@ -1,10 +1,10 @@
 // Home Section Data - YOU MANUALLY ADD ITEMS HERE
 const homeData = {
     // MANUALLY ADD LATEST MOVIES (use movie indices from your movies array)
-    latestMovies: [26, 20, 18,14,12,11], // Example: first 3 movies
+    latestMovies: [11,12,14 16,18,22,26], // Example: first 3 movies
 
     // MANUALLY ADD LATEST SERIES (use series indices from your series array)
-    latestSeries: [1, 2,8,3,14,18], // Example: first 3 series
+    latestSeries: [1, 2,3,8,14,18], // Example: first 3 series
 
     // MANUALLY ADD FEATURED CONTENT (mix of movies and series)
     featured: [
@@ -27,7 +27,7 @@ const homeData = {
 
     // MANUALLY ADD RECOMMENDATIONS
     recommendations: [
-        { type: 'movie', index: , reason: "Editor's" },
+        { type: 'movie', index: 27 , reason: "Editor's" },
         { type: 'series', index: 10, reason: "Editor's" },
         { type: 'movie', index: 5, reason: "Editor's" },
         { type: 'series', index: 3, reason: "Editor's Pick" }
