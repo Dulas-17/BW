@@ -1,21 +1,46 @@
-// Home Section Logic
-// This file handles the home section functionality
+// Home Section Data - YOU MANUALLY ADD ITEMS HERE
+const homeData = {
+    // MANUALLY ADD LATEST MOVIES (use movie indices from your movies array)
+    latestMovies: [0, 1, 2], // Example: first 3 movies
 
-// Initialize home section
+    // MANUALLY ADD LATEST SERIES (use series indices from your series array)
+    latestSeries: [0, 1, 2], // Example: first 3 series
+
+    // MANUALLY ADD FEATURED CONTENT (mix of movies and series)
+    featured: [
+        { type: 'movie', index: 0 }, // First movie
+        { type: 'series', index: 0 }, // First series
+        { type: 'movie', index: 1 }, // Second movie
+        { type: 'series', index: 1 } // Second series
+    ],
+
+    // MANUALLY ADD UPCOMING CONTENT
+    upcoming: [
+        { type: 'movie', index: 3, title: "Upcoming Movie 1", image: "upcoming1.jpg", description: "Coming soon..." },
+        { type: 'series', index: 3, title: "Upcoming Series 1", image: "upcoming2.jpg", description: "Coming soon..." },
+        { type: 'movie', index: 4, title: "Upcoming Movie 2", image: "upcoming3.jpg", description: "Coming soon..." }
+    ],
+
+    // MANUALLY ADD RECOMMENDATIONS
+    recommendations: [
+        { type: 'movie', index: 2, reason: "Fan Favorite" },
+        { type: 'series', index: 2, reason: "Trending Now" },
+        { type: 'movie', index: 5, reason: "Highly Rated" },
+        { type: 'series', index: 4, reason: "Editor's Pick" }
+    ]
+};
+
+// Home Section Logic
 function initializeHomeSection() {
     console.log("Initializing home section...");
     updateHomeContent();
-
-    // Add scroll tracking for home section
     setupHomeScrollTracking();
 }
 
-// Setup scroll tracking for home section
 function setupHomeScrollTracking() {
     const homeSection = document.getElementById('home');
     if (!homeSection) return;
 
-    // Save scroll position when home section is active and user scrolls
     homeSection.addEventListener('scroll', () => {
         if (homeSection.classList.contains('active')) {
             saveScrollPosition('home');
@@ -23,143 +48,137 @@ function setupHomeScrollTracking() {
     });
 }
 
-// Update home section with latest content
 function updateHomeContent() {
     updateLatestMovies();
     updateLatestSeries();
     updateFeaturedContent();
-    updateRecentlyAdded();
+    updateUpcomingContent();
+    updateRecommendations();
 }
 
-// Get latest movies (last 6 added)
-function getLatestMovies() {
-    return content.movies.slice(-6).reverse();
-}
-
-// Get latest series (last 6 added)
-function getLatestSeries() {
-    return content.series.slice(-6).reverse();
-}
-
-// Get featured content (mix of popular movies and series)
-function getFeaturedContent() {
-    const featuredMovies = content.movies.filter(movie => 
-        movie.featured || movie.rating > 4
-    ).slice(0, 3);
-
-    const featuredSeries = content.series.filter(series => 
-        series.featured || series.rating > 4
-    ).slice(0, 3);
-
-    return [...featuredMovies, ...featuredSeries].sort(() => Math.random() - 0.5).slice(0, 6);
-}
-
-// Get recently added content (last 8 items from both movies and series)
-function getRecentlyAdded() {
-    const recentMovies = content.movies.slice(-4).reverse();
-    const recentSeries = content.series.slice(-4).reverse();
-
-    return [...recentMovies, ...recentSeries].sort((a, b) => {
-        // Simple timestamp simulation - in real app, you'd have actual timestamps
-        return Math.random() - 0.5;
-    }).slice(0, 8);
-}
-
-// Update latest movies section
+// Update latest movies section (MANUALLY CONTROLLED)
 function updateLatestMovies() {
     const container = document.getElementById('latestMovies');
-    const latestMovies = getLatestMovies();
-
     container.innerHTML = '';
 
-    if (latestMovies.length === 0) {
-        container.innerHTML = '<p style="padding: 1rem; color: #666; text-align: center;">No movies available yet.</p>';
+    if (homeData.latestMovies.length === 0) {
+        container.innerHTML = '<p style="padding: 1rem; color: #666; text-align: center;">No latest movies added yet.</p>';
         return;
     }
 
-    latestMovies.forEach((movie, index) => {
-        const originalIndex = content.movies.findIndex(m => m.title === movie.title);
-        const movieElement = createHomeItem(movie, 'movie', originalIndex);
-        container.appendChild(movieElement);
+    homeData.latestMovies.forEach((movieIndex) => {
+        const movie = content.movies[movieIndex];
+        if (movie) {
+            const movieElement = createHomeItem(movie, 'movie', movieIndex);
+            container.appendChild(movieElement);
+        }
     });
 }
 
-// Update latest series section
+// Update latest series section (MANUALLY CONTROLLED)
 function updateLatestSeries() {
     const container = document.getElementById('latestSeries');
-    const latestSeries = getLatestSeries();
-
     container.innerHTML = '';
 
-    if (latestSeries.length === 0) {
-        container.innerHTML = '<p style="padding: 1rem; color: #666; text-align: center;">No series available yet.</p>';
+    if (homeData.latestSeries.length === 0) {
+        container.innerHTML = '<p style="padding: 1rem; color: #666; text-align: center;">No latest series added yet.</p>';
         return;
     }
 
-    latestSeries.forEach((series, index) => {
-        const originalIndex = content.series.findIndex(s => s.title === series.title);
-        const seriesElement = createHomeItem(series, 'series', originalIndex);
-        container.appendChild(seriesElement);
+    homeData.latestSeries.forEach((seriesIndex) => {
+        const series = content.series[seriesIndex];
+        if (series) {
+            const seriesElement = createHomeItem(series, 'series', seriesIndex);
+            container.appendChild(seriesElement);
+        }
     });
 }
 
-// Update featured content section
+// Update featured content section (MANUALLY CONTROLLED)
 function updateFeaturedContent() {
     const container = document.getElementById('featuredContent');
-    const featuredItems = getFeaturedContent();
-
     container.innerHTML = '';
 
-    if (featuredItems.length === 0) {
-        container.innerHTML = '<p style="padding: 1rem; color: #666; text-align: center;">No featured content available.</p>';
+    if (homeData.featured.length === 0) {
+        container.innerHTML = '<p style="padding: 1rem; color: #666; text-align: center;">No featured content added yet.</p>';
         return;
     }
 
-    featuredItems.forEach((item, index) => {
-        const type = item.episodes ? 'series' : 'movie';
-        const originalIndex = type === 'series' ? 
-            content.series.findIndex(s => s.title === item.title) : 
-            content.movies.findIndex(m => m.title === item.title);
-
-        const itemElement = createHomeItem(item, type, originalIndex, true);
-        container.appendChild(itemElement);
+    homeData.featured.forEach((item) => {
+        const contentItem = item.type === 'movie' ? content.movies[item.index] : content.series[item.index];
+        if (contentItem) {
+            const itemElement = createHomeItem(contentItem, item.type, item.index, true);
+            container.appendChild(itemElement);
+        }
     });
 }
 
-// Update recently added section
-function updateRecentlyAdded() {
-    const container = document.getElementById('recentlyAdded');
-    const recentItems = getRecentlyAdded();
-
+// Update upcoming content section (MANUALLY CONTROLLED - can use existing or new items)
+function updateUpcomingContent() {
+    const container = document.getElementById('upcomingContent');
     container.innerHTML = '';
 
-    if (recentItems.length === 0) {
-        container.innerHTML = '<p style="padding: 1rem; color: #666; text-align: center;">No recently added content.</p>';
+    if (homeData.upcoming.length === 0) {
+        container.innerHTML = '<p style="padding: 1rem; color: #666; text-align: center;">No upcoming content added yet.</p>';
         return;
     }
 
-    recentItems.forEach((item, index) => {
-        const type = item.episodes ? 'series' : 'movie';
-        const originalIndex = type === 'series' ? 
-            content.series.findIndex(s => s.title === item.title) : 
-            content.movies.findIndex(m => m.title === item.title);
+    homeData.upcoming.forEach((item) => {
+        // If it's an existing item, get from content arrays
+        let contentItem, itemType, itemIndex;
 
-        const itemElement = createHomeItem(item, type, originalIndex);
-        container.appendChild(itemElement);
+        if (item.type && item.index !== undefined) {
+            // Existing item from movies/series arrays
+            contentItem = item.type === 'movie' ? content.movies[item.index] : content.series[item.index];
+            itemType = item.type;
+            itemIndex = item.index;
+        } else {
+            // Custom upcoming item (not in main arrays yet)
+            contentItem = item;
+            itemType = item.type || 'movie';
+            itemIndex = item.index || 0;
+        }
+
+        if (contentItem) {
+            const itemElement = createUpcomingItem(contentItem, itemType, itemIndex);
+            container.appendChild(itemElement);
+        }
     });
 }
 
-// Create home item element
-function createHomeItem(item, type, originalIndex, isFeatured = false) {
+// Update recommendations section (MANUALLY CONTROLLED)
+function updateRecommendations() {
+    const container = document.getElementById('recommendations');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    if (homeData.recommendations.length === 0) {
+        container.innerHTML = '<p style="padding: 1rem; color: #666; text-align: center;">No recommendations added yet.</p>';
+        return;
+    }
+
+    homeData.recommendations.forEach((item) => {
+        const contentItem = item.type === 'movie' ? content.movies[item.index] : content.series[item.index];
+        if (contentItem) {
+            const itemElement = createHomeItem(contentItem, item.type, item.index, false, item.reason);
+            container.appendChild(itemElement);
+        }
+    });
+}
+
+// Create regular home item element
+function createHomeItem(item, type, originalIndex, isFeatured = false, recommendationReason = '') {
     const div = document.createElement('div');
     div.className = 'home-item';
 
-    // Add featured badge if needed
     const featuredBadge = isFeatured ? '<span class="featured-badge">Featured</span>' : '';
+    const recommendationBadge = recommendationReason ? `<span class="recommendation-badge">${recommendationReason}</span>` : '';
 
     div.innerHTML = `
         <img src="${item.image}" alt="${item.title}" />
         ${featuredBadge}
+        ${recommendationBadge}
         <div class="home-item-content">
             <h4>${item.title}</h4>
             <p>${item.description ? item.description.substring(0, 60) + '...' : 'No description available'}</p>
@@ -171,12 +190,29 @@ function createHomeItem(item, type, originalIndex, isFeatured = false) {
     return div;
 }
 
+// Create upcoming item element (special styling)
+function createUpcomingItem(item, type, originalIndex) {
+    const div = document.createElement('div');
+    div.className = 'home-item upcoming-item';
+
+    div.innerHTML = `
+        <img src="${item.image}" alt="${item.title}" />
+        <span class="upcoming-badge">Coming Soon</span>
+        <div class="home-item-content">
+            <h4>${item.title}</h4>
+            <p>${item.description ? item.description.substring(0, 60) + '...' : 'No description available'}</p>
+            <div class="upcoming-actions">
+                <button onclick="addToWatchLater('${type}', ${originalIndex})" class="watch-later-btn">Notify Me</button>
+            </div>
+        </div>
+    `;
+
+    return div;
+}
+
 // Navigate to item details from home section
 function navigateFromHome(type, index) {
-    // Save current scroll position before navigating
     saveScrollPosition('home');
-
-    // Save that we're coming from home section
     localStorage.setItem('originSection', 'home');
 
     if (type === 'series') {
@@ -186,15 +222,9 @@ function navigateFromHome(type, index) {
     }
 }
 
-// Listen for content updates to refresh home section
+// Listen for content updates
 document.addEventListener('contentUpdated', function() {
     if (document.getElementById('home').classList.contains('active')) {
         updateHomeContent();
     }
 });
-
-// Simulate content update event (you would call this when adding new content)
-function triggerContentUpdate() {
-    const event = new Event('contentUpdated');
-    document.dispatchEvent(event);
-}
