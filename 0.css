@@ -1,3 +1,61 @@
+.upcoming-item {
+    opacity: 0.8;
+    border: 2px dashed #007bff;
+}
+
+.upcoming-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: #007bff;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.upcoming-actions .btn {
+    display: none; /* Hide "View Details" for upcoming items */
+}
+
+.upcoming-actions .watch-later-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+/* Add to your CSS file */
+.featured-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: #ff6b00;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.recommendation-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #007bff;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.home-item {
+    position: relative;
+}
+
+
 /*
 NEW: Style for an item that has been opened.
 This provides the "watched" indicator on your lists.
