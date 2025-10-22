@@ -1,7 +1,7 @@
 // Home Section Data - YOU MANUALLY ADD ITEMS HERE
 const homeData = {
     // MANUALLY ADD LATEST MOVIES (use movie indices from your movies array)
-    latestMovies: [11,12,14 16,18,22,26], // Example: first 3 movies
+    latestMovies: [11,12,14,16,18,22,26], // FIXED: Added comma between 14 and 16
 
     // MANUALLY ADD LATEST SERIES (use series indices from your series array)
     latestSeries: [1, 2,3,8,14,18], // Example: first 3 series
@@ -75,6 +75,8 @@ function updateLatestMovies() {
         if (movie) {
             const movieElement = createHomeItem(movie, 'movie', movieIndex);
             container.appendChild(movieElement);
+        } else {
+            console.warn(`Movie at index ${movieIndex} not found`);
         }
     });
 }
@@ -94,6 +96,8 @@ function updateLatestSeries() {
         if (series) {
             const seriesElement = createHomeItem(series, 'series', seriesIndex);
             container.appendChild(seriesElement);
+        } else {
+            console.warn(`Series at index ${seriesIndex} not found`);
         }
     });
 }
@@ -113,6 +117,8 @@ function updateFeaturedContent() {
         if (contentItem) {
             const itemElement = createHomeItem(contentItem, item.type, item.index, true);
             container.appendChild(itemElement);
+        } else {
+            console.warn(`${item.type} at index ${item.index} not found`);
         }
     });
 }
@@ -146,6 +152,8 @@ function updateUpcomingContent() {
         if (contentItem) {
             const itemElement = createUpcomingItem(contentItem, itemType, itemIndex);
             container.appendChild(itemElement);
+        } else {
+            console.warn(`Upcoming ${itemType} at index ${itemIndex} not found`);
         }
     });
 }
@@ -167,6 +175,8 @@ function updateRecommendations() {
         if (contentItem) {
             const itemElement = createHomeItem(contentItem, item.type, item.index, false, item.reason);
             container.appendChild(itemElement);
+        } else {
+            console.warn(`Recommendation ${item.type} at index ${item.index} not found`);
         }
     });
 }
@@ -206,7 +216,7 @@ function createUpcomingItem(item, type, originalIndex) {
             <h4>${item.title}</h4>
             <p>${item.description ? item.description.substring(0, 60) + '...' : 'No description available'}</p>
             <div class="upcoming-actions">
-                <button onclick="addToWatchLater('${type}', ${originalIndex})" class="watch-later-btn">Notify Me</button>
+                <button onclick="addToWatchLater('${type}', ${originalIndex})" class="watch-later-btn">Watch Later</button>
             </div>
         </div>
     `;
