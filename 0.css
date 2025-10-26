@@ -171,8 +171,7 @@ SECTIONS
 .section {
   display: none;
   padding: 1rem;
-  width: 100%; /* fixed from 100vw */
-  max-width: 1100px;
+  width: 100%; /* fixed from 100vw *
   margin: auto;
   background: var(--surface-light);
   border-radius: 0;
@@ -436,7 +435,7 @@ CONTENT GRIDS
 
 .featured-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 1.5rem;
   margin: 2rem 0;
 }
@@ -506,8 +505,9 @@ CONTENT GRIDS
 }
 
 .series-details img {
-  width: 100%;
-  max-height: 90%;
+  width: 50%;
+  height:60%;
+  max-height: 50%;
   object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
