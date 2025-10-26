@@ -506,9 +506,7 @@ CONTENT GRIDS
 }
 
 .series-details img {
-  max-width: 50vw;
-  max-height: 40vh;
-  width:100%;
+  width:95%;
   height:85^;
   object-fit: cover;
   border-radius: 12px;
@@ -699,6 +697,14 @@ RESPONSIVENESS
 @media (min-width: 1200px) {
   .series-grid {
     grid-template-columns: repeat(5, 1fr);
+.series-details img {
+  width:50%;
+  height:40^;
+  object-fit: cover;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  align-items:left;
+}
   }
 }
 
