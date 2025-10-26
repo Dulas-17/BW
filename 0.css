@@ -697,14 +697,6 @@ RESPONSIVENESS
 @media (min-width: 1200px) {
   .series-grid {
     grid-template-columns: repeat(5, 1fr);
-.series-details img {
-  width:50%;
-  height:40^;
-  object-fit: cover;
-  border-radius: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  align-items:left;
-}
   }
 }
 
@@ -743,5 +735,26 @@ RESPONSIVENESS
   .featured-container,
   .news-grid {
     grid-template-columns: 1fr;
+  }
+}
+@media (min-width: 1200px) {
+  .series-details {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 2rem;
+    text-align: left;
+  }
+
+  .series-details img {
+    width: 50%;
+    height: 50%;
+    object-fit: cover;
+    border-radius: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .series-details .text-content {
+    flex: 1;
   }
 }
