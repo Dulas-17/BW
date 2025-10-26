@@ -506,9 +506,8 @@ CONTENT GRIDS
 }
 
 .series-details img {
-  width: 50%;
-  height:60%;
-  max-height: 50%;
+  width: 100%;
+  max-height: 90%;
   object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
