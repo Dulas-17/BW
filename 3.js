@@ -9,7 +9,7 @@ const movieData = [
 },
 {
   title: "The Bad Guys 2",
-  image: "Images/badguys2.jpeg",
+  image: "Images/badguys2.jpeg.png",
   description: "The gang returns for another wild heist in The Bad Guys 2. After trying to go straight, the crew is pulled back into the criminal underworld when a mysterious villain frames them for a crime they didn’t commit. To clear their names, they must pull off their most daring job yet.",
   genres: ["Animation", "Comedy", "Adventure", "Family"],
   link: ""
