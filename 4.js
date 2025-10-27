@@ -20,9 +20,11 @@ const homeData = {
 
     // MANUALLY ADD UPCOMING CONTENT
     upcoming: [
-        { type: 'movie', index: 3, title: "Upcoming Movie 1", image: "upcoming1.jpg", description: "Coming soon..." },
-        { type: 'series', index: 3, title: "Upcoming Series 1", image: "upcoming2.jpg", description: "Coming soon..." },
-        { type: 'movie', index: 4, title: "Upcoming Movie 2", image: "upcoming3.jpg", description: "Coming soon..." }
+        { type: 'movie', index: 4, title: "Upcoming Movie 1", image: "upcoming1.jpg", description: "Coming soon..." },
+        { type: 'movie, index: 13, title: "Upcoming Movie 2", image: "upcoming2.jpg", description: "Coming soon..." },
+        { type: 'movie', index: 19, title: "Upcoming Movie 3", image: "upcoming3.jpg", description: "Coming soon..." },
+ { type: 'movie', index: 24, title: "Upcoming Movie 4", image: "upcoming4.jpg", description: "Coming soon..." },
+ { type: 'movie', index: 28, title: "Upcoming Movie 5", image: "upcoming5.jpg", description: "Coming soon..." }
     ],
 
     // MANUALLY ADD RECOMMENDATIONS
