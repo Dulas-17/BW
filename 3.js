@@ -1,6 +1,41 @@
 // movies.js
 const movieData = [
 {
+  title: "Fantastic Four (2025)",
+  image: "Images/fantasticfour.jpeg",
+  description: "The Fantastic Four marks the arrival of Marvel’s First Family in the MCU. After an experimental mission goes wrong, four astronauts gain extraordinary powers that change their lives forever. They must learn to use their abilities to protect humanity while facing a powerful new cosmic threat.",
+  genres: ["Action", "Sci-Fi", "Adventure", "Superhero"],
+  link: ""
+},
+{
+  title: "The Bad Guys 2",
+  image: "Images/badguys2.jpeg",
+  description: "The gang returns for another wild heist in The Bad Guys 2. After trying to go straight, the crew is pulled back into the criminal underworld when a mysterious villain frames them for a crime they didn’t commit. To clear their names, they must pull off their most daring job yet.",
+  genres: ["Animation", "Comedy", "Adventure", "Family"],
+  link: ""
+},
+{
+  title: "The Odd Life of Timothy Green",
+  image: "Images/timothygreen.jpeg",
+  description: "A childless couple buries a box in their backyard, containing all their wishes for a baby. The next day, a 10-year-old boy named Timothy appears on their doorstep — but he’s not an ordinary child. Timothy’s magical nature changes their lives and everyone around him in ways they could never imagine.",
+  genres: ["Fantasy", "Drama", "Family", "Slice of Life"],
+  link: ""
+},
+{
+  title: "Interstellar",
+  image: "Images/interstellar.jpeg",
+  description: "In a future where Earth is dying, a group of astronauts travel through a wormhole near Saturn in search of a new home for humanity. As they face the mysteries of time, gravity, and love across distant galaxies, they discover that the greatest connection transcends space and time.",
+  genres: ["Sci-Fi", "Adventure", "Drama", "Mystery"],
+  link: ""
+},
+{
+  title: "No Game No Life: Zero",
+  image: "Images/nogamenolifezero.jpeg",
+  description: "Set six thousand years before the events of No Game No Life, this movie follows Riku, a human caught in an endless war among gods, and Schwi, an android seeking the meaning of the human heart. Together, they risk everything to bring peace to a world consumed by chaos.",
+  genres: ["Anime", "Fantasy", "Adventure", "Drama", "Sci-Fi"],
+  link: ""
+},
+{
   title: "Transformers: Dark of the Moon",
   image: "Images/transformers_darkmoon.jpeg",
   description: "The Autobots learn of a hidden Cybertronian spacecraft on the Moon and race against the Decepticons to reach it and uncover its secrets. As war erupts on Earth, humanity’s fate hangs in the balance, and Sam Witwicky must once again rise to the challenge to help his robotic allies.",
