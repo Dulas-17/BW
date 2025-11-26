@@ -45,7 +45,6 @@ const seriesData = [
     { title: "5 - Tears of the Balmera", link: "https://drive.google.com/file/d/15kOo04LrE51EVMhmoZthwR9N1_3sAI2j/preview" },
   ]
 },
-
 {
   title: "Lucifer (S1)",
   image: "Images/lucifer1.jpeg",
@@ -67,9 +66,6 @@ const seriesData = [
     { title: "13 - Take Me Back to Hell", link: "https://drive.google.com/file/d/10yBvi3a9x8SjI9XX3u0pi6AaEQBUmEs-/preview" },
   ]
 },
-
-
-
 {
   title: "Demon Slayer (S4)",
   image: "Images/demonslayer_s4.jpeg",
