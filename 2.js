@@ -1,6 +1,19 @@
 // series.js
 const seriesData = [
 {
+  title: "No Game No Life (S1)",
+  image: "Images/nogamenolife.jpeg",
+  description: "Sora and Shiro, two genius siblings known as Blank, are transported to a world where everything is decided through games. With unmatched strategy and skill, they aim to challenge the world's god and claim the ultimate throne.",
+  genres: ["Anime", "Fantasy", "Isekai", "Adventure", "Comedy","Ecchi"],
+  episodes: [
+    { title: "1 - Beginner", link:"https://drive.google.com/file/d/1D4SoLqQIKKBllWAqVTMbxuysot2j8JWa/preview" },
+    { title: "2 - Challenger", link:"https://drive.google.com/file/d/1JcdKd4M48kFUFkdYrSNa4TA-QFnrKOaJ/preview" },
+    { title: "3 - Expert", link:"https://drive.google.com/file/d/1MvZiX8EJ5I-wFrpiGDm4fIgz_8EotN86/preview" },
+    { title: "4 - Grandmaster", link:"https://drive.google.com/file/d/1v45drmWdcwgZvo-NX5d9pii985VpuERZ/preview" },
+    { title: "5 - Weak Square", link:"https://drive.google.com/file/d/1gO6eRdxaW--8FABd2liMxpV4svmNwGkk/preview" },
+  ]
+},
+{
   title: "86 Eighty-Six (S1)",
   image: "Images/86.jpeg",
   description: "In a dystopian war where the subjugated ‘Eighty-Six’ are forced to fight in unmanned drones while the privileged remain safe, a handler and her squad of Colorata must face betrayal, loss, and the truth behind the war.",
